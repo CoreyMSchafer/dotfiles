@@ -8,7 +8,7 @@ alias p="cd ~/Projects"
 alias g="git"
 alias h="history"
 alias se='open /Applications/eclipse/Eclipse.app'
-alias ch='history | grep "git commmit"'
+alias ch='history | grep "git commit"'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
