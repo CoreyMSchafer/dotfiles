@@ -1,0 +1,10 @@
+###############################################################################
+# Sublime Text                                                                #
+###############################################################################
+
+# Install Sublime Text settings
+cp -r init/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text*/Packages/User/Preferences.sublime-settings 2> /dev/null
+
+# Create Build Systems
+cp -r init/Python2.7.sublime-build ~/Library/Application\ Support/Sublime\ Text*/Packages/User/Preferences.sublime-settings 2> /dev/null
+cp -r init/Python3.5.sublime-build ~/Library/Application\ Support/Sublime\ Text*/Packages/User/Preferences.sublime-settings 2> /dev/null
