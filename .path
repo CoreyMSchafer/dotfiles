@@ -1,2 +1,0 @@
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:$PATH"
-export PATH="$HOME/anaconda/bin:$PATH"

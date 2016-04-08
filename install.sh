@@ -34,7 +34,10 @@ echo "...done"
 # move any existing dotfiles in ${homedir} to dotfiles_old directory, then create symlinks
 for file in ${files}; do
     echo "Moving any existing dotfiles from ${homedir} to ${olddir}"
-    mv ${homedir}/.${file} ${homedir}/dotfiles_old/
+    mv ${homedir}/.${file} ${olddir}/
     echo "Creating symlink to $file in home directory."
     ln -s ${dir}/.${file} ${homedir}/.${file}
 done
+
+# Run the Homebrew Script
+./brew.sh

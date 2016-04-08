@@ -1,13 +1,29 @@
-# Add `~/bin` to the `$PATH`
-export PATH="$HOME/bin:$PATH";
-export PATH="/usr/local/sbin:$PATH"
-export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+# Add to the $PATH. Lower ones have higher priority.
 
+export GEM_HOME="$HOME/.gem:$PATH";
+export PATH="$GEM_HOME/bin:$PATH";
+
+export PATH="/usr/bin:$PATH";
+export PATH="/usr/sbin:$PATH";
+export PATH="/bin:$PATH";
+export PATH="/sbin:$PATH";
+export PATH="/usr/local/bin:$PATH";
+export PATH="/usr/local/sbin:$PATH";
+
+export PATH="/usr/local/git/bin:$PATH";
+export PATH="$HOME/bin:$PATH";
+export PATH="$HOME/anaconda/bin:$PATH";
+export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH";
+
+# Set Man Pages
+export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+
+# Set PATH for Finder-launched applications
+launchctl setenv PATH $PATH
 
 # Load the shell dotfiles, and then some:
-# * ~/.path can be used to extend `$PATH`.
-# * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,exports,aliases,functions,private}; do
+# * ~/.private can be used for other settings you don’t want to commit.
+for file in ~/.{private,bash_prompt,exports,aliases,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
