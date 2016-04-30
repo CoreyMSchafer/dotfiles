@@ -13,31 +13,26 @@ fi
 
 homedir=$1
 
-dir=${homedir}/dotfiles                    # dotfiles directory
-olddir=${homedir}/dotfiles_old             # old dotfiles backup directory
-files="aliases bash_profile bash_prompt bashrc functions path private"    # list of files/folders to symlink in ${homedir}
+# dotfiles directory
+dotfiledir=${homedir}/dotfiles
+
+# list of files/folders to symlink in ${homedir}
+files="aliases bash_profile bash_prompt bashrc functions path private vimrc"
 
 ##########
 
 curl "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > ${homedir}/.git-completion.bash
 
-# create dotfiles_old in ${homedir}
-echo "Creating ${olddir} for backup of any existing dotfiles in ${homedir}"
-mkdir -p ${olddir}
-echo "...done"
-
 # change to the dotfiles directory
 echo "Changing to the ${dir} directory"
-cd ${dir}
+cd ${dotfiledir}
 echo "...done"
 
-# move any existing dotfiles in ${homedir} to dotfiles_old directory, then create symlinks
+# create symlinks (will overwrite old dotfiles)
 for file in ${files}; do
-    echo "Moving any existing dotfiles from ${homedir} to ${olddir}"
-    mv ${homedir}/.${file} ${olddir}/
     echo "Creating symlink to $file in home directory."
-    ln -s ${dir}/.${file} ${homedir}/.${file}
+    ln -sf ${dotfiledir}/.${file} ${homedir}/.${file}
 done
 
 # Run the Homebrew Script
-./brew.sh
+# ./brew.sh

@@ -20,7 +20,7 @@ export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
 
 # Load the shell dotfiles, and then some:
 # * ~/.private can be used for other settings you don’t want to commit.
-for file in ~/.{private,bash_prompt,exports,aliases,functions}; do
+for file in ~/.{private,bash_prompt,exports,aliases,functions,vimrc}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
