@@ -18,15 +18,15 @@ export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH";
 # Set Man Pages
 export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
 
-# Set PATH for Finder-launched applications
-launchctl setenv PATH $PATH
-
 # Load the shell dotfiles, and then some:
 # * ~/.private can be used for other settings you don’t want to commit.
 for file in ~/.{private,bash_prompt,exports,aliases,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
+
+# Set ENV for Finder-launched applications
+launchctl setenv PATH $PATH
 
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
