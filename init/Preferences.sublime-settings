@@ -1,18 +1,36 @@
 {
-	"caret_extra_width": 1,
-	"caret_style": "phase",
-	"close_windows_when_empty": false,
-	"color_scheme": "Packages/User/SublimeLinter/predawn (SL).tmTheme",
-	"copy_with_empty_selection": false,
-	"drag_text": false,
-	"draw_minimap_border": true,
-	"enable_tab_scrolling": false,
-	"font_face": "Source Code Pro",
+	"theme": "predawn-DEV.sublime-theme",
+	"color_scheme": "Packages/Predawn/predawn.tmTheme",
+
+	"predawn_tabs_active_underline": false,
+    "predawn_tabs_large": false,
+    "predawn_tabs_medium": false,
+    "predawn_tabs_small": false,
+
+    "predawn_sidebar_arrows": false,
+    "predawn_sidebar_large": false,
+    "predawn_sidebar_medium": false,
+    "predawn_sidebar_small": false,
+    "predawn_sidebar_xlarge": false,
+    "predawn_sidebar_xsmall": false,
+    "predawn_sidebar_narrow": false,
+
+    "predawn_findreplace_small": false,
+    "predawn_quick_panel_small": false,
+
+    "font_face": "Source Code Pro",
 	"font_options":
 	[
 		"no_round"
 	],
 	"font_size": 19,
+    "caret_extra_width": 1,
+	"caret_style": "phase",
+	"close_windows_when_empty": false,
+	"copy_with_empty_selection": false,
+	"drag_text": false,
+	"draw_minimap_border": true,
+	"enable_tab_scrolling": false,
 	"highlight_line": true,
 	"ignored_packages":
 	[
@@ -28,7 +46,6 @@
 	"scroll_speed": 5.0,
 	"show_full_path": false,
 	"sidebar_default": true,
-	"theme": "predawn-DEV.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
 	"word_wrap": true
