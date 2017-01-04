@@ -1,0 +1,11 @@
+{
+    "auto_formatting": true,
+    "autoformat_ignore":
+    [
+        "E309",
+        "E501"
+    ],
+    "pep8_max_line_length": 90,
+    "anaconda_linter_mark_style": "none",
+    "disable_anaconda_completion": true
+}
