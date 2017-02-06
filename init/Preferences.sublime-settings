@@ -52,7 +52,7 @@
 
     "show_definitions": false,
     "show_encoding": true,
-    "show_errors_inline": false
+    "show_errors_inline": false,
 
     "ensure_newline_at_eof_on_save": true,
     "highlight_modified_tabs": true,
