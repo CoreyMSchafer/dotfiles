@@ -1,8 +1,8 @@
 {
-	"theme": "predawn-DEV.sublime-theme",
-	"color_scheme": "Packages/Predawn/predawn.tmTheme",
+    "theme": "predawn-DEV.sublime-theme",
+    "color_scheme": "Packages/Predawn/predawn.tmTheme",
 
-	"predawn_tabs_active_underline": false,
+    "predawn_tabs_active_underline": false,
     "predawn_tabs_large": false,
     "predawn_tabs_medium": false,
     "predawn_tabs_small": false,
@@ -19,36 +19,36 @@
     "predawn_quick_panel_small": false,
 
     "font_face": "Source Code Pro",
-	"font_options":
-	[
-		"no_round"
-	],
-	"font_size": 19,
+    "font_options":
+    [
+        "no_round"
+    ],
+    "font_size": 19,
     "caret_extra_width": 1,
-	"caret_style": "phase",
-	"close_windows_when_empty": false,
-	"copy_with_empty_selection": false,
-	"drag_text": false,
-	"draw_minimap_border": true,
-	"enable_tab_scrolling": false,
-	"highlight_line": true,
-	"ignored_packages":
-	[
-		"Vintage"
-	],
-	"match_brackets_content": false,
-	"match_selection": false,
-	"match_tags": false,
-	"open_files_in_new_window": false,
-	"overlay_scroll_bars": "enabled",
-	"preview_on_click": false,
-	"scroll_past_end": true,
-	"scroll_speed": 5.0,
-	"show_full_path": false,
-	"sidebar_default": true,
-	"translate_tabs_to_spaces": true,
-	"trim_trailing_white_space_on_save": true,
-	"word_wrap": true,
+    "caret_style": "phase",
+    "close_windows_when_empty": false,
+    "copy_with_empty_selection": false,
+    "drag_text": false,
+    "draw_minimap_border": true,
+    "enable_tab_scrolling": false,
+    "highlight_line": true,
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "match_brackets_content": false,
+    "match_selection": false,
+    "match_tags": false,
+    "open_files_in_new_window": false,
+    "overlay_scroll_bars": "enabled",
+    "preview_on_click": false,
+    "scroll_past_end": true,
+    "scroll_speed": 5.0,
+    "show_full_path": false,
+    "sidebar_default": true,
+    "translate_tabs_to_spaces": true,
+    "trim_trailing_white_space_on_save": true,
+    "word_wrap": true,
 
     "show_definitions": false,
     "show_encoding": true,
