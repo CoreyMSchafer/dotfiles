@@ -10,7 +10,7 @@
     [
         "no_round"
     ],
-    "font_size": 19,
+    "font_size": 20,
     "bold_folder_labels": true,
     "caret_extra_width": 1,
     "caret_style": "phase",
