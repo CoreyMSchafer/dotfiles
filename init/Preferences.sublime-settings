@@ -1,29 +1,17 @@
 {
-    "theme": "predawn-DEV.sublime-theme",
+    "theme": "Material-Theme-Darker.sublime-theme",
     "color_scheme": "Packages/Predawn/predawn.tmTheme",
 
-    "predawn_tabs_active_underline": false,
-    "predawn_tabs_large": false,
-    "predawn_tabs_medium": false,
-    "predawn_tabs_small": false,
-
-    "predawn_sidebar_arrows": false,
-    "predawn_sidebar_large": false,
-    "predawn_sidebar_medium": false,
-    "predawn_sidebar_small": false,
-    "predawn_sidebar_xlarge": false,
-    "predawn_sidebar_xsmall": false,
-    "predawn_sidebar_narrow": false,
-
-    "predawn_findreplace_small": false,
-    "predawn_quick_panel_small": false,
-
+    "material_theme_accent_graphite": true ,
+    "material_theme_compact_sidebar": true,
+        
     "font_face": "Source Code Pro",
     "font_options":
     [
         "no_round"
     ],
     "font_size": 19,
+    "bold_folder_labels": true,
     "caret_extra_width": 1,
     "caret_style": "phase",
     "close_windows_when_empty": false,
@@ -36,6 +24,8 @@
     [
         "Vintage"
     ],
+    "line_padding_bottom": 1,
+    "line_padding_top": 1,
     "match_brackets_content": false,
     "match_selection": false,
     "match_tags": false,
