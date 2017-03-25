@@ -5,6 +5,8 @@
     "material_theme_accent_graphite": true ,
     "material_theme_compact_sidebar": true,
         
+    "file_exclude_patterns": ["*.pyc", "*.pyo", "*.exe", "*.dll", "*.obj","*.o", "*.a", "*.lib", "*.so", "*.dylib", "*.ncb", "*.sdf", "*.suo", "*.pdb", "*.idb", ".DS_Store", "*.class", "*.psd", "*.sublime-workspace"],
+        
     "font_face": "Source Code Pro",
     "font_options":
     [
