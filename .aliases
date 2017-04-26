@@ -34,9 +34,10 @@ alias egrep='egrep --color=auto'
 alias sudo='sudo '
 
 # Get OS X Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-alias update_all='sudo softwareupdate -i -a; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; brew -v update; brew -v upgrade --all; brew cleanup; brew cask cleanup; brew prune; brew doctor; conda update conda; pip install --upgrade pip'
+alias update_system='sudo softwareupdate -i -a; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update'
 alias update_brew="brew -v update; brew -v upgrade --all; brew cleanup; brew cask cleanup; brew prune; brew doctor"
 alias update_python_all='pip install --upgrade pip; pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U; conda update conda; conda update anaconda'
+alias update_all='update_system; update_brew; update_python_all'
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
