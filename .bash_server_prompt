@@ -18,7 +18,7 @@ if tput setaf 1 &> /dev/null; then
 	blue=$(tput setaf 153);
 	green=$(tput setaf 71);
 	orange=$(tput setaf 166);
-	red=$(tput setaf 124);
+	red=$(tput setaf 167);
 	white=$(tput setaf 15);
 	yellow=$(tput setaf 228);
 else
