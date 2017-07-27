@@ -63,10 +63,7 @@ function conda_auto_env() {
     # Check if you are already in the environment
     if [[ $CONDA_PREFIX != *$ENV_NAME* ]]; then
       # Try to activate environment
-      source activate $ENV_NAME
-      if [ $? -gt 0 ]; then
-        echo "Found conda environment '$ENV_NAME' but could not activate."
-      fi
+      source activate $ENV_NAME &>/dev/null
     fi
   fi
 }
