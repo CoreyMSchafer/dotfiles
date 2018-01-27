@@ -1,11 +1,4 @@
-
 # Shortcuts
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias p="cd ~/Projects"
-alias g="git"
-alias h="history"
-alias se='open /Applications/eclipse/Eclipse.app'
 alias ch='history | grep "git commit"'
 alias hg='history | grep'
 

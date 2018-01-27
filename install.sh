@@ -17,14 +17,14 @@ homedir=$1
 dotfiledir=${homedir}/dotfiles
 
 # list of files/folders to symlink in ${homedir}
-files="aliases bash_profile bash_prompt bashrc functions path private vimrc"
+files="bash_profile bashrc bash_prompt aliases private"
 
 ##########
 
 curl "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > ${homedir}/.git-completion.bash
 
 # change to the dotfiles directory
-echo "Changing to the ${dir} directory"
+echo "Changing to the ${dotfiledir} directory"
 cd ${dotfiledir}
 echo "...done"
 
