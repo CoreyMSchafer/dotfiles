@@ -1,6 +1,0 @@
-# Add to the $PATH. Lower ones have higher priority.
-# Load dotfiles:
-for file in ~/.{bash_prompt,aliases}; do
-    [ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
