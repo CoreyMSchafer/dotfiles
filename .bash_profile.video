@@ -1,7 +1,5 @@
 # Add to the $PATH. Lower ones have higher priority.
-
 # Load dotfiles:
-# * ~/.private is in .gitignore and can be used for settings you don’t want to commit.
 for file in ~/.{bash_prompt,aliases}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
