@@ -1,0 +1,5 @@
+{
+    "cmd": ["/Library/Frameworks/Python.framework/Versions/3.7/bin/python3", "-u", "$file"],
+    "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+    "quiet": true
+}
