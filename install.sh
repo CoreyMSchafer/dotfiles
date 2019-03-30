@@ -1,10 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ############################
-# .make.sh
 # This script creates symlinks from the home directory to any desired dotfiles in ${homedir}/dotfiles
+# And also installs Homebrew Packages
+# And sets Sublime preferences
 ############################
-
-########## Variables
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: install.sh <home_directory>"
@@ -19,10 +18,6 @@ dotfiledir=${homedir}/dotfiles
 # list of files/folders to symlink in ${homedir}
 files="bash_profile bashrc bash_prompt aliases private"
 
-##########
-
-curl "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > ${homedir}/.git-completion.bash
-
 # change to the dotfiles directory
 echo "Changing to the ${dotfiledir} directory"
 cd ${dotfiledir}
@@ -34,5 +29,11 @@ for file in ${files}; do
     ln -sf ${dotfiledir}/.${file} ${homedir}/.${file}
 done
 
+# Download Git Auto-Completion
+curl "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > ${homedir}/.git-completion.bash
+
 # Run the Homebrew Script
-# ./brew.sh
+./brew.sh
+
+# Run the Sublime Script
+./sublime.sh
