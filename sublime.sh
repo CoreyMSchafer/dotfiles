@@ -5,7 +5,7 @@ cp -r settings/Package\ Control.sublime-package ~/Library/Application\ Support/S
 # Install Custom Sublime Text settings
 cp -r settings/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings 2> /dev/null
 cp -r settings/Anaconda.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Anaconda.sublime-settings 2> /dev/null
-cp -r settings/Default(OSX)-User.sublime-keymap ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ (OSX).sublime-keymap 2> /dev/null
+cp -r settings/Default\ \(OSX\).sublime-keymap ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ \(OSX\).sublime-keymap
 
 # Create Python Build Systems
 cp -r settings/Python-2.sublime-build ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/ 2> /dev/null
