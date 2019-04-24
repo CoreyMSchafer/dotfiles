@@ -11,6 +11,7 @@
     "editor.formatOnSave": true,
     "window.zoomLevel": 1,
     "python.pythonPath": "/usr/local/bin/python3",
+    "python.formatting.provider": "black",
     "code-runner.executorMap": {
         "python": "$pythonPath -u $fullFileName"
     },
