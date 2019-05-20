@@ -1,17 +1,19 @@
 {
     "workbench.colorTheme": "Predawn",
     "workbench.iconTheme": "ayu",
-    "editor.fontSize": 16,
+    "editor.fontSize": 22,
     "editor.fontWeight": "500",
     "editor.fontFamily": "Source Code Pro",
     "debug.console.fontFamily": "Source Code Pro",
-    "debug.console.fontSize": 16,
-    "terminal.integrated.fontSize": 16,
+    "debug.console.fontSize": 22,
+    "terminal.integrated.fontSize": 22,
     "terminal.integrated.fontWeight": "600",
-    "editor.formatOnSave": true,
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 2,
     "python.pythonPath": "/usr/local/bin/python3",
     "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
     "code-runner.executorMap": {
         "python": "$pythonPath -u $fullFileName"
     },
@@ -27,7 +29,7 @@
     "zenMode.hideTabs": false,
     "editor.minimap.enabled": false,
     "workbench.settings.openDefaultSettings": true,
-    "workbench.settings.useSplitJSON": true,
     "workbench.settings.editor": "json",
-    "workbench.statusBar.feedback.visible": false
+    "workbench.statusBar.feedback.visible": false,
+    "workbench.startupEditor": "newUntitledFile",
 }

@@ -1,7 +1,7 @@
 # Shortcuts
 alias ch='history | grep "git commit"'
 alias hg='history | grep'
-alias yt='subl ~/Google\ Drive/YouTube/Scripts/'
+alias yt='code ~/Google\ Drive/YouTube/Scripts/'
 alias cyt='cd ~/Google\ Drive/YouTube/Scripts/'
 alias oyt='open ~/Google\ Drive/YouTube/Scripts/'
 
