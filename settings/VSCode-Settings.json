@@ -19,6 +19,8 @@
     },
     "code-runner.clearPreviousOutput": true,
     "code-runner.showExecutionMessage": false,
+    "code-runner.ignoreSelection": true,
+    "code-runner.saveFileBeforeRun": true,
     "[plaintext]": {
         "editor.quickSuggestions": false
     },
