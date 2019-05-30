@@ -2,12 +2,9 @@
     "auto_formatting": true,
     "autoformat_ignore":
     [
-        "E309",
-        "E501"
     ],
     "pep8_ignore":
     [
-        "E309",
         "E501"
     ],
     "anaconda_linter_underlines": false,
