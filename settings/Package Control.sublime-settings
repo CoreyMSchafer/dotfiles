@@ -1,0 +1,14 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Anaconda",
+		"BracketHighlighter",
+		"Material Theme",
+		"Predawn",
+		"SideBarEnhancements"
+	]
+}

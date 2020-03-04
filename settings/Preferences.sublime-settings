@@ -59,13 +59,6 @@
         "Ruby",
         "Vintage"
     ],
-    "installed_packages":[
-        "Anaconda",
-        "BracketHighlighter",
-        "Material Theme",
-        "Predawn",
-        "SideBarEnhancements"
-    ],
     "line_padding_bottom": 1,
     "line_padding_top": 1,
     "match_brackets_content": false,

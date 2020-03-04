@@ -3,11 +3,13 @@ mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Pac
 mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/
 
 # Install Package Control
-curl "https://packagecontrol.io/Package%20Control.sublime-package" > settings/Package\ Control.sublime-package
-cp -r settings/Package\ Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Package\ Control.sublime-package
+mkdir -p settings/package_control_installer/
+curl "https://packagecontrol.io/Package%20Control.sublime-package" > settings/package_control_installer/Package\ Control.sublime-package
+cp -r settings/package_control_installer/Package\ Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Package\ Control.sublime-package
 
 # Install Custom Sublime Text settings
 cp -r settings/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
+cp -r settings/Package\ Control.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Package\ Control.sublime-settings
 cp -r settings/Anaconda.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Anaconda.sublime-settings
 cp -r settings/Default\ \(OSX\).sublime-keymap ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ \(OSX\).sublime-keymap
 
