@@ -3,8 +3,8 @@ mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Pac
 mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/
 
 # Install Package Control
-curl "https://packagecontrol.io/Package%20Control.sublime-package" > settings/Package\ Control.sublime-package
-cp -r settings/Package\ Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Package\ Control.sublime-package
+curl "https://packagecontrol.io/Package%20Control.sublime-package" > settings/package_control_installer/Package\ Control.sublime-package
+cp -r settings/package_control_installer/Package\ Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Package\ Control.sublime-package
 
 # Install Custom Sublime Text settings
 cp -r settings/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
