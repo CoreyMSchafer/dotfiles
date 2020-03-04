@@ -3,6 +3,7 @@ mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Pac
 mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/
 
 # Install Package Control
+mkdir -p settings/package_control_installer/
 curl "https://packagecontrol.io/Package%20Control.sublime-package" > settings/package_control_installer/Package\ Control.sublime-package
 cp -r settings/package_control_installer/Package\ Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages/Package\ Control.sublime-package
 
