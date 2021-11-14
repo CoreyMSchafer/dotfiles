@@ -4,20 +4,37 @@
 brew install python
 brew install tree
 
-# Install MacOS Applications
-brew cask install google-chrome
-brew cask install firefox
-brew cask install sublime-text
-brew cask install virtualbox
-brew cask install sourcetree
-brew cask install spotify
-brew cask install discord
-brew cask install google-backup-and-sync
-brew cask install skype
-brew cask install gimp
-brew cask install vlc
-brew cask install hyperdock
-brew cask install divvy
+CASKS=(
+    google-chrome
+    firefox
+    sublime-text
+    virtualbox
+    sourcetree
+    spotify
+    discord
+    google-backup-and-sync
+    skype
+    gimp
+    vlc
+    hyperdock
+    font-source-code-pro
+    slack
+    font-fira-code 
+    intellij-idea-ce
+    visual-studio-code
+    steam
+    docker
+    alfred 
+    1password
+    phpstorm
+    macdown
+)
+
+for app in "${CASKS[@]}"
+do
+   echo "brew install $app on your MacOS."
+   brew install --cask $app &>/dev/null
+done
 
 # Install Source Code Pro Font
 brew tap homebrew/cask-fonts
