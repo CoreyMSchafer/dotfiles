@@ -1,8 +1,11 @@
 # Simplified dotfile for video recordings
 
 # Load dotfiles:
-for file in ~/.{bash_prompt,aliases,private}; do
-    [ -r "$file" ] && [ -f "$file" ] && source "$file";
+for file in ~/.{bash_prompt,bash_aliases,private}; do
+    if [ -f "$file"  ]; then
+        . ~/."$file"
+    fi
+    # [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
 
