@@ -1,25 +1,40 @@
-#!/usr/bin/env bash
+#!/bin/zsh
+
+# Check if Homebrew is installed
+if ! command -v brew &> /dev/null
+then
+    echo "Homebrew not installed. Installing Homebrew."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+    echo "Homebrew is already installed."
+fi
+
+# Update Homebrew and Upgrade any already-installed formulae
+brew update
+brew upgrade
 
 # Install Brew Packages
 brew install python
 brew install tree
 
 # Install MacOS Applications
-brew cask install google-chrome
-brew cask install firefox
-brew cask install sublime-text
-brew cask install virtualbox
-brew cask install sourcetree
-brew cask install spotify
-brew cask install discord
-brew cask install google-backup-and-sync
-brew cask install skype
-brew cask install gimp
-brew cask install vlc
-brew cask install hyperdock
-brew cask install divvy
+brew install --cask google-chrome
+brew install --cask firefox
+brew install --cask brave-browser
+brew install --cask sublime-text
+brew install --cask virtualbox
+brew install --cask sourcetree
+brew install --cask spotify
+brew install --cask discord
+brew install --cask google-drive
+brew install --cask skype
+brew install --cask gimp
+brew install --cask vlc
+brew install --cask rectangle
+brew install --cask visual-studio-code
+brew install --cask postman
+
 
 # Install Source Code Pro Font
 brew tap homebrew/cask-fonts
-brew cask install font-source-code-pro
-
+brew install --cask font-source-code-pro
