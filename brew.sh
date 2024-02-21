@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # Check if Homebrew is installed
 if ! command -v brew &> /dev/null
@@ -15,25 +15,35 @@ brew upgrade
 
 # Install Brew Packages
 brew install python
+brew install bash
+brew install zsh
 brew install tree
 
-# Install MacOS Applications
-brew install --cask google-chrome
-brew install --cask firefox
-brew install --cask brave-browser
-brew install --cask sublime-text
-brew install --cask virtualbox
-brew install --cask sourcetree
-brew install --cask spotify
-brew install --cask discord
-brew install --cask google-drive
-brew install --cask skype
-brew install --cask gimp
-brew install --cask vlc
-brew install --cask rectangle
-brew install --cask visual-studio-code
-brew install --cask postman
+# Set the Homebrew zsh as default shell
+echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
+chsh -s "$(brew --prefix)/bin/zsh"
 
+# Define an array of applications to install using Homebrew Cask.
+apps=(
+    "google-chrome"
+    "firefox"
+    "brave-browser"
+    "sublime-text"
+    "visual-studio-code"
+    "virtualbox"
+    "spotify"
+    "discord"
+    "google-drive"
+    "gimp"
+    "vlc"
+    "rectangle"
+    "postman"
+)
+
+# Loop over the array to install each application.
+for app in "${apps[@]}"; do
+    brew install --cask "$app"
+done
 
 # Install Source Code Pro Font
 brew tap homebrew/cask-fonts
