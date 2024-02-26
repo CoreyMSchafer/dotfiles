@@ -50,9 +50,8 @@ cp "settings/Package Control.sublime-settings" "$HOME/Library/Application Suppor
 # Open Sublime Text to install packages
 echo "Opening Sublime to automatically install packages"
 subl .
-
 echo "Press Enter after Packages are all installed..."
-read -p "Press enter to continue..."
+read
 
 # Quit Sublime after packages are installed
 osascript -e 'quit app "Sublime Text"'
@@ -81,4 +80,5 @@ echo "Custom Sublime Text settings and packages have been copied."
 subl .
 echo "You can view potential Sublime Text errors by pressing Ctrl + backtick"
 echo "If there are no errors, activate your Sublime license."
-read -p "Press enter to continue..."
+echo "Press enter to continue..."
+read

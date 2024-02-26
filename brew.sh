@@ -28,19 +28,27 @@ packages=(
 
 # Loop over the array to install each application.
 for package in "${packages[@]}"; do
-    brew install "$package"
+    if brew list --formula | grep -q "^$package\$"; then
+        echo "$package is already installed. Skipping..."
+    else
+        echo "Installing $package..."
+        brew install "$package"
+    fi
 done
 
 # Add the Homebrew zsh to allowed shells
+echo "Changing default shell to Homebrew zsh"
 echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
 # Set the Homebrew zsh as default shell
 chsh -s "$(brew --prefix)/bin/zsh"
 
 # Git config name
-read -p "Please enter your name for Git configuration: " git_user_name
+echo "Please enter your FULL NAME for Git configuration:"
+read git_user_name
 
 # Git config email
-read -p "Please enter your email for Git configuration: " git_user_email
+echo "Please enter your EMAIL for Git configuration:"
+read git_user_email
 
 # Set my git credentials
 $(brew --prefix)/bin/git config --global user.name "$git_user_name"
@@ -52,9 +60,21 @@ $(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
 # Install Prettier, which I use in both VS Code and Sublime Text
 $(brew --prefix)/bin/npm install --global prettier
 
-# Install Source Code Pro Font
-brew tap homebrew/cask-fonts
-brew install --cask font-source-code-pro
+# Install Source Code Pro Font if not already installed
+
+# Tap the Homebrew font cask repository if not already tapped
+brew tap | grep -q "^homebrew/cask-fonts$" || brew tap homebrew/cask-fonts
+
+# Define the font name
+font_name="font-source-code-pro"
+
+# Check if the font is already installed
+if brew list --cask | grep -q "^$font_name\$"; then
+    echo "$font_name is already installed. Skipping..."
+else
+    echo "Installing $font_name..."
+    brew install --cask "$font_name"
+fi
 
 # Define an array of applications to install using Homebrew Cask.
 apps=(
@@ -75,7 +95,12 @@ apps=(
 
 # Loop over the array to install each application.
 for app in "${apps[@]}"; do
-    brew install --cask "$app"
+    if brew list --cask | grep -q "^$app\$"; then
+        echo "$app is already installed. Skipping..."
+    else
+        echo "Installing $app..."
+        brew install --cask "$app"
+    fi
 done
 
 # Update and clean up again for safe measure
@@ -84,8 +109,17 @@ brew upgrade
 brew upgrade --cask
 brew cleanup
 
-read -p "Sign in to Google Chrome. Press enter to continue..."
-read -p "Sign in to Spotify. Press enter to continue..."
-read -p "Sign in to Discord. Press enter to continue..."
-read -p "Open Rectangle and give it necessary permissions. Press enter to continue..."
-read -p "Import your Rectangle settings located in ~/dotfiles/settings/RectangleConfig.json. Press enter to continue..."
+echo "Sign in to Google Chrome. Press enter to continue..."
+read
+
+echo "Sign in to Spotify. Press enter to continue..."
+read
+
+echo "Sign in to Discord. Press enter to continue..."
+read
+
+echo "Open Rectangle and give it necessary permissions. Press enter to continue..."
+read
+
+echo "Import your Rectangle settings located in ~/dotfiles/settings/RectangleConfig.json. Press enter to continue..."
+read
