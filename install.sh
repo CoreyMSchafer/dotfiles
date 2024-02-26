@@ -1,38 +1,38 @@
 #!/usr/bin/env zsh
 ############################
-# This script creates symlinks from the home directory to any desired dotfiles in ${homedir}/dotfiles
-# And also installs Homebrew Packages
-# And sets Sublime preferences
+# This script creates symlinks from the home directory to any desired dotfiles in $HOME/dotfiles
+# And also installs MacOS Software
+# And also installs Homebrew Packages and Casks (Apps)
+# And also sets up VS Code
+# And also sets up Sublime Text
 ############################
 
-if [ "$#" -eq 0 ]; then
-  homedir=$HOME
-else
-  homedir=$1
-fi
-
 # dotfiles directory
-dotfiledir="${homedir}/dotfiles"
+dotfiledir="${HOME}/dotfiles"
 
 # list of files/folders to symlink in ${homedir}
-files=(bash_profile bashrc bash_prompt aliases private zshrc zprofile zprompt)
+files=(zshrc zprompt bashrc bash_profile bash_prompt aliases private)
 
 # change to the dotfiles directory
 echo "Changing to the ${dotfiledir} directory"
 cd "${dotfiledir}" || exit
-echo "...done"
 
 # create symlinks (will overwrite old dotfiles)
 for file in "${files[@]}"; do
-  echo "Creating symlink to $file in home directory."
-  ln -sf "${dotfiledir}/.${file}" "${homedir}/.${file}"
+    echo "Creating symlink to $file in home directory."
+    ln -sf "${dotfiledir}/.${file}" "${HOME}/.${file}"
 done
 
-# Download Git Auto-Completion
-curl "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > "${homedir}/.git-completion.bash"
+# Run the MacOS Script
+./macOS.sh
 
 # Run the Homebrew Script
-# ./brew.sh
+./brew.sh
+
+# Run VS Code Script
+./vscode.sh
 
 # Run the Sublime Script
-# ./sublime.sh
+./sublime.sh
+
+echo "Installation Complete!"

@@ -1,4 +1,8 @@
-# If not running interactively, don't do anything
-[[ $- == *i* ]] || return
+# If not running interactively, exit script
+[[ $- != *i* ]] && return
 
-[ -n "$PS1" ] && source ~/.bash_profile;
+# Load dotfiles:
+for file in ~/.{bash_prompt,aliases,private}; do
+    [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;

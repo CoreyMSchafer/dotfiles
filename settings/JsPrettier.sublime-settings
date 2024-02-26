@@ -1,0 +1,4 @@
+// Settings in here override those in "/JsPrettier/JsPrettier.sublime-settings",
+{
+  "auto_format_on_save": true
+}

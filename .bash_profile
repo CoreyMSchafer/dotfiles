@@ -1,14 +1,6 @@
-# Simplified dotfile for video recordings
-
-# Load dotfiles:
-for file in ~/.{bash_prompt,aliases,private}; do
-    [ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
-
-#Git auto-complete
-if [ -f ~/.git-completion.bash ]; then
-    source ~/.git-completion.bash
+# Load .bashrc if available
+if [ -f ~/.bashrc ]; then
+    source ~/.bashrc
 fi
 
 # Setting PATH for Python 3.7
