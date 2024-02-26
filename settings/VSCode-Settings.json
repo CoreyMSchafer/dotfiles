@@ -27,7 +27,7 @@
   "code-runner.ignoreSelection": true,
   "code-runner.saveFileBeforeRun": true,
   "code-runner.executorMap": {
-    "python": "$pythonPath -u $fullFileName"
+    "python": "\"$pythonPath\" -u $fullFileName"
   },
   "[plaintext]": {
     "editor.quickSuggestions": {
