@@ -1,0 +1,241 @@
+#!/usr/bin/env zsh
+
+# Install Homebrew if it isn't already installed
+if ! command -v brew &>/dev/null; then
+    echo "Homebrew not installed. Installing Homebrew."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    # Attempt to set up Homebrew PATH automatically for this session
+    if [ -x "/opt/homebrew/bin/brew" ]; then
+        # For Apple Silicon Macs
+        echo "Configuring Homebrew in PATH for Apple Silicon Mac..."
+        export PATH="/opt/homebrew/bin:$PATH"
+    fi
+else
+    echo "Homebrew is already installed."
+fi
+
+# Verify brew is now accessible
+if ! command -v brew &>/dev/null; then
+    echo "Failed to configure Homebrew in PATH. Please add Homebrew to your PATH manually."
+    exit 1
+fi
+
+ brew.sh+                                                                                                              buffers
+ vscode.sh+                                                                                                            buffers
+Last login: Thu Mar  7 20:55:46 on ttys000
+                    'c.          snu@MacBook-Air-von-Sebastian.local
+                 ,xNMM.          -----------------------------------
+               .OMMMMo           OS: macOS 14.2.1 23C71 arm64
+               OMMM0,            Host: MacBookAir10,1
+     .;loddo:' loolloddol;.      Kernel: 23.2.0
+   cKMMMMMMMMMMNWMMMMMMMMMM0:    Uptime: 49 mins
+ .KMMMMMMMMMMMMMMMMMMMMMMMWd.    Packages: 258 (brew)
+ XMMMMMMMMMMMMMMMMMMMMMMMX.      Shell: zsh 5.9
+;MMMMMMMMMMMMMMMMMMMMMMMM:       Resolution: 1440x900
+:MMMMMMMMMMMMMMMMMMMMMMMM:       DE: Aqua
+.MMMMMMMMMMMMMMMMMMMMMMMMX.      WM: Quartz Compositor
+ kMMMMMMMMMMMMMMMMMMMMMMMMWd.    WM Theme: Blue (Dark)
+ .XMMMMMMMMMMMMMMMMMMMMMMMMMMk   Terminal: iTerm2
+  .XMMMMMMMMMMMMMMMMMMMMMMMMK.   Terminal Font: AnonymicePowerline 20 (normal)
+    kMMMMMMMMMMMMMMMMMMMMMMd     CPU: Apple M1
+     ;KMMMMMMMWXXWMMMMMMMk.      GPU: Apple M1
+       .cooc,.    .,coo:.        Memory: 1390MiB / 8192MiB
+ install.sh                                                                                                            buffers
+ 44
+ 45 echo -e "Installing oh-my-zsh\n"
+ 46 if [ -d ~/.config/zsh_custom/oh-my-zsh ]; then
+ 47     echo -e "oh-my-zsh is already installed\n"
+ 48     git -C ~/.config/zsh_custom/oh-my-zsh remote set-url origin https://github.com/ohmyzsh/ohmyzsh.git
+ 49 elif [ -d ~/.oh-my-zsh ]; then
+ 50     echo -e "oh-my-zsh in already installed at '~/.oh-my-zsh'. Moving it to '~/.config/zsh_custom/oh-my-zsh'"
+ 51     export ZSH="$HOME/.config/ezsh/oh-my-zsh"
+ 52     mv ~/.oh-my-zsh ~/.config/zsh_custom/oh-my-zsh
+ 53     git -C ~/.config/zsh_custom/oh-my-zsh remote set-url origin https://github.com/ohmyzsh/ohmyzsh.git
+ 54 else
+ 55     git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git ~/.config/zsh_custom/oh-my-zsh
+ 56 fi
+ 57
+ 58 cp -f .zshrc ~/
+ 59 cp -f ezshrc.zsh ~/.config/zsh_custom/
+ 60
+ 61 mkdir -p ~/.config/zsh_custom/zshrc         # PLACE YOUR ZSHRC CONFIGURATIONS OVER THERE
+ 62 mkdir -p ~/.cache/zsh/                # this will be used to store .zcompdump zsh completion cache files which normally           clutter $HOME
+ 63 mkdir -p ~/.fonts                     # Create .fonts if doesn't exist
+ 64
+ 65 if [ -f ~/.zcompdump ]; then
+ 66     mv ~/.zcompdump* ~/.cache/zsh/
+ 67 fi
+ 68
+ 69 if [ -d ~/.config/zsh_custom/oh-my-zsh/plugins/zsh-autosuggestions ]; then
+ 70     cd ~/.config/zsh_custom/oh-my-zsh/plugins/zsh-autosuggestions && git pull
+ 71 else
+ 72     git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ~/.config/zsh_custom/oh-my-zsh/plugins/zsh-              autosuggestions
+ 73 fi
+ 74
+ 75 if [ -d ~/.config/zsh_custom/oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+ 76     cd ~/.config/zsh_custom/oh-my-zsh/custom/plugins/zsh-syntax-highlighting && git pull
+ 77 else
+ 78     git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.config/zsh_custom/oh-my-zsh/custom/           plugins/zsh-syntax-highlighting
+ 79 fi
+ 80
+ 81 if [ -d ~/.config/zsh_custom/oh-my-zsh/custom/plugins/zsh-completions ]; then
+ NORMAL  /Users/snu/ezsh  L:80 C:0                                                                                           
+
+# Update Homebrew and Upgrade any already-installed formulae
+brew update
+brew upgrade
+brew upgrade --cask
+brew cleanup
+
+# Define an array of packages to install using Homebrew.
+packages=(
+    "python"
+    "bash"
+    "zsh"
+    "git"
+    "tree"
+    "pylint"
+    "black"
+    "node"
+    "git"
+"tmux"
+"ffmpeg"
+"thefuck"
+"bat"
+"colorls"
+"Imagemagick"
+"archey"
+"pandoc"
+"tldr"
+"neovim"
+"neomutt"
+"newsboat"
+"python"
+"links"
+"tree"
+"youtube-dl"
+"mas"
+"speedtest-cli"
+"cask"
+"htop"
+
+)
+
+# Loop over the array to install each application.
+for package in "${packages[@]}"; do
+    if brew list --formula | grep -q "^$package\$"; then
+        echo "$package is already installed. Skipping..."
+    else
+        echo "Installing $package..."
+        brew install "$package"
+    fi
+done
+
+# Add the Homebrew zsh to allowed shells
+echo "Changing default shell to Homebrew zsh"
+echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
+# Set the Homebrew zsh as default shell
+chsh -s "$(brew --prefix)/bin/zsh"
+
+# Git config name
+echo "Please enter your FULL NAME for Git configuration:"
+read git_user_name
+
+# Git config email
+echo "Please enter your EMAIL for Git configuration:"
+read git_user_email
+
+# Set my git credentials
+$(brew --prefix)/bin/git config --global user.name "$git_user_name"
+$(brew --prefix)/bin/git config --global user.email "$git_user_email"
+
+# Create the tutorial virtual environment I use frequently
+#$(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
+
+# Install Prettier, which I use in both VS Code and Sublime Text
+#$(brew --prefix)/bin/npm install --global prettier
+
+# Define an array of applications to install using Homebrew Cask.
+apps=(
+    "google-chrome"
+    "firefox"
+    "brave-browser"
+    "visual-studio-code"
+    "virtualbox"
+    "spotify"
+    "discord"
+    "google-drive"
+    "gimp"
+    "vlc"
+    "rectangle"
+    "postman"
+    "microsoft-teams"
+"quicklook-json"  # This is an example QuickLook plugin; replace with the specific one you need
+"zoom"
+"google-chrome"
+"google-drive"
+"onedrive"
+"visual-studio-code"
+"spotify"
+"vlc"
+"docker"
+"xcode"
+"microsoft-office"
+"little-snitch"
+"audacity"
+
+)
+
+# Loop over the array to install each application.
+for app in "${apps[@]}"; do
+    if brew list --cask | grep -q "^$app\$"; then
+        echo "$app is already installed. Skipping..."
+    else
+        echo "Installing $app..."
+        brew install --cask "$app"
+    fi
+done
+
+# Install Source Code Pro Font
+# Tap the Homebrew font cask repository if not already tapped
+brew tap | grep -q "^homebrew/cask-fonts$" || brew tap homebrew/cask-fonts
+
+# Define the font name
+font_name="font-source-code-pro"
+
+# Check if the font is already installed
+if brew list --cask | grep -q "^$font_name\$"; then
+    echo "$font_name is already installed. Skipping..."
+else
+    echo "Installing $font_name..."
+    brew install --cask "$font_name"
+fi
+
+# Once font is installed, Import your Terminal Profile
+echo "Import your terminal settings..."
+echo "Terminal -> Settings -> Profiles -> Import..."
+echo "Import from ${HOME}/dotfiles/settings/Pro.terminal"
+echo "Press enter to continue..."
+read
+
+# Update and clean up again for safe measure
+brew update
+brew upgrade
+brew upgrade --cask
+brew cleanup
+
+echo "Sign in to Google Chrome. Press enter to continue..."
+read
+
+echo "Sign in to Spotify. Press enter to continue..."
+read
+
+echo "Sign in to Discord. Press enter to continue..."
+read
+
+echo "Open Rectangle and give it necessary permissions. Press enter to continue..."
+read
+
+echo "Import your Rectangle settings located in ~/dotfiles/settings/RectangleConfig.json. Press enter to continue..."
+read
