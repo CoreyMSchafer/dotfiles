@@ -4,11 +4,9 @@ This repository contains scripts and configuration files to set up a development
 
 ## YouTube Video Walkthrough
 
-I will provide a video walkthrough of these dotfiles here once that video is recorded and published
+Click on the image below to watch the video on YouTube:
 
-<!-- [![Watch the video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
-
-Replace `VIDEO_ID` with your video's ID to embed the walkthrough video here. -->
+[![Watch the video](https://img.youtube.com/vi/ra5kMCXO-6I/0.jpg)](https://youtu.be/ra5kMCXO-6I)
 
 ## Overview
 
@@ -34,7 +32,7 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 ### Prerequisites
 
-- macOS (The scripts are tailored for macOS)
+-  macOS (The scripts are tailored for macOS)
 
 ### Installation
 
@@ -53,27 +51,27 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 This script will:
 
-- Create symlinks for dotfiles (`.bashrc`, `.zshrc`, etc.)
-- Run macOS-specific configurations
-- Install Homebrew packages and casks
-- Configure Sublime Text and Visual Studio Code
+-  Create symlinks for dotfiles (`.bashrc`, `.zshrc`, etc.)
+-  Run macOS-specific configurations
+-  Install Homebrew packages and casks
+-  Configure Sublime Text and Visual Studio Code
 
 ## Configuration Files
 
-- `.bashrc` & `.zshrc`: Shell configuration files for Bash and Zsh.
-- `.shared_prompt`: Custom prompt setup used by both `.bash_prompt` & `.zprompt`
-- `.bash_prompt` & `.zprompt`: Custom prompt setup for Bash and Zsh.
-- `.bash_profile: Setting system-wide environment variables
-- `.aliases`: Aliases for common commands. Some are personalized to my machines specifically (e.g. the 'yt' alias opening my YouTube Scripts')
-- `.private`: This is a file you'll create locally to hold private information and shouldn't be uploaded to version control
-- `settings/`: Directory containing editor settings and themes for Sublime Text and Visual Studio Code.
+-  `.bashrc` & `.zshrc`: Shell configuration files for Bash and Zsh.
+-  `.shared_prompt`: Custom prompt setup used by both `.bash_prompt` & `.zprompt`
+-  `.bash_prompt` & `.zprompt`: Custom prompt setup for Bash and Zsh.
+-  `.bash_profile: Setting system-wide environment variables
+-  `.aliases`: Aliases for common commands. Some are personalized to my machines specifically (e.g. the 'yt' alias opening my YouTube Scripts')
+-  `.private`: This is a file you'll create locally to hold private information and shouldn't be uploaded to version control
+-  `settings/`: Directory containing editor settings and themes for Sublime Text and Visual Studio Code.
 
 ### Customizing Your Setup
 
 You're encouraged to modify the scripts and configuration files to suit your preferences. Here are some tips for customization:
 
-- **Dotfiles**: Edit `.shared_prompt`, `.zprompt`, `.bash_prompt` to add or modify shell configurations.
-- **Sublime Text and VS Code**: Adjust settings in the `settings/` directory to change editor preferences and themes.
+-  **Dotfiles**: Edit `.shared_prompt`, `.zprompt`, `.bash_prompt` to add or modify shell configurations.
+-  **Sublime Text and VS Code**: Adjust settings in the `settings/` directory to change editor preferences and themes.
 
 ## Contributing
 
@@ -85,5 +83,5 @@ This project is licensed under the MIT License - see the [LICENSE-MIT.txt](LICEN
 
 ## Acknowledgments
 
-- I originally forked this from [Mathias Bynens' dotfiles](https://github.com/mathiasbynens/dotfiles)
-- Thanks to all the open-source projects used in this setup.
+-  I originally forked this from [Mathias Bynens' dotfiles](https://github.com/mathiasbynens/dotfiles)
+-  Thanks to all the open-source projects used in this setup.

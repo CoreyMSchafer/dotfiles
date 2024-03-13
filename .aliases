@@ -51,5 +51,5 @@ alias reg_mode='defaults write com.apple.dock autohide -bool false && killall Do
 alias clean='rm -rf ~/.Trash/*; rm -rf ~/Downloads/*'
 
 # Virtual Environments
-alias wipe_env='rm -rf ~/tutorial; python3 -m venv ~/tutorial'
-alias tut_env='source ~/tutorial/bin/activate'
+alias wipe_env='rm -rf ~/venvs/tutorial; python3 -m venv ~/venvs/tutorial'
+alias tut_env='source ~/venvs/tutorial/bin/activate'
