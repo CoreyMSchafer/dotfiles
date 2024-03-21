@@ -11,12 +11,12 @@ extensions=(
     ms-python.pylint
     ms-python.vscode-pylance
     ms-python.debugpy
-    GitHub.copilot
+#    GitHub.copilot
     ms-vscode.Theme-PredawnKit
     teabyii.ayu
     formulahendry.code-runner
     esbenp.prettier-vscode
-    znck.grammarly
+#    znck.grammarly
 )
 
 # Get a list of all currently installed extensions.

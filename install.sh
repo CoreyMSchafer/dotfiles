@@ -25,14 +25,14 @@ done
 
 # Run the MacOS Script
 ./macOS.sh
+# Installing iTerm2
+brew install --cask iterm2
+
 
 # Run the Homebrew Script
 ./brew.sh
 
 # Run VS Code Script
 ./vscode.sh
-
-# Run the Sublime Script
-./sublime.sh
 
 echo "Installation Complete!"

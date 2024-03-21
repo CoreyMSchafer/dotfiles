@@ -1,96 +1,52 @@
+#Korrigierte Fassung!
 #!/usr/bin/env zsh
+set -e
 
-# Install Homebrew if it isn't already installed
+# Install and configure Homebrew first
+echo "Checking and installing Homebrew..."
 if ! command -v brew &>/dev/null; then
-    echo "Homebrew not installed. Installing Homebrew."
+    echo "Homebrew not installed. Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    # Attempt to set up Homebrew PATH automatically for this session
-    if [ -x "/opt/homebrew/bin/brew" ]; then
-        # For Apple Silicon Macs
-        echo "Configuring Homebrew in PATH for Apple Silicon Mac..."
-        export PATH="/opt/homebrew/bin:$PATH"
-    fi
+    
+    # Add Homebrew to PATH in .zshrc for future terminal sessions
+    echo 'export PATH="/opt/homebrew/bin:$PATH"' >> ~/.zshrc
+    export PATH="/opt/homebrew/bin:$PATH"
 else
     echo "Homebrew is already installed."
 fi
 
-# Verify brew is now accessible
+# Verify brew is accessible
 if ! command -v brew &>/dev/null; then
     echo "Failed to configure Homebrew in PATH. Please add Homebrew to your PATH manually."
     exit 1
+else
+    echo "Homebrew is configured correctly."
 fi
 
-# Update Homebrew and Upgrade any already-installed formulae
-brew update
-brew upgrade
-brew upgrade --cask
-brew cleanup
+# Install iTerm2 using Homebrew
+echo "Checking and installing iTerm2..."
+if ! command -v iTerm &>/dev/null; then
+    echo "iTerm2 not installed. Installing iTerm2..."
+    brew install --cask iterm2
+else
+    echo "iTerm2 is already installed."
+fi
 
-# Define an array of packages to install using Homebrew.
-packages=(
-    "python"
-    "bash"
-    "zsh"
-    "git"
-    "tree"
-    "pylint"
-    "black"
-    "node"
-)
-
-# Loop over the array to install each application.
-for package in "${packages[@]}"; do
-    if brew list --formula | grep -q "^$package\$"; then
-        echo "$package is already installed. Skipping..."
-    else
-        echo "Installing $package..."
-        brew install "$package"
-    fi
-done
-
-# Add the Homebrew zsh to allowed shells
-echo "Changing default shell to Homebrew zsh"
-echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
-# Set the Homebrew zsh as default shell
-chsh -s "$(brew --prefix)/bin/zsh"
-
-# Git config name
-echo "Please enter your FULL NAME for Git configuration:"
-read git_user_name
-
-# Git config email
-echo "Please enter your EMAIL for Git configuration:"
-read git_user_email
-
-# Set my git credentials
-$(brew --prefix)/bin/git config --global user.name "$git_user_name"
-$(brew --prefix)/bin/git config --global user.email "$git_user_email"
-
-# Create the tutorial virtual environment I use frequently
-$(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
-
-# Install Prettier, which I use in both VS Code and Sublime Text
-$(brew --prefix)/bin/npm install --global prettier
-
-# Define an array of applications to install using Homebrew Cask.
+# Define an array of applications to install using Homebrew Cask
 apps=(
-    "google-chrome"
-    "firefox"
-    "brave-browser"
-    "sublime-text"
     "visual-studio-code"
-    "virtualbox"
+    "google-chrome"
     "spotify"
-    "discord"
-    "google-drive"
-    "gimp"
     "vlc"
-    "rectangle"
+    "docker"
+    "slack"
+    "firefox"
+    "zoom"
+    "microsoft-teams"
     "postman"
 )
 
-# Loop over the array to install each application.
+# Install applications using Homebrew Cask
 for app in "${apps[@]}"; do
     if brew list --cask | grep -q "^$app\$"; then
         echo "$app is already installed. Skipping..."
@@ -99,6 +55,18 @@ for app in "${apps[@]}"; do
         brew install --cask "$app"
     fi
 done
+
+# Install Miniconda
+echo "Installing Miniconda..."
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
+bash miniconda.sh -b -p $HOME/miniconda
+export PATH="$HOME/miniconda/bin:$PATH"
+conda init zsh
+source ~/.zshrc
+
+# Install packages within Miniconda environment
+echo "Installing Python packages with Conda..."
+conda install -y jupyter pandas numpy matplotlib scikit-learn
 
 # Install Source Code Pro Font
 # Tap the Homebrew font cask repository if not already tapped
@@ -115,19 +83,20 @@ else
     brew install --cask "$font_name"
 fi
 
-# Once font is installed, Import your Terminal Profile
+# Once font is installed, prompt user to import Terminal settings
 echo "Import your terminal settings..."
 echo "Terminal -> Settings -> Profiles -> Import..."
 echo "Import from ${HOME}/dotfiles/settings/Pro.terminal"
 echo "Press enter to continue..."
 read
 
-# Update and clean up again for safe measure
+# Update and clean up Homebrew installations
 brew update
 brew upgrade
 brew upgrade --cask
 brew cleanup
 
+# Prompt user for manual actions
 echo "Sign in to Google Chrome. Press enter to continue..."
 read
 
