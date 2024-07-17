@@ -7,15 +7,20 @@ fi
 
 # Install VS Code Extensions
 extensions=(
-    ms-python.python
-    ms-python.pylint
-    ms-python.vscode-pylance
-    ms-python.debugpy
-    GitHub.copilot
-    ms-vscode.Theme-PredawnKit
-    teabyii.ayu
-    formulahendry.code-runner
     esbenp.prettier-vscode
+    formulahendry.code-runner
+    foxundermoon.shell-format
+    mechatroner.rainbow-csv
+    ms-python.black-formatter
+    ms-python.isort
+    ms-python.pylint
+    ms-python.python
+    ms-toolsai.jupyter
+    ms-vscode.theme-predawnkit
+    mtxr.sqltools
+    mtxr.sqltools-driver-sqlite
+    teabyii.ayu
+    tomoki1207.pdf
     znck.grammarly
 )
 
