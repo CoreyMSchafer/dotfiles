@@ -102,22 +102,33 @@ for app in "${apps[@]}"; do
     fi
 done
 
-# Install Source Code Pro Font
+# Install fonts
 # Tap the Homebrew font cask repository if not already tapped
 brew tap | grep -q "^homebrew/cask-fonts$" || brew tap homebrew/cask-fonts
 
-# Define the font name
-font_name="font-source-code-pro"
+fonts=(
+    "font-source-code-pro"
+    "font-lato"
+    "font-montserrat"
+    "font-nunito"
+    "font-open-sans"
+    "font-oswald"
+    "font-poppins"
+    "font-raleway"
+    "font-roboto"
+)
 
-# Check if the font is already installed
-if brew list --cask | grep -q "^$font_name\$"; then
-    echo "$font_name is already installed. Skipping..."
-else
-    echo "Installing $font_name..."
-    brew install --cask "$font_name"
-fi
+for font in "${fonts[@]}"; do
+    # Check if the font is already installed
+    if brew list --cask | grep -q "^$font\$"; then
+        echo "$font is already installed. Skipping..."
+    else
+        echo "Installing $font..."
+        brew install --cask "$font"
+    fi
+done
 
-# Once font is installed, Import your Terminal Profile
+# Once fonts are installed, import your Terminal Profile
 echo "Import your terminal settings..."
 echo "Terminal -> Settings -> Profiles -> Import..."
 echo "Import from ${HOME}/dotfiles/settings/Pro.terminal"
