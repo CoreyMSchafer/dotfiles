@@ -1,58 +1,83 @@
 [
-    {
-        "key": "cmd+b",
-        "command": "code-runner.run"
-    },
-    {
-        "key": "shift+cmd+k",
-        "command": "workbench.action.toggleSidebarVisibility"
-    },
-    {
-        "key": "escape",
-        "command": "workbench.action.terminal.toggleTerminal",
-        "when": "terminalFocus"
-    },
-    {
-        "key": "escape",
-        "command": "workbench.action.output.toggleOutput",
-        "when": "inOutput"
-    },
-    {
-        "key": "cmd+y",
-        "command": "redo",
-        "when": "textInputFocus && !editorReadonly"
-    },
-    {
-        "key": "cmd+y",
-        "command": "editor.action.webvieweditor.redo",
-        "when": "!editorFocus && !inputFocus && activeEditor == 'WebviewEditor'"
-    },
-    {
-        "key": "shift+cmd+z",
-        "command": "workbench.action.toggleZenMode"
-    },
-    {
-        "key": "shift+cmd+z",
-        "command": "workbench.action.exitZenMode",
-        "when": "inZenMode"
-    },
-    {
-        "key": "escape escape",
-        "command": "-workbench.action.exitZenMode",
-        "when": "inZenMode"
-    },
-    {
-        "key": "ctrl+cmd+down",
-        "command": "editor.action.moveLinesDownAction",
-        "when": "editorTextFocus && !editorReadonly"
-    },
-    {
-        "key": "ctrl+cmd+up",
-        "command": "editor.action.moveLinesUpAction",
-        "when": "editorTextFocus && !editorReadonly"
-    },
-    {
-        "key": "shift+cmd+w",
-        "command": "editor.action.toggleWordWrap"
-    }
+  {
+    "key": "cmd+b",
+    "command": "code-runner.run"
+  },
+  {
+    "key": "shift+cmd+k",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "escape",
+    "command": "workbench.action.togglePanel",
+    "when": "panelVisible"
+  },
+  {
+    "key": "cmd+y",
+    "command": "redo",
+    "when": "textInputFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+y",
+    "command": "editor.action.webvieweditor.redo",
+    "when": "!editorFocus && !inputFocus && activeEditor == 'WebviewEditor'"
+  },
+  {
+    "key": "shift+cmd+z",
+    "command": "workbench.action.toggleZenMode"
+  },
+  {
+    "key": "shift+cmd+z",
+    "command": "workbench.action.exitZenMode",
+    "when": "inZenMode"
+  },
+  {
+    "key": "escape escape",
+    "command": "-workbench.action.exitZenMode",
+    "when": "inZenMode"
+  },
+  {
+    "key": "ctrl+cmd+down",
+    "command": "editor.action.moveLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+cmd+up",
+    "command": "editor.action.moveLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "shift+cmd+w",
+    "command": "editor.action.toggleWordWrap"
+  },
+  {
+    "key": "cmd+l",
+    "command": "editor.action.moveSelectionToNextFindMatch",
+    "when": "editorFocus"
+  },
+  {
+    "key": "shift+cmd+l",
+    "command": "editor.action.moveSelectionToPreviousFindMatch",
+    "when": "editorFocus"
+  },
+  {
+    "key": "shift+cmd+d",
+    "command": "cursorUndo",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "cmd+u",
+    "command": "-cursorUndo",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "ctrl+cmd+l",
+    "command": "editor.action.selectAllMatches",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+cmd+l",
+    "command": "editor.action.selectHighlights",
+    "when": "editorFocus"
+  }
 ]

@@ -1,27 +1,57 @@
 {
+  // Recording specific settings
+  "editor.fontSize": 16, // Use 18 for Screen Recordings
+  "debug.console.fontSize": 16, // Use 18 for Screen Recordings
+  "terminal.integrated.fontSize": 16, // Use 18 for Screen Recordings
+  "window.zoomLevel": 0, // Use 3 for Screen Recordings
+  // "editor.quickSuggestions": {
+  //   "comments": "off",
+  //   "strings": "off",
+  //   "other": "off"
+  // },
+  // "editor.lightbulb.enabled": "off",
+  // "editor.suggestOnTriggerCharacters": false,
+  // "editor.parameterHints.enabled": false,
+  // "editor.suggest.filterGraceful": false,
+  // "editor.suggest.showDeprecated": false,
+
+  // General settings
   "workbench.colorTheme": "Predawn",
   "workbench.iconTheme": "ayu",
   "editor.fontFamily": "Source Code Pro",
   "debug.console.fontFamily": "Source Code Pro",
   "editor.fontWeight": "500",
   "terminal.integrated.fontWeight": "600",
-  "editor.fontSize": 16, //Use 22 for Screen Recordings
-  "debug.console.fontSize": 16, //Use 22 for Screen Recordings
-  "terminal.integrated.fontSize": 16, //Use 22 for Screen Recordings
-  "window.zoomLevel": 0, // Use 2 for Screen Recordings
+  "workbench.settings.openDefaultSettings": true,
+  "workbench.settings.useSplitJSON": true,
+  "workbench.settings.editor": "json",
+  "workbench.startupEditor": "newUntitledFile",
+  "editor.tabSize": 4,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[shellscript]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
+  "editor.quickSuggestionsDelay": 100,
+  "editor.minimap.enabled": false,
+  "diffEditor.useInlineViewWhenSpaceIsLimited": false,
+
+  // Zen Mode settings
+  "zenMode.centerLayout": false,
+  "zenMode.fullScreen": false,
+  "zenMode.hideLineNumbers": false,
+
+  // Python settings
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "always"
+      "source.organizeImports": true
     }
   },
-  "pylint.args": ["--disable=C0114,C0115,C0116"],
+  "python.venvPath": "~/venvs",
+  "isort.args": ["--profile", "black"],
+  "pylint.args": ["--disable=C0114,C0115,C0116,C0103,C0301,W0621,W0718,W1203"],
+  "pylint.importStrategy": "fromEnvironment",
+
+  // Code Runner settings
   "code-runner.clearPreviousOutput": true,
   "code-runner.showExecutionMessage": false,
   "code-runner.ignoreSelection": true,
@@ -29,6 +59,9 @@
   "code-runner.executorMap": {
     "python": "\"$pythonPath\" -u $fullFileName"
   },
+  "code-runner.enableAppInsights": false,
+
+  // Plaintext settings
   "[plaintext]": {
     "editor.quickSuggestions": {
       "comments": "off",
@@ -36,13 +69,21 @@
       "other": "off"
     }
   },
-  "editor.quickSuggestionsDelay": 100,
-  "zenMode.centerLayout": false,
-  "zenMode.fullScreen": false,
-  "zenMode.hideLineNumbers": false,
-  "editor.minimap.enabled": false,
-  "workbench.settings.openDefaultSettings": true,
-  "workbench.settings.useSplitJSON": false,
-  "workbench.settings.editor": "json",
-  "workbench.startupEditor": "newUntitledFile"
+
+  // Shell script settings
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+
+  // Notebook settings
+  "notebook.output.scrolling": true,
+  "notebook.formatOnSave.enabled": true,
+  "notebook.lineNumbers": "on",
+  "notebook.scrolling.revealNextCellOnExecute": "none",
+  "notebook.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+
+  // SQL Tools settings
+  "sqltools.useNodeRuntime": true
 }

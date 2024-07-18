@@ -58,16 +58,26 @@ echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
 chsh -s "$(brew --prefix)/bin/zsh"
 
 # Git config name
-echo "Please enter your FULL NAME for Git configuration:"
-read git_user_name
+current_name=$($(brew --prefix)/bin/git config --global --get user.name)
+if [ -z "$current_name" ]; then
+    echo "Please enter your FULL NAME for Git configuration:"
+    read git_user_name
+    $(brew --prefix)/bin/git config --global user.name "$git_user_name"
+    echo "Git user.name has been set to $git_user_name"
+else
+    echo "Git user.name is already set to '$current_name'. Skipping configuration."
+fi
 
 # Git config email
-echo "Please enter your EMAIL for Git configuration:"
-read git_user_email
-
-# Set my git credentials
-$(brew --prefix)/bin/git config --global user.name "$git_user_name"
-$(brew --prefix)/bin/git config --global user.email "$git_user_email"
+current_email=$($(brew --prefix)/bin/git config --global --get user.email)
+if [ -z "$current_email" ]; then
+    echo "Please enter your EMAIL for Git configuration:"
+    read git_user_email
+    $(brew --prefix)/bin/git config --global user.email "$git_user_email"
+    echo "Git user.email has been set to $git_user_email"
+else
+    echo "Git user.email is already set to '$current_email'. Skipping configuration."
+fi
 
 # Create the tutorial virtual environment I use frequently
 $(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
@@ -142,6 +152,9 @@ brew upgrade --cask
 brew cleanup
 
 echo "Sign in to Google Chrome. Press enter to continue..."
+read
+
+echo "Connect Google Account (System Settings -> Internet Accounts). Press enter to continue..."
 read
 
 echo "Sign in to Spotify. Press enter to continue..."

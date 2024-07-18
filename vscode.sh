@@ -44,12 +44,12 @@ VSCODE_USER_SETTINGS_DIR="${HOME}/Library/Application Support/Code/User/"
 # Check if VS Code settings directory exists
 if [ -d "$VSCODE_USER_SETTINGS_DIR" ]; then
     # Backup existing settings.json and keybindings.json, if they exist
-    cp "${VSCODE_USER_SETTINGS_DIR}/settings.json" "${VSCODE_USER_SETTINGS_DIR}/settings.json.backup"
-    cp "${VSCODE_USER_SETTINGS_DIR}/keybindings.json" "${VSCODE_USER_SETTINGS_DIR}/keybindings.json.backup"
+    mv "${VSCODE_USER_SETTINGS_DIR}/settings.json" "${VSCODE_USER_SETTINGS_DIR}/settings.json.backup"
+    mv "${VSCODE_USER_SETTINGS_DIR}/keybindings.json" "${VSCODE_USER_SETTINGS_DIR}/keybindings.json.backup"
 
     # Copy your custom settings.json and keybindings.json to the VS Code settings directory
-    cp "settings/VSCode-Settings.json" "${VSCODE_USER_SETTINGS_DIR}/settings.json"
-    cp "settings/VSCode-Keybindings.json" "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
+    ls -sf "settings/VSCode-Settings.json" "${VSCODE_USER_SETTINGS_DIR}/settings.json"
+    ls -sf "settings/VSCode-Keybindings.json" "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
 
     echo "VS Code settings and keybindings have been updated."
 else
