@@ -103,7 +103,6 @@ apps=(
     "brave-browser"
     "sublime-text"
     "visual-studio-code"
-    "virtualbox"
     "spotify"
     "discord"
     "google-drive"
