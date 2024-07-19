@@ -51,11 +51,22 @@ for package in "${packages[@]}"; do
     fi
 done
 
-# Add the Homebrew zsh to allowed shells
-echo "Changing default shell to Homebrew zsh"
-echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
-# Set the Homebrew zsh as default shell
-chsh -s "$(brew --prefix)/bin/zsh"
+# Get the path to Homebrew's zsh
+BREW_ZSH="$(brew --prefix)/bin/zsh"
+# Check if Homebrew's zsh is already the default shell
+if [ "$SHELL" != "$BREW_ZSH" ]; then
+    echo "Changing default shell to Homebrew zsh"
+    # Check if Homebrew's zsh is already in allowed shells
+    if ! grep -Fxq "$BREW_ZSH" /etc/shells; then
+        echo "Adding Homebrew zsh to allowed shells"
+        echo "$BREW_ZSH" | sudo tee -a /etc/shells >/dev/null
+    fi
+    # Set the Homebrew zsh as default shell
+    chsh -s "$BREW_ZSH"
+    echo "Default shell changed to Homebrew zsh."
+else
+    echo "Homebrew zsh is already the default shell. Skipping configuration."
+fi
 
 # Git config name
 current_name=$($(brew --prefix)/bin/git config --global --get user.name)
