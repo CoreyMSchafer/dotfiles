@@ -4,16 +4,51 @@
   "debug.console.fontSize": 16, // Use 18 for Screen Recordings
   "terminal.integrated.fontSize": 16, // Use 18 for Screen Recordings
   "window.zoomLevel": 0, // Use 3 for Screen Recordings
-  // "editor.quickSuggestions": {
-  //   "comments": "off",
-  //   "strings": "off",
-  //   "other": "off"
-  // },
-  // "editor.lightbulb.enabled": "off",
-  // "editor.suggestOnTriggerCharacters": false,
-  // "editor.parameterHints.enabled": false,
-  // "editor.suggest.filterGraceful": false,
-  // "editor.suggest.showDeprecated": false,
+  // Uncomment Below for Recording...
+  "github.copilot.editor.enableAutoCompletions": false,
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "editor.quickSuggestions": {
+    "comments": "off",
+    "strings": "off"
+    "other": "on",
+  },
+  "editor.lightbulb.enabled": "off",
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.parameterHints.enabled": false,
+  "editor.suggest.filterGraceful": true,
+  "editor.hover.enabled": false,
+  "editor.inlineSuggest.enabled": false,
+  "editor.suggest.showKeywords": false,
+  "editor.suggest.showSnippets": false,
+  "editor.suggest.showMethods": true,
+  "editor.suggest.showFunctions": true,
+  "editor.suggest.showVariables": true,
+  "editor.suggest.showClasses": true,
+  "editor.suggest.showConstants": true,
+  "editor.suggest.showProperties": true,
+  "editor.suggest.showFields": true,
+  "editor.suggest.showConstructors": false,
+  "editor.suggest.showModules": false,
+  "editor.suggest.showValues": false,
+  "editor.suggest.showEvents": false,
+  "editor.suggest.showOperators": false,
+  "editor.suggest.showUnits": false,
+  "editor.suggest.showColors": false,
+  "editor.suggest.showFiles": false,
+  "editor.suggest.showReferences": false,
+  "editor.suggest.showCustomcolors": false,
+  "editor.suggest.showFolders": false,
+  "editor.suggest.showTypeParameters": false,
+  "editor.suggest.showIssues": false,
+  "editor.suggest.showUsers": false,
+  "editor.suggest.localityBonus": true,
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnEnter": "off",
 
   // General settings
   "workbench.colorTheme": "Predawn",
