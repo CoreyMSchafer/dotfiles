@@ -4,7 +4,6 @@
 # And also installs MacOS Software
 # And also installs Homebrew Packages and Casks (Apps)
 # And also sets up VS Code
-# And also sets up Sublime Text
 ############################
 
 # dotfiles directory
@@ -31,8 +30,5 @@ done
 
 # Run VS Code Script
 ./vscode.sh
-
-# Run the Sublime Script
-./sublime.sh
 
 echo "Installation Complete!"
