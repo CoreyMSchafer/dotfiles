@@ -3,13 +3,13 @@
 # Install Homebrew if it isn't already installed
 if ! command -v brew &>/dev/null; then
     echo "Homebrew not installed. Installing Homebrew."
-    zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     # Attempt to set up Homebrew PATH automatically for this session
-    if [ -x "/usr/local/bin/brew" ]; then
-        # For Intel Macs
-        echo "Configuring Homebrew in PATH for Apple Intel Mac..."
-        export PATH="/usr/local/bin:$PATH"
+    if [ -x "/opt/homebrew/bin/brew" ]; then
+        # For Apple Silicon Macs
+        echo "Configuring Homebrew in PATH for Apple Silicon Mac..."
+        export PATH="/opt/homebrew/bin:$PATH"
     fi
 else
     echo "Homebrew is already installed."
@@ -30,7 +30,6 @@ brew cleanup
 # Define an array of packages to install using Homebrew.
 packages=(
     "python"
-    "tcl-tk"
     "python-tk"
     "zsh"
     "git"
@@ -89,26 +88,15 @@ else
     echo "Git user.email is already set to '$current_email'. Skipping configuration."
 fi
 
-# Create the tutorial virtual environment I use frequently
-$(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
-
 # Install Prettier, which I use in both VS Code and Sublime Text
 $(brew --prefix)/bin/npm install --global prettier
 
 # Define an array of applications to install using Homebrew Cask.
 apps=(
     "google-chrome"
-    "firefox"
-    "brave-browser"
-    "sublime-text"
     "visual-studio-code"
-    "spotify"
-    "discord"
     "google-drive"
-    "gimp"
-    "vlc"
     "rectangle"
-    "postman"
 )
 
 # Loop over the array to install each application.
@@ -164,12 +152,6 @@ echo "Sign in to Google Chrome. Press enter to continue..."
 read
 
 echo "Connect Google Account (System Settings -> Internet Accounts). Press enter to continue..."
-read
-
-echo "Sign in to Spotify. Press enter to continue..."
-read
-
-echo "Sign in to Discord. Press enter to continue..."
 read
 
 echo "Open Rectangle and give it necessary permissions. Press enter to continue..."
