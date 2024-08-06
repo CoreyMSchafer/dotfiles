@@ -6,10 +6,10 @@ if ! command -v brew &>/dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     # Attempt to set up Homebrew PATH automatically for this session
-    if [ -x "/opt/homebrew/bin/brew" ]; then
-        # For Apple Silicon Macs
-        echo "Configuring Homebrew in PATH for Apple Silicon Mac..."
-        export PATH="/opt/homebrew/bin:$PATH"
+    if [ -x "/usr/local/bin/brew" ]; then
+        # For Intel Macs
+        echo "Configuring Homebrew in PATH for Apple Intel Mac..."
+        export PATH="/usr/local/bin:$PATH"
     fi
 else
     echo "Homebrew is already installed."
