@@ -1,9 +1,6 @@
 # Shortcuts
 alias ch='history | grep "git commit"'
 alias hg='history | grep'
-alias yt="subl '$HOME/Google Drive/My Drive/YouTube/Scripts/'"
-alias cyt="cd '$HOME/Google Drive/My Drive/YouTube/Scripts/'"
-alias oyt="open '$HOME/Google Drive/My Drive/YouTube/Scripts/'"
 
 # Detect which `ls` flavor is in use
 if ls --color >/dev/null 2>&1; then # GNU `ls`
@@ -33,23 +30,6 @@ alias update_system='sudo softwareupdate -i -a'
 # Update/upgrade Homebrew and their installed packages
 alias update_brew='brew update; brew upgrade; brew upgrade --cask; brew cleanup'
 
-# Show/hide hidden files in Finder
-# As of macOS Sierra (10.12) and later, you can simply press Cmd + Shift + . (period) while in Finder to toggle the visibility of hidden files.
-alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
-alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
-
-# To prep before screencasts
-alias tut_mode='defaults write com.apple.dock autohide -bool true && killall Dock;
-               defaults write com.apple.finder CreateDesktop -bool false && killall Finder;
-               defaults write com.apple.menuextra.clock IsAnalog -bool true && killall SystemUIServer;
-               rm -rf ~/.Trash/*;
-               rm -rf ~/Downloads/*'
-alias reg_mode='defaults write com.apple.dock autohide -bool false && killall Dock;
-               defaults write com.apple.finder CreateDesktop -bool true && killall Finder;
-               defaults write com.apple.menuextra.clock IsAnalog -bool false && killall SystemUIServer;'
-
+# Empties trash and removes downloaded files
 alias clean="osascript -e 'tell application \"Finder\" to empty the trash'; rm -rf ~/Downloads/*"
 
-# Virtual Environments
-alias wipe_env='rm -rf ~/venvs/tutorial; python3 -m venv ~/venvs/tutorial'
-alias tut_env='source ~/venvs/tutorial/bin/activate'

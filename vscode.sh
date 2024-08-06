@@ -57,3 +57,5 @@ code .
 echo "Login to extensions (Copilot, Grammarly, etc) within VS Code."
 echo "Press enter to continue..."
 read
+
+echo "Installation Complete"

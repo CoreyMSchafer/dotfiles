@@ -1,5 +1,5 @@
 
-source "${HOME}/dotfiles/.shared_prompt"
+source "${HOME}/dotfiles/.git_venv_prompt"
 
 PS1="\$(prompt_venv)" # virtual environment
 PS1+="%{${bold}%}"$'\n' # newline
