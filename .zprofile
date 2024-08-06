@@ -1,6 +1,7 @@
 
 # Set PATHS
-if [ -x "/opt/homebrew/bin/brew" ]; then
-    # For Apple Silicon Macs
-    export PATH="/opt/homebrew/bin:$PATH"
+if [ -x "/usr/local/bin/brew" ]; then
+    # For Intel Macs
+    export PATH="/usr/local/bin:$PATH"
 fi
+
