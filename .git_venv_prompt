@@ -6,7 +6,7 @@ prompt_git() {
     # Check if the current directory is in a Git repository.
     if git rev-parse --is-inside-work-tree &>/dev/null; then
         # Get the status summary.
-        local gitSummary=$(git status--porcelain)
+        local gitSummary=$(git status --porcelain)
 
         # Check for uncommitted changes in the index, unstaged changes, untracked files, and stashed files.
         [[ -n $(echo "$gitSummary" | grep '^M') ]] && git_status+='+'
