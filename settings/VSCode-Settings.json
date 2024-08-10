@@ -1,10 +1,9 @@
 {
-  // Recording specific settings
-  "editor.fontSize": 16, // Use 18 for Screen Recordings
-  "debug.console.fontSize": 16, // Use 18 for Screen Recordings
-  "terminal.integrated.fontSize": 16, // Use 18 for Screen Recordings
-  "window.zoomLevel": 0, // Use 3 for Screen Recordings
-  // Uncomment Below for Recording...
+  "editor.fontSize": 16,
+  "debug.console.fontSize": 16,
+  "terminal.integrated.fontSize": 16,
+  "window.zoomLevel": 0,
+
   "github.copilot.editor.enableAutoCompletions": false,
   "github.copilot.enable": {
     "*": true,
@@ -14,8 +13,8 @@
   },
   "editor.quickSuggestions": {
     "comments": "off",
-    "strings": "off"
-    "other": "on",
+    "strings": "off",
+    "other": "on"
   },
   "editor.lightbulb.enabled": "off",
   "editor.suggestOnTriggerCharacters": true,
@@ -60,7 +59,7 @@
   "workbench.settings.openDefaultSettings": true,
   "workbench.settings.useSplitJSON": true,
   "workbench.settings.editor": "json",
-  "workbench.startupEditor": "newUntitledFile",
+  "workbench.startupEditor": "none",
   "editor.tabSize": 4,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",

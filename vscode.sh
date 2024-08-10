@@ -21,7 +21,6 @@ extensions=(
     mtxr.sqltools-driver-sqlite
     teabyii.ayu
     tomoki1207.pdf
-    znck.grammarly
 )
 
 # Get a list of all currently installed extensions.
@@ -54,6 +53,6 @@ fi
 
 # Open VS Code to sign-in to extensions
 code .
-echo "Login to extensions (Copilot, Grammarly, etc) within VS Code."
+echo "Login to extensions (Copilot, etc) within VS Code."
 echo "Press enter to continue..."
 read

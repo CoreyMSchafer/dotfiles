@@ -88,14 +88,13 @@ else
     echo "Git user.email is already set to '$current_email'. Skipping configuration."
 fi
 
-# Install Prettier, which I use in both VS Code and Sublime Text
+# Install Prettier for VS Code
 $(brew --prefix)/bin/npm install --global prettier
 
 # Define an array of applications to install using Homebrew Cask.
 apps=(
     "google-chrome"
     "visual-studio-code"
-    "google-drive"
     "rectangle"
 )
 

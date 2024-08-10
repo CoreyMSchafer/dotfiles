@@ -79,5 +79,10 @@
     "key": "ctrl+cmd+l",
     "command": "editor.action.selectHighlights",
     "when": "editorFocus"
+  },
+  {
+    "key": "cmd+k cmd+f",
+    "command": "workbench.action.closeFolder",
+    "when": "emptyWorkspaceSupport && workbenchState != 'empty'"
   }
 ]

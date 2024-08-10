@@ -24,6 +24,12 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+# Restart System
+alias restart='sudo shutdown -r now'
+
+# Shutdown System
+alias shutdown='sudo shutdown -h now'
+
 # Get OS X Software Updates
 alias update_system='sudo softwareupdate -i -a'
 
@@ -32,4 +38,3 @@ alias update_brew='brew update; brew upgrade; brew upgrade --cask; brew cleanup'
 
 # Empties trash and removes downloaded files
 alias clean="osascript -e 'tell application \"Finder\" to empty the trash'; rm -rf ~/Downloads/*"
-
