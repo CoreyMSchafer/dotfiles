@@ -21,7 +21,6 @@ extensions=(
     mtxr.sqltools-driver-sqlite
     teabyii.ayu
     tomoki1207.pdf
-    znck.grammarly
 )
 
 # Get a list of all currently installed extensions.

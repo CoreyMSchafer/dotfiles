@@ -110,6 +110,7 @@ apps=(
     "vlc"
     "rectangle"
     "postman"
+    "keyboardcleantool"
 )
 
 # Loop over the array to install each application.
