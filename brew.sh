@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 
+brew tap leoafarias/fvm
+
 # Install Brew Packages
 brew install python
 brew install tree
+brew install openjdk
+# Install flutter
+brew install fvm
+fvm install stable
+fvm global
+echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> ~/.zshrc
+echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> ~/.bashrc
+
 
 CASKS=(
     google-chrome
