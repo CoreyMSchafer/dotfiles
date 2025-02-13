@@ -7,10 +7,12 @@ fi
 
 # Install VS Code Extensions
 extensions=(
+    batisteo.vscode-django
     esbenp.prettier-vscode
     formulahendry.code-runner
     foxundermoon.shell-format
     mechatroner.rainbow-csv
+    monosans.djlint
     ms-python.black-formatter
     ms-python.isort
     ms-python.pylint
@@ -19,6 +21,7 @@ extensions=(
     ms-vscode.theme-predawnkit
     mtxr.sqltools
     mtxr.sqltools-driver-sqlite
+    ritwickdey.LiveServer
     teabyii.ayu
     tomoki1207.pdf
 )

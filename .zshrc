@@ -12,3 +12,6 @@ for file in ~/.{zprompt,aliases,private}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
+
+# Created by pipx
+export PATH="$PATH:/Users/coreyschafer/.local/bin"

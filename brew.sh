@@ -21,6 +21,19 @@ if ! command -v brew &>/dev/null; then
     exit 1
 fi
 
+# Moving pipx install location for easy reference in VSCode Settings
+if [ ! -d "/opt/pipx" ]; then
+    echo "Creating /opt/pipx and setting up permissions..."
+    sudo mkdir -p /opt/pipx/{bin,share/man}
+    sudo chown -R $(whoami):admin /opt/pipx
+    export PIPX_HOME="/opt/pipx"
+    export PIPX_BIN_DIR="/opt/pipx/bin"
+    export PIPX_MAN_DIR="/opt/pipx/share/man"
+    export PATH="/opt/pipx/bin:$PATH"
+else
+    echo "/opt/pipx already exists. Skipping directory creation."
+fi
+
 # Update Homebrew and Upgrade any already-installed formulae
 brew update
 brew upgrade
@@ -39,6 +52,7 @@ packages=(
     "pylint"
     "black"
     "node"
+    "pipx"
 )
 
 # Loop over the array to install each application.
@@ -58,7 +72,7 @@ if [ "$SHELL" != "$BREW_ZSH" ]; then
     echo "Changing default shell to Homebrew zsh"
     # Check if Homebrew's zsh is already in allowed shells
     if ! grep -Fxq "$BREW_ZSH" /etc/shells; then
-        echo "Adding Homebrew zsh to allowed shells"
+        echo "Adding Homebrew zsh to allowed shells..."
         echo "$BREW_ZSH" | sudo tee -a /etc/shells >/dev/null
     fi
     # Set the Homebrew zsh as default shell
@@ -90,11 +104,20 @@ else
     echo "Git user.email is already set to '$current_email'. Skipping configuration."
 fi
 
+# Github uses "main" as the default branch name
+$(brew --prefix)/bin/git config --global init.defaultBranch main
+
 # Create the tutorial virtual environment I use frequently
 $(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
 
-# Install Prettier, which I use in both VS Code and Sublime Text
+# Install Prettier, which I use in both VSCode and Sublime Text
 $(brew --prefix)/bin/npm install --global prettier
+
+# Install DJLint, which I use in VSCode for Django and Jinja2 Template Formatting
+$(brew --prefix)/bin/pipx install djlint
+
+# Install Ruff, which I use in VSCode for Python Formatting and Linting
+# $(brew --prefix)/bin/pipx install ruff
 
 # Define an array of applications to install using Homebrew Cask.
 apps=(

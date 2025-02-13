@@ -11,7 +11,6 @@
   // "debug.console.fontSize": 18, // Use 18 for Screen Recordings
   // "terminal.integrated.fontSize": 18, // Use 18 for Screen Recordings
   // "window.zoomLevel": 3, // Use 3 for Screen Recordings
-  // "github.copilot.editor.enableAutoCompletions": false,
   // "editor.quickSuggestions": {
   //   "comments": "off",
   //   "strings": "off"
@@ -22,6 +21,7 @@
   // "editor.hover.enabled": false,
   // "editor.inlineSuggest.enabled": false,
   // "editor.suggest.showSnippets": false,
+  // "github.copilot.editor.enableAutoCompletions": false,
 
   // END - Recording specific settings
 
@@ -40,7 +40,7 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.quickSuggestionsDelay": 200,
-  "editor.dragAndDrop": false
+  "editor.dragAndDrop": false,
   "editor.minimap.enabled": false,
   "diffEditor.useInlineViewWhenSpaceIsLimited": false,
 
@@ -72,6 +72,27 @@
   },
   "code-runner.enableAppInsights": false,
 
+  //Copilot Settings
+  "github.copilot.editor.enableAutoCompletions": true,
+
+  // HTML, Jinja2, and Django settings
+  "[html][django-html][jinja][jinja-html]": {
+    "editor.defaultFormatter": "monosans.djlint",
+    "editor.tabSize": 2
+  },
+  "files.associations": {
+    "*.html": "django-html",
+    "*.svg": "html"
+  },
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  },
+  "djlint.useVenv": false,
+  "djlint.pythonPath": "/opt/pipx/venvs/djlint/bin/python",
+  "djlint.ignore": ["H031", "D004"],
+  "djlint.maxBlankLines": 1,
+  "djlint.lineBreakAfterMultilineTag": false,
+
   // Plaintext settings
   "[plaintext]": {
     "editor.quickSuggestions": {
@@ -96,5 +117,6 @@
   },
 
   // SQL Tools settings
-  "sqltools.useNodeRuntime": true
+  "sqltools.useNodeRuntime": true,
+  "liveServer.settings.donotShowInfoMsg": true
 }

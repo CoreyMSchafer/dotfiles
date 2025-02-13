@@ -31,7 +31,7 @@ alias egrep='egrep --color=auto'
 alias update_system='sudo softwareupdate -i -a'
 
 # Update/upgrade Homebrew and their installed packages
-alias update_brew='brew update; brew upgrade; brew upgrade --cask; brew cleanup'
+alias update_brew='brew update; brew upgrade; brew upgrade --cask; brew cleanup; $(brew --prefix)/bin/npm update --global; pipx upgrade-all'
 
 # Show/hide hidden files in Finder
 # As of macOS Sierra (10.12) and later, you can simply press Cmd + Shift + . (period) while in Finder to toggle the visibility of hidden files.
@@ -53,3 +53,7 @@ alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/de
 # Virtual Environments
 alias wipe_env='rm -rf ~/venvs/tutorial; python3 -m venv ~/venvs/tutorial'
 alias tut_env='source ~/venvs/tutorial/bin/activate'
+
+# Find Files and Directories
+alias fd='find . -type d -iname'
+alias ff='find . -type f -iname'
