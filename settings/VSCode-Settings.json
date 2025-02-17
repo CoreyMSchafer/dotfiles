@@ -1,9 +1,10 @@
 {
-  // Recording specific settings
+  // BEGIN - Recording specific settings
   "editor.fontSize": 16, // Use 18 for Screen Recordings
   "debug.console.fontSize": 16, // Use 18 for Screen Recordings
   "terminal.integrated.fontSize": 16, // Use 18 for Screen Recordings
   "window.zoomLevel": 0, // Use 3 for Screen Recordings
+  "github.copilot.editor.enableAutoCompletions": true,
 
   // Uncomment Below for Recording...
 
@@ -50,17 +51,15 @@
   "zenMode.hideLineNumbers": false,
 
   // Python settings
+  "python.venvPath": "~/venvs",
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
+      // "source.fixAll": "explicit"
       "source.organizeImports": "explicit"
     }
   },
-  "python.venvPath": "~/venvs",
-  "isort.args": ["--profile", "black"],
-  "pylint.args": ["--disable=C0114,C0115,C0116,C0103,C0301,W0621,W0718,W1203"],
-  "pylint.importStrategy": "fromEnvironment",
 
   // Code Runner settings
   "code-runner.clearPreviousOutput": true,
@@ -71,9 +70,6 @@
     "python": "\"$pythonPath\" -u $fullFileName"
   },
   "code-runner.enableAppInsights": false,
-
-  //Copilot Settings
-  "github.copilot.editor.enableAutoCompletions": true,
 
   // HTML, Jinja2, and Django settings
   "[html][django-html][jinja][jinja-html]": {
@@ -89,7 +85,7 @@
   },
   "djlint.useVenv": false,
   "djlint.pythonPath": "/opt/pipx/venvs/djlint/bin/python",
-  "djlint.ignore": ["H031", "D004"],
+  "djlint.ignore": ["H031", "D004", "H023"],
   "djlint.maxBlankLines": 1,
   "djlint.lineBreakAfterMultilineTag": false,
 

@@ -49,8 +49,6 @@ packages=(
     "zsh"
     "git"
     "tree"
-    "pylint"
-    "black"
     "node"
     "pipx"
 )
@@ -117,7 +115,7 @@ $(brew --prefix)/bin/npm install --global prettier
 $(brew --prefix)/bin/pipx install djlint
 
 # Install Ruff, which I use in VSCode for Python Formatting and Linting
-# $(brew --prefix)/bin/pipx install ruff
+$(brew --prefix)/bin/pipx install ruff
 
 # Define an array of applications to install using Homebrew Cask.
 apps=(
@@ -175,7 +173,7 @@ done
 # Once fonts are installed, import your Terminal Profile
 echo "Import your terminal settings..."
 echo "Terminal -> Settings -> Profiles -> Import..."
-echo "Import from ${HOME}/dotfiles/settings/Pro.terminal"
+echo "Import from ${HOME}/dotfiles/settings/CMS.terminal"
 echo "Press enter to continue..."
 read
 

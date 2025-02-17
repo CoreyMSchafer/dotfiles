@@ -1,0 +1,78 @@
+# RUFF DEFAULTS
+# (These are all the default groups, even if you don’t currently select them)
+# select = [
+#     "F",    # Pyflakes – detects syntax errors and basic mistakes
+#     "E4",   # Pycodestyle errors (part of E group)
+#     "E7",   # Pycodestyle E7xx errors (naming, etc.)
+#     "E9",   # Pycodestyle E9xx errors (syntax)
+# ]
+
+lint.extend-select = [
+    "E",    # Pycodestyle errors (style issues)
+    "W",    # Pycodestyle warnings (style issues)
+    "C90",  # McCabe – complexity metric for functions
+    "I",    # isort – import ordering checks
+    "N",    # PEP8 Naming – naming conventions
+    "D",    # Pydocstyle – docstring formatting
+    "UP",   # Pyupgrade – upgrades syntax to newer Python versions
+    "YTT",  # Flake8-2020 – checks for Python 2020 best practices
+    # "ANN",  # Flake8-annotations – enforces type annotation style
+    "ASYNC",# Flake8-async – checks async/await usage
+    "S",    # Flake8-bandit – security issues
+    "BLE",  # Flake8-blind-except – flags bare excepts
+    "FBT",  # Flake8-boolean-trap – potential pitfalls with booleans
+    "B",    # Flake8-bugbear – common bug patterns
+    "A",    # Flake8-builtins – misuse of Python built-in names
+    "COM",  # Flake8-commas – trailing/comma issues
+    # "CPY",  # Flake8-copyright – copyright header checks
+    "C4",   # Flake8-comprehensions – best practices in comprehensions
+    "DTZ",  # Flake8-datetimez – datetime formatting issues
+    "T10",  # Flake8-debugger – debugger statements (e.g. pdb)
+    "DJ",   # Flake8-django – Django-specific conventions
+    "EM",   # Flake8-errmsg – error message style
+    "EXE",  # Flake8-executable – executable file checks
+    "FA",   # Flake8-future-annotations – future import for annotations
+    "ISC",  # Flake8-implicit-str-concat – warns on implicit string concatenation
+    "ICN",  # Flake8-import-conventions – import style and order
+    "LOG",  # Flake8-logging – proper logging usage
+    "G",    # Flake8-logging-format – logging format string issues
+    "INP",  # Flake8-no-pep420 – warns against non-PEP420 namespace usage
+    "PIE",  # Flake8-pie – Python improvement suggestions
+    # "T20",  # Flake8-print – disallows print statements
+    "PYI",  # Flake8-pyi – checks for type stub (.pyi) consistency
+    "PT",   # Flake8-pytest-style – pytest best practices
+    "Q",    # Flake8-quotes – enforces quote style consistency
+    "RSE",  # Flake8-raise – proper raise statement usage
+    "RET",  # Flake8-return – return statement issues
+    "SLF",  # Flake8-self – enforces 'self' usage in methods
+    "SLOT", # Flake8-slots – suggests use of __slots__ where appropriate
+    "SIM",  # Flake8-simplify – code simplification hints
+    "TID",  # Flake8-tidy-imports – ensures tidy import ordering
+    "TC",   # Flake8-type-checking – proper import of typing in type checks
+    "INT",  # Flake8-gettext – checks for proper internationalization usage
+    "ARG",  # Flake8-unused-arguments – flags unused function arguments
+    "PTH",  # Flake8-use-pathlib – encourages pathlib over os.path
+    "TD",   # Flake8-todos – detects TODO/FIXME comments
+    "FIX",  # Flake8-fixme – flags FIXME comments
+    # "ERA",  # Eradicate – detects commented-out code (potentially dangerous)
+    "PD",   # Pandas-vet – checks pandas-specific code practices
+    "PGH",  # Pygrep-hooks – custom grep hooks for linting
+    "PL",   # Pylint – integration with Pylint conventions
+    "TRY",  # Tryceratops – try/except usage suggestions
+    "FLY",  # Flynt – f-string conversion suggestions
+    "NPY",  # NumPy-specific rules – ensures NumPy coding standards
+    "FAST", # FastAPI – FastAPI-specific linting rules
+    "AIR",  # Airflow – Airflow-specific linting rules
+    "PERF", # Perflint – performance-related checks
+    "FURB", # Refurb – rules for code refurbishment
+    # "DOC",  # Pydoclint – docstring linting and consistency
+    "RUF",  # Ruff-specific rules – additional Ruff checks
+]
+
+lint.ignore = [
+    "E501",  # Pycodestyle - line too long
+    "D1",    # Pydocstyle - missing docstring in public module, class, or function
+    "FBT003", # Flake8-boolean-trap - boolean position value in function call
+    "D203",  # Pydocstyle - one blank line required before class docstring
+    "D212",  # Pydocstyle - summary line should be immediately after the opening quotes.
+]

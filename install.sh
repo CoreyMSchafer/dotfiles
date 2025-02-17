@@ -23,6 +23,10 @@ for file in "${files[@]}"; do
     ln -sf "${dotfiledir}/.${file}" "${HOME}/.${file}"
 done
 
+# create symlinks for configs (will overwrite old configs)
+mkdir -p "${HOME}/.config/ruff"
+ln -sf "${dotfiledir}/settings/ruff.toml" "${HOME}/.config/ruff/ruff.toml"
+
 # Run the MacOS Script
 ./macOS.sh
 
