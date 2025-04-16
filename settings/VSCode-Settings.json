@@ -45,6 +45,11 @@
   "editor.minimap.enabled": false,
   "diffEditor.useInlineViewWhenSpaceIsLimited": false,
 
+  "files.exclude": {
+    "**/.git": false,
+    "**/.mypy_cache": true
+  },
+
   // Zen Mode settings
   "zenMode.centerLayout": false,
   "zenMode.fullScreen": false,
@@ -60,6 +65,9 @@
       "source.organizeImports": "explicit"
     }
   },
+  // "python.analysis.inlayHints.variableTypes": true,
+  // "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.typeCheckingMode": "off", // Disable Pylance Checking so MyPy Extension is only used
 
   // Code Runner settings
   "code-runner.clearPreviousOutput": true,
@@ -72,6 +80,7 @@
   "code-runner.enableAppInsights": false,
 
   // HTML, Jinja2, and Django settings
+  "django.snippets.use": false
   "[html][django-html][jinja][jinja-html]": {
     "editor.defaultFormatter": "monosans.djlint",
     "editor.tabSize": 2

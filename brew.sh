@@ -50,6 +50,7 @@ packages=(
     "git"
     "tree"
     "node"
+    "uv"
     "pipx"
 )
 

@@ -12,14 +12,17 @@ extensions=(
     esbenp.prettier-vscode
     formulahendry.code-runner
     foxundermoon.shell-format
+    github.copilot
+    github.copilot-chat
     mechatroner.rainbow-csv
     monosans.djlint
+    ms-python.mypy-type-checker
     ms-python.python
     ms-toolsai.jupyter
     ms-vscode.theme-predawnkit
     mtxr.sqltools
     mtxr.sqltools-driver-sqlite
-    ritwickdey.LiveServer
+    ritwickdey.liveServer
     tamasfe.even-better-toml
     teabyii.ayu
     tomoki1207.pdf
