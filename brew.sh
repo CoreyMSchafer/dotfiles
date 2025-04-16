@@ -125,6 +125,7 @@ apps=(
     "brave-browser"
     "sublime-text"
     "visual-studio-code"
+    "git-credential-manager"
     "spotify"
     "discord"
     "google-drive"
