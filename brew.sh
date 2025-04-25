@@ -160,6 +160,8 @@ fonts=(
     "font-poppins"
     "font-raleway"
     "font-roboto"
+    "font-architects-daughter"
+
 )
 
 for font in "${fonts[@]}"; do
