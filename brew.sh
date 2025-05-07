@@ -52,6 +52,7 @@ packages=(
     "node"
     "uv"
     "pipx"
+    "gh"
 )
 
 # Loop over the array to install each application.
@@ -106,6 +107,17 @@ fi
 # Github uses "main" as the default branch name
 $(brew --prefix)/bin/git config --global init.defaultBranch main
 
+# Check if already authenticated with GitHub to avoid re-authentication prompt
+if ! $(brew --prefix)/bin/gh auth status &>/dev/null; then
+    echo "You will need to authenticate with GitHub. Follow the prompts to login..."
+    $(brew --prefix)/bin/gh auth login
+else
+    echo "Already authenticated with GitHub. Skipping login."
+fi
+
+# Install GitHub Copilot extension
+$(brew --prefix)/bin/gh extension install github/gh-copilot
+
 # Create the tutorial virtual environment I use frequently
 $(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
 
@@ -146,10 +158,7 @@ for app in "${apps[@]}"; do
     fi
 done
 
-# Install fonts
-# Tap the Homebrew font cask repository if not already tapped
-brew tap | grep -q "^homebrew/cask-fonts$" || brew tap homebrew/cask-fonts
-
+# Install fonts. Fonts are now available directly from Homebrew cask
 fonts=(
     "font-source-code-pro"
     "font-lato"
@@ -161,7 +170,6 @@ fonts=(
     "font-raleway"
     "font-roboto"
     "font-architects-daughter"
-
 )
 
 for font in "${fonts[@]}"; do

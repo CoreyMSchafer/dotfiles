@@ -28,7 +28,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # Update/upgrade Homebrew and their installed packages
-alias update_brew='brew update; brew upgrade; brew upgrade --cask; brew cleanup; $(brew --prefix)/bin/npm update --global; $(brew --prefix)/bin/pipx upgrade-all; $(brew --prefix)/bin/uv tool upgrade --all'
+alias update_brew='brew update; brew upgrade; brew upgrade --cask; brew cleanup; $(brew --prefix)/bin/npm update --global; $(brew --prefix)/bin/pipx upgrade-all; $(brew --prefix)/bin/uv tool upgrade --all; $(brew --prefix)/bin/gh extension upgrade gh-copilot'
 
 # Show/hide hidden files in Finder
 # As of macOS Sierra (10.12) and later, you can simply press Cmd + Shift + . (period) while in Finder to toggle the visibility of hidden files.

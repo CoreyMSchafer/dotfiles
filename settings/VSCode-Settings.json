@@ -55,6 +55,9 @@
   "zenMode.fullScreen": false,
   "zenMode.hideLineNumbers": false,
 
+  // Copilot settings
+  "github.copilot.chat.agent.thinkingTool": true,
+
   // Python settings
   "python.venvPath": "~/venvs",
   "[python]": {
@@ -80,7 +83,7 @@
   "code-runner.enableAppInsights": false,
 
   // HTML, Jinja2, and Django settings
-  "django.snippets.use": false
+  "django.snippets.use": false,
   "[html][django-html][jinja][jinja-html]": {
     "editor.defaultFormatter": "monosans.djlint",
     "editor.tabSize": 2
