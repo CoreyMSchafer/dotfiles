@@ -57,9 +57,11 @@
 
   // Copilot settings
   "github.copilot.chat.agent.thinkingTool": true,
+  "github.copilot.nextEditSuggestions.enabled": true,
 
   // Python settings
   "python.venvPath": "~/venvs",
+  "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
@@ -85,7 +87,7 @@
   // HTML, Jinja2, and Django settings
   "django.snippets.use": false,
   "[html][django-html][jinja][jinja-html]": {
-    "editor.defaultFormatter": "monosans.djlint",
+    // "editor.defaultFormatter": "monosans.djlint",
     "editor.tabSize": 2
   },
   "files.associations": {
@@ -116,15 +118,19 @@
   },
 
   // Notebook settings
-  "notebook.output.scrolling": true,
+  "notebook.defaultFormatter": "charliermarsh.ruff",
   "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.organizeImports": "explicit"
+  },
+  "notebook.insertFinalNewline": true,
+  "notebook.output.scrolling": true,
   "notebook.lineNumbers": "on",
   "notebook.scrolling.revealNextCellOnExecute": "none",
-  "notebook.codeActionsOnSave": {
-    "source.organizeImports": true
-  },
 
   // SQL Tools settings
   "sqltools.useNodeRuntime": true,
   "liveServer.settings.donotShowInfoMsg": true
+
+  // Miscellaneous settings (Likely added Dynamically)
 }

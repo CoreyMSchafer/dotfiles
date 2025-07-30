@@ -128,7 +128,7 @@ $(brew --prefix)/bin/npm install --global prettier
 $(brew --prefix)/bin/pipx install djlint
 
 # Install Ruff, which I use in VSCode for Python Formatting and Linting
-$(brew --prefix)/bin/pipx install ruff
+$(brew --prefix)/bin/uv tool install ruff
 
 # Define an array of applications to install using Homebrew Cask.
 apps=(
@@ -138,6 +138,7 @@ apps=(
     "sublime-text"
     "visual-studio-code"
     "git-credential-manager"
+    "docker"
     "spotify"
     "discord"
     "google-drive"

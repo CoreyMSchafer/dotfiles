@@ -28,5 +28,9 @@ unset file
 # GitHub Copilot CLI shell integration
 eval "$(gh copilot alias -- zsh)"
 
+# Default WORDCHARS: *?_-.[]~=/&;!#$%^(){}<>
+# Modified to exclude forward slash for better path component deletion
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 # Created by pipx
 export PATH="$PATH:/Users/coreyschafer/.local/bin"

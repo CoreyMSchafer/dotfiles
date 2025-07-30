@@ -1,9 +1,9 @@
 # Shortcuts
 alias ch='history | grep "git commit"'
 alias hg='history | grep'
-alias yt="subl '$HOME/Google Drive/My Drive/YouTube/Scripts/'"
-alias cyt="cd '$HOME/Google Drive/My Drive/YouTube/Scripts/'"
-alias oyt="open '$HOME/Google Drive/My Drive/YouTube/Scripts/'"
+alias yt="code $HOME/My_Drive/YouTube/Scripts/"
+alias cyt="cd $HOME/My_Drive/YouTube/Scripts/"
+alias oyt="open $HOME/My_Drive/YouTube/Scripts/"
 
 # Detect which `ls` flavor is in use
 if ls --color >/dev/null 2>&1; then # GNU `ls`
