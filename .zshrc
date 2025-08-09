@@ -32,7 +32,7 @@ eval "$(gh copilot alias -- zsh)"
 # ~/.zshrc
 # Usage:
 #   yt_init              # init current dir
-#   yt_init project_name # create ./project_name, cd into it, then init
+#   yt_init project_name # create ./project_name, set it up, but stay where you are
 yt_init() {
   local template="$HOME/dotfiles/prompts/copilot-instructions.md"
   local gitignore_stack="${GITIGNORE_STACK:-python,macos,visualstudiocode,dotenv}"
@@ -54,14 +54,9 @@ yt_init() {
     return 1
   fi
 
-  # Absolute path to the project directory, without changing your shell’s CWD
-  if [[ "$target" == "." ]]; then
-    dir="$orig"
-  else
-    dir="$orig/$target"
-  fi
+  dir="$orig"; [[ "$target" == "." ]] || dir="$orig/$target"
 
-  # Overwrite .gitignore with your preferred template
+  # .gitignore (overwrite with your preferred stack)
   if command -v curl >/dev/null; then
     curl -fsSL "$gitignore_url" -o "$dir/.gitignore" \
       || echo "⚠️  Could not fetch .gitignore; keeping uv's default."
@@ -69,18 +64,31 @@ yt_init() {
     echo "⚠️  curl not found; keeping uv's default .gitignore."
   fi
 
-  # Copilot instructions + empty sandbox files (no clobber concerns on fresh init)
+  # Copilot instructions + empty sandbox files
   mkdir -p "$dir/.github"
   cp -f "$template" "$dir/.github/copilot-instructions.md"
   : > "$dir/s.txt"
   : > "$dir/sandbox.txt"
   : > "$dir/sandbox.py"
 
-  # Create virtual environment inside the project (run from project root in a subshell)
+  # Create virtual environment (run from project root)
   ( cd "$dir" && uv venv ) || return
+
+  # Initial commit (assumes brand-new repo with no commits)
+  if command -v git >/dev/null; then
+    git -C "$dir" add -A
+    if git -C "$dir" commit -m "Initial Commit"; then
+      echo "✅ Created initial Git commit."
+    else
+      echo "ℹ️  Git commit skipped/failed (possibly re-ran yt_init or git not configured)."
+    fi
+  else
+    echo "⚠️  git not found; skipping initial commit."
+  fi
 
   echo "✅ Project ready at $dir"
 }
+
 
 # Default WORDCHARS: *?_-.[]~=/&;!#$%^(){}<>
 # Modified to exclude forward slash for better path component deletion
