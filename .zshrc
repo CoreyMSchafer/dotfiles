@@ -28,6 +28,51 @@ unset file
 # GitHub Copilot CLI shell integration
 eval "$(gh copilot alias -- zsh)"
 
+# YouTube script initialization
+# ~/.zshrc
+# Usage:
+#   yt_init              # init current dir
+#   yt_init project_name # create ./project_name, cd into it, then init
+yt_init() {
+  local template="$HOME/dotfiles/prompts/copilot-instructions.md"
+  local gitignore_stack="${GITIGNORE_STACK:-python,macos,visualstudiocode,dotenv}"
+  local gitignore_url="https://www.toptal.com/developers/gitignore/api/${gitignore_stack}"
+
+  # minimal sanity: require template file so we don't error later
+  [[ -f "$template" ]] || { echo "Template not found: $template"; return 1; }
+
+  if [[ $# -eq 1 ]]; then
+    uv init "$1" || return        # if this errors, nothing below runs
+    cd -- "$1" || return
+  elif [[ $# -eq 0 ]]; then
+    uv init || return
+  else
+    echo "Usage: yt_init [project_name]"
+    return 1
+  fi
+
+  # overwrite .gitignore with your preferred template
+  if command -v curl >/dev/null; then
+    curl -fsSL "$gitignore_url" -o .gitignore || echo "⚠️  Could not fetch .gitignore; keeping uv's default."
+  else
+    echo "⚠️  curl not found; keeping uv's default .gitignore."
+  fi
+
+  # always (re)write your Copilot instructions + sandbox files
+  mkdir -p .github
+  cp -f "$template" .github/copilot-instructions.md
+  : > s.txt
+  : > sandbox.txt
+  printf '%s\n' '# scratchpad' > sandbox.py
+
+  # make a venv so VS Code can pick it up immediately
+  uv venv || return
+
+  echo "✅ Project ready in $(pwd)"
+}
+
+
+
 # Default WORDCHARS: *?_-.[]~=/&;!#$%^(){}<>
 # Modified to exclude forward slash for better path component deletion
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'

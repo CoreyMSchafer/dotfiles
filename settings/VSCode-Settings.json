@@ -1,9 +1,9 @@
 {
   // BEGIN - Recording specific settings
-  "editor.fontSize": 16, // Use 18 for Screen Recordings
-  "debug.console.fontSize": 16, // Use 18 for Screen Recordings
-  "terminal.integrated.fontSize": 16, // Use 18 for Screen Recordings
-  "window.zoomLevel": 0, // Use 3 for Screen Recordings
+  "editor.fontSize": 18, // Use 18 for Screen Recordings
+  "debug.console.fontSize": 18, // Use 18 for Screen Recordings
+  "terminal.integrated.fontSize": 18, // Use 18 for Screen Recordings
+  "window.zoomLevel": -2, // Use 3 for Screen Recordings
   "github.copilot.editor.enableAutoCompletions": true,
 
   // Uncomment Below for Recording...
@@ -58,6 +58,10 @@
   // Copilot settings
   "github.copilot.chat.agent.thinkingTool": true,
   "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.chat.codesearch.enabled": true,
+  "github.copilot.chat.newWorkspace.useContext7": true,
+
+  "python.analysis.addHoverSummaries": true,
 
   // Python settings
   "python.venvPath": "~/venvs",
