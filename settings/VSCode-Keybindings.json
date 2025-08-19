@@ -9,8 +9,13 @@
   },
   {
     "key": "escape",
-    "command": "workbench.action.togglePanel",
-    "when": "panelVisible"
+    "command": "editor.action.inlineSuggest.hide",
+    "when": "inlineEditIsVisible && editorTextFocus"
+  },
+  {
+    "key": "escape",
+    "command": "workbench.action.closePanel",
+    "when": "panelVisible && !inlineEditIsVisible"
   },
   {
     "key": "cmd+y",

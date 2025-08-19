@@ -4,7 +4,7 @@
   "debug.console.fontSize": 18, // Use 18 for Screen Recordings
   "terminal.integrated.fontSize": 18, // Use 18 for Screen Recordings
   "window.zoomLevel": -2, // Use 3 for Screen Recordings
-  "github.copilot.editor.enableAutoCompletions": true,
+  "github.copilot.nextEditSuggestions.enabled": true,
 
   // Uncomment Below for Recording...
 
@@ -22,7 +22,7 @@
   // "editor.hover.enabled": false,
   // "editor.inlineSuggest.enabled": false,
   // "editor.suggest.showSnippets": false,
-  // "github.copilot.editor.enableAutoCompletions": false,
+  // "github.copilot.nextEditSuggestions.enabled": false,
 
   // END - Recording specific settings
 
@@ -57,7 +57,6 @@
 
   // Copilot settings
   "github.copilot.chat.agent.thinkingTool": true,
-  "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.chat.codesearch.enabled": true,
   "github.copilot.chat.newWorkspace.useContext7": true,
 
@@ -77,6 +76,7 @@
   // "python.analysis.inlayHints.variableTypes": true,
   // "python.analysis.inlayHints.functionReturnTypes": true,
   "python.analysis.typeCheckingMode": "off", // Disable Pylance Checking so MyPy Extension is only used
+  "python.analysis.autoFormatStrings": true,
 
   // Code Runner settings
   "code-runner.clearPreviousOutput": true,

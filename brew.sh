@@ -124,6 +124,9 @@ $(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
 # Install Prettier, which I use in both VSCode and Sublime Text
 $(brew --prefix)/bin/npm install --global prettier
 
+# Install ESLint, which I use in VSCode
+$(brew --prefix)/bin/npm install --global eslint
+
 # Install DJLint, which I use in VSCode for Django and Jinja2 Template Formatting
 $(brew --prefix)/bin/pipx install djlint
 
