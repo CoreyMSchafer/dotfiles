@@ -1,6 +1,6 @@
 # Shortcuts
-alias ch='history | grep "git commit"'
-alias hg='history | grep'
+alias ch='history 0 | grep "git commit"'
+alias hg='history 0 | grep'
 alias yt="code $HOME/My_Drive/YouTube/Scripts/"
 alias cyt="cd $HOME/My_Drive/YouTube/Scripts/"
 alias oyt="open $HOME/My_Drive/YouTube/Scripts/"
