@@ -46,8 +46,24 @@ yt_init() {
 
   if [[ $# -eq 1 ]]; then
     target="$1"
-    uv init "$target" || return     # keep uv’s error behavior
+    
+    # Check if target directory exists and is not empty
+    if [[ -d "$target" ]] && [[ -n "$(ls -A "$target" 2>/dev/null)" ]]; then
+      echo "❌ Error: Directory '$target' already exists and is not empty."
+      echo "   Please use an empty directory or remove existing contents."
+      return 1
+    fi
+    
+    uv init "$target" || return     # keep uv's error behavior
   elif [[ $# -eq 0 ]]; then
+    
+    # Check if current directory is not empty
+    if [[ -n "$(ls -A . 2>/dev/null)" ]]; then
+      echo "❌ Error: Current directory is not empty."
+      echo "   Please run yt_init from an empty directory or specify a new directory name."
+      return 1
+    fi
+    
     uv init || return
   else
     echo "Usage: yt_init [project_name]"
