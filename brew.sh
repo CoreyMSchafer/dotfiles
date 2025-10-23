@@ -176,6 +176,7 @@ fonts=(
     "font-raleway"
     "font-roboto"
     "font-architects-daughter"
+    "font-fontawesome"
 )
 
 for font in "${fonts[@]}"; do
