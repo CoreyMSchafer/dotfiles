@@ -12,3 +12,8 @@ if [ -d "/opt/pipx" ]; then
 
     export PATH="/opt/pipx/bin:$PATH"
 fi
+
+# Add Rust and Cargo
+if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+fi

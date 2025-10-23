@@ -53,6 +53,8 @@ packages=(
     "uv"
     "pipx"
     "gh"
+    "ripgrep"
+    "tealdeer"
 )
 
 # Loop over the array to install each application.

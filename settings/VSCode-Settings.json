@@ -5,6 +5,7 @@
   "terminal.integrated.fontSize": 18, // Use 18 for Screen Recordings
   "window.zoomLevel": -2, // Use 3 for Screen Recordings
   "github.copilot.nextEditSuggestions.enabled": true,
+  "editor.inlineSuggest.enabled": true,
 
   // Uncomment Below for Recording...
 
