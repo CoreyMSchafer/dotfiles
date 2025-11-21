@@ -92,7 +92,7 @@
   // HTML, Jinja2, and Django settings
   "django.snippets.use": false,
   "[html][django-html][jinja][jinja-html]": {
-    // "editor.defaultFormatter": "monosans.djlint",
+    "editor.defaultFormatter": "monosans.djlint",
     "editor.tabSize": 2
   },
   "files.associations": {
@@ -100,11 +100,12 @@
     "*.svg": "html"
   },
   "emmet.includeLanguages": {
-    "django-html": "html"
+    "django-html": "html",
+    "jinja-html": "html"
   },
   "djlint.useVenv": false,
   "djlint.pythonPath": "/opt/pipx/venvs/djlint/bin/python",
-  "djlint.ignore": ["H031", "D004", "H023"],
+  "djlint.ignore": ["H031", "D004", "H023", "D018"],
   "djlint.maxBlankLines": 1,
   "djlint.lineBreakAfterMultilineTag": false,
 

@@ -34,7 +34,8 @@ eval "$(gh copilot alias -- zsh)"
 #   yt_init              # init current dir
 #   yt_init project_name # create ./project_name, set it up, but stay where you are
 yt_init() {
-  local template="$HOME/dotfiles/prompts/copilot-instructions.md"
+  local template="$HOME/dotfiles/prompts/AGENTS.md"
+  local template_dir="$HOME/My_Drive/YouTube/Youtube-Tutorial-Template"
   local gitignore_stack="${GITIGNORE_STACK:-python,macos,visualstudiocode,dotenv}"
   local gitignore_url="https://www.toptal.com/developers/gitignore/api/${gitignore_stack}"
   local orig="$PWD"
@@ -82,10 +83,31 @@ yt_init() {
 
   # Copilot instructions + empty sandbox files
   mkdir -p "$dir/.github"
-  cp -f "$template" "$dir/.github/copilot-instructions.md"
+  mkdir -p "$dir/.claude/commands"
+  mkdir -p "$dir/reference-examples"
+  cp -f "$template" "$dir/AGENTS.md"
   : > "$dir/s.txt"
   : > "$dir/sandbox.txt"
   : > "$dir/sandbox.py"
+  : > "$dir/snippets.txt"
+
+  # Copy Claude commands from template
+  if [[ -d "$template_dir/.claude/commands" ]]; then
+    cp -f "$template_dir/.claude/commands/"* "$dir/.claude/commands/" 2>/dev/null \
+      && echo "✅ Copied Claude commands from template." \
+      || echo "⚠️  Could not copy Claude commands (directory may be empty)."
+  else
+    echo "⚠️  Template Claude commands directory not found."
+  fi
+
+  # Copy reference examples from template
+  if [[ -d "$template_dir/reference-examples" ]]; then
+    cp -f "$template_dir/reference-examples/"* "$dir/reference-examples/" 2>/dev/null \
+      && echo "✅ Copied reference examples from template." \
+      || echo "⚠️  Could not copy reference examples (directory may be empty)."
+  else
+    echo "⚠️  Template reference examples directory not found."
+  fi
 
   # Create virtual environment (run from project root)
   ( cd "$dir" && uv venv ) || return
@@ -112,3 +134,6 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 # Created by pipx
 export PATH="$PATH:/Users/coreyschafer/.local/bin"
+
+# Added by Antigravity
+export PATH="/Users/coreyschafer/.antigravity/antigravity/bin:$PATH"
