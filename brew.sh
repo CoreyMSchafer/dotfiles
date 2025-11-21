@@ -144,6 +144,7 @@ apps=(
     "visual-studio-code"
     "git-credential-manager"
     "docker"
+    "claude-code"
     "spotify"
     "discord"
     "google-drive"

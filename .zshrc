@@ -100,6 +100,15 @@ yt_init() {
     echo "⚠️  Template Claude commands directory not found."
   fi
 
+  # Copy CLAUDE.md from template
+  if [[ -f "$template_dir/CLAUDE.md" ]]; then
+    cp -f "$template_dir/CLAUDE.md" "$dir/CLAUDE.md" \
+      && echo "✅ Copied CLAUDE.md from template." \
+      || echo "⚠️  Could not copy CLAUDE.md."
+  else
+    echo "⚠️  Template CLAUDE.md not found."
+  fi
+
   # Copy reference examples from template
   if [[ -d "$template_dir/reference-examples" ]]; then
     cp -f "$template_dir/reference-examples/"* "$dir/reference-examples/" 2>/dev/null \
