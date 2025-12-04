@@ -25,9 +25,6 @@ for file in ~/.{zprompt,aliases,private}; do
 done
 unset file
 
-# GitHub Copilot CLI shell integration
-eval "$(gh copilot alias -- zsh)"
-
 # YouTube script initialization
 # ~/.zshrc
 # Usage:
