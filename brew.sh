@@ -52,6 +52,7 @@ packages=(
     "node"
     "uv"
     "pipx"
+    "gemini-cli"
     "gh"
     "ripgrep"
     "tealdeer"
@@ -117,9 +118,6 @@ else
     echo "Already authenticated with GitHub. Skipping login."
 fi
 
-# Install GitHub Copilot extension
-$(brew --prefix)/bin/gh extension install github/gh-copilot
-
 # Create the tutorial virtual environment I use frequently
 $(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
 
@@ -145,6 +143,8 @@ apps=(
     "git-credential-manager"
     "docker"
     "claude-code"
+    "codex"
+    "copilot-cli"
     "spotify"
     "discord"
     "google-drive"

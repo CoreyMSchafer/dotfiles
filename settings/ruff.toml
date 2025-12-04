@@ -15,7 +15,7 @@ lint.extend-select = [
     "N",    # PEP8 Naming – naming conventions
     "D",    # Pydocstyle – docstring formatting
     "UP",   # Pyupgrade – upgrades syntax to newer Python versions
-    "YTT",  # Flake8-2020 – checks for Python 2020 best practices
+    "YTT",  # Flake8-2020 – checks for misuse of sys.version and sys.version_info
     # "ANN",  # Flake8-annotations – enforces type annotation style
     "ASYNC",# Flake8-async – checks async/await usage
     "S",    # Flake8-bandit – security issues
@@ -36,7 +36,7 @@ lint.extend-select = [
     "ICN",  # Flake8-import-conventions – enforces conventional import aliases
     "LOG",  # Flake8-logging – proper logging usage
     "G",    # Flake8-logging-format – logging format string issues
-    "INP",  # Flake8-no-pep420 – warns against non-PEP420 namespace usage
+    "INP",  # Flake8-no-pep420 – requires __init__.py files (no implicit namespace packages)
     "PIE",  # Flake8-pie – Python improvement suggestions
     # "T20",  # Flake8-print – disallows print statements
     "PYI",  # Flake8-pyi – checks for type stub (.pyi) consistency
@@ -82,4 +82,16 @@ lint.ignore = [
     "FA102", # Flake8-future-annotations - Missing `from __future__ import annotations`, but uses PEP 604 union
     "TRY003", # Tryceratops - Checks for long exception messages that are not defined in the exception class itself.
     "EM101", # Flake8-errmsg - Checks for the use of string literals in exception constructors.
+    "TC002", # Flake8-type-checking - Checks for usage of typing imports outside of TYPE_CHECKING blocks.
+    "TC003", # Flake8-type-checking - Checks for imports from typing that are not within TYPE_CHECKING blocks.
 ]
+
+[lint.per-file-ignores]
+# IGNORE RULES FOR TESTS
+# S101    # Flake8-bandit – asserts are standard in pytest
+# PLR2004 # Pylint – magic values (e.g. 404, 200) are common in tests
+# SLF001  # Flake8-self – private member access needed to test internal state
+# D       # Pydocstyle – docstrings are often redundant in verbose test names
+# ANN     # Flake8-annotations – type annotations are unnecessary overhead for tests
+"test_*.py" = ["S101", "PLR2004", "SLF001", "D", "ANN"]
+"*_test.py" = ["S101", "PLR2004", "SLF001", "D", "ANN"]
