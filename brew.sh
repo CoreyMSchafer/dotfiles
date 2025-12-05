@@ -56,6 +56,7 @@ packages=(
     "gh"
     "ripgrep"
     "tealdeer"
+    "imagemagick"
 )
 
 # Loop over the array to install each application.
@@ -153,7 +154,6 @@ apps=(
     "rectangle"
     "postman"
     "keyboardcleantool"
-    "imagemagick"
 )
 
 # Loop over the array to install each application.
