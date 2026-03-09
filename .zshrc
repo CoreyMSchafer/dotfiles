@@ -133,6 +133,16 @@ yt_init() {
   echo "✅ Project ready at $dir"
 }
 
+# Copy to clipboard without newlines. Can be piped to or run as a command.
+c() {
+  if [[ $# -eq 0 ]]; then
+    # No arguments, read from stdin (piped input)
+    tr -d '\n' | pbcopy
+  else
+    # Arguments provided, run as command
+    "$@" | tr -d '\n' | pbcopy
+  fi
+}
 
 # Default WORDCHARS: *?_-.[]~=/&;!#$%^(){}<>
 # Modified to exclude forward slash for better path component deletion
@@ -143,3 +153,6 @@ export PATH="$PATH:/Users/coreyschafer/.local/bin"
 
 # Added by Antigravity
 export PATH="/Users/coreyschafer/.antigravity/antigravity/bin:$PATH"
+
+# Added by fzf installer
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

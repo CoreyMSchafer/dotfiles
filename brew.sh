@@ -49,6 +49,7 @@ packages=(
     "zsh"
     "coreutils"
     "git"
+    "fzf"
     "tree"
     "node"
     "uv"
@@ -85,6 +86,14 @@ if [ "$SHELL" != "$BREW_ZSH" ]; then
     echo "Default shell changed to Homebrew zsh."
 else
     echo "Homebrew zsh is already the default shell. Skipping configuration."
+fi
+
+# Set up fzf key bindings and completion
+if [[ ! -f "${HOME}/.fzf.zsh" ]]; then
+    echo "Setting up fzf shell integration..."
+    "$(brew --prefix)/opt/fzf/install"
+else
+    echo "fzf shell integration already configured. Skipping configuration."
 fi
 
 # Git config name

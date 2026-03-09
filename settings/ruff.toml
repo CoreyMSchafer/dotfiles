@@ -75,7 +75,9 @@ lint.ignore = [
     "FBT003", # Flake8-boolean-trap - boolean position value in function call
     "D203",  # Pydocstyle - one blank line required before class docstring
     "D212",  # Pydocstyle - summary line should be immediately after the opening quotes.
+    "D400",  # Pydocstyle - First line should end with a period.
     "D401",  # Pydocstyle - Checks for docstring first lines that are not in an imperative mood.
+    "D415",  # Pydocstyle - First line should end with a period, question mark, or exclamation point
     "S311",  # Flake8-bandit - Standard pseudo-random generators are not suitable for security/cryptographic purposes
     "PERF401", # Perflint - Checks for for loops that can be replaced by a list comprehension.
     "RET504", # Flake8-return - Checks for variable assignments that immediately precede a return of the assigned variable.
@@ -101,3 +103,4 @@ lint.ignore = [
 # EM102   # Flake8-errmsg – f-string exceptions in test helpers are acceptable for debugging
 "test_*.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102"]
 "*_test.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102"]
+"conftest.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102"]
