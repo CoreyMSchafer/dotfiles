@@ -54,3 +54,8 @@ alias tut_env='source ~/venvs/tutorial/bin/activate'
 # Find Files and Directories
 alias fd='find . -type d -iname'
 alias ff='find . -type f -iname'
+
+# CLI - AI FULL AUTO
+alias claude-auto='claude --dangerously-skip-permissions --disallowedTools "Bash(rm *)"'
+alias codex-auto='codex --full-auto'
+alias copilot-auto='copilot --allow-all-tools --deny-tool "shell(rm)"'
