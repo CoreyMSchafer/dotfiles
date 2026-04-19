@@ -60,6 +60,7 @@ packages=(
     "dust"
     "fd"
     "tealdeer"
+    "ffmpeg"
     "imagemagick"
 )
 
@@ -153,7 +154,7 @@ apps=(
     "brave-browser"
     "visual-studio-code"
     "git-credential-manager"
-    "docker"
+    "docker-desktop"
     "claude-code"
     "codex"
     "copilot-cli"
