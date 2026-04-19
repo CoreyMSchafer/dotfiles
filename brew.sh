@@ -57,6 +57,8 @@ packages=(
     "gemini-cli"
     "gh"
     "ripgrep"
+    "dust"
+    "fd"
     "tealdeer"
     "imagemagick"
 )
@@ -132,7 +134,7 @@ fi
 # Create the tutorial virtual environment I use frequently
 $(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
 
-# Install Prettier, which I use in both VSCode and Sublime Text
+# Install Prettier, which I use in VSCode
 $(brew --prefix)/bin/npm install --global prettier
 
 # Install ESLint, which I use in VSCode
@@ -149,7 +151,6 @@ apps=(
     "google-chrome"
     "firefox"
     "brave-browser"
-    "sublime-text"
     "visual-studio-code"
     "git-credential-manager"
     "docker"

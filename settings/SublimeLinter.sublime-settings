@@ -1,8 +1,0 @@
-// SublimeLinter Settings - User
-{
-  "linters": {
-    "pylint": {
-      "args": ["--disable=C0114,C0115,C0116"]
-    }
-  }
-}

@@ -149,10 +149,10 @@ c() {
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 # Created by pipx
-export PATH="$PATH:/Users/coreyschafer/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Added by Antigravity
-export PATH="/Users/coreyschafer/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # Added by fzf installer
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

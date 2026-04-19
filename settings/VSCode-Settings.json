@@ -8,7 +8,7 @@
   "editor.inlineSuggest.enabled": true,
 
   // Uncomment Below for Recording...
-
+  
   // "editor.fontSize": 18, // Use 18 for Screen Recordings
   // "debug.console.fontSize": 18, // Use 18 for Screen Recordings
   // "terminal.integrated.fontSize": 18, // Use 18 for Screen Recordings
@@ -44,6 +44,7 @@
   "editor.quickSuggestionsDelay": 200,
   "editor.dragAndDrop": false,
   "editor.minimap.enabled": false,
+  "editor.stickyScroll.enabled": false,
   "diffEditor.useInlineViewWhenSpaceIsLimited": false,
 
   "files.exclude": {
@@ -137,6 +138,9 @@
   // SQL Tools settings
   "sqltools.useNodeRuntime": true,
   "liveServer.settings.donotShowInfoMsg": true
+
+  // Terminal settings
+  "terminal.integrated.suggest.enabled": false,
 
   // Miscellaneous settings (Likely added Dynamically)
 }

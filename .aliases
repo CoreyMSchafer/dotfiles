@@ -52,8 +52,9 @@ alias wipe_env='rm -rf ~/venvs/tutorial; python3 -m venv ~/venvs/tutorial'
 alias tut_env='source ~/venvs/tutorial/bin/activate'
 
 # Find Files and Directories
-alias fd='find . -type d -iname'
-alias ff='find . -type f -iname'
+# COMMENTING THESE WHILE I EVALUATE fd (https://github.com/sharkdp/fd)
+# alias fd='find . -type d -iname'
+# alias ff='find . -type f -iname'
 
 # CLI - AI FULL AUTO
 alias claude-auto='claude --dangerously-skip-permissions --disallowedTools "Bash(rm *)"'

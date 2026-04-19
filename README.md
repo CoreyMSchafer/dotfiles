@@ -10,7 +10,7 @@ Click on the image below to watch the video on YouTube:
 
 ## Overview
 
-The setup includes automated scripts for installing essential software, configuring Bash and Zsh shells, and setting up Sublime Text and Visual Studio Code editors. This guide will help you replicate my development environment on your machine if you desire to do so.
+The setup includes automated scripts for installing essential software, configuring Bash and Zsh shells, and setting up Visual Studio Code. This guide will help you replicate my development environment on your machine if you desire to do so.
 
 ## Important Note Before Installation
 
@@ -54,7 +54,7 @@ This script will:
 -  Create symlinks for dotfiles (`.bashrc`, `.zshrc`, etc.)
 -  Run macOS-specific configurations
 -  Install Homebrew packages and casks
--  Configure Sublime Text and Visual Studio Code
+-  Configure Visual Studio Code
 
 ## Configuration Files
 
@@ -64,14 +64,14 @@ This script will:
 -  `.bash_profile: Setting system-wide environment variables
 -  `.aliases`: Aliases for common commands. Some are personalized to my machines specifically (e.g. the 'yt' alias opening my YouTube Scripts')
 -  `.private`: This is a file you'll create locally to hold private information and shouldn't be uploaded to version control
--  `settings/`: Directory containing editor settings and themes for Sublime Text and Visual Studio Code.
+-  `settings/`: Directory containing editor settings and configurations for Visual Studio Code.
 
 ### Customizing Your Setup
 
 You're encouraged to modify the scripts and configuration files to suit your preferences. Here are some tips for customization:
 
 -  **Dotfiles**: Edit `.shared_prompt`, `.zprompt`, `.bash_prompt` to add or modify shell configurations.
--  **Sublime Text and VS Code**: Adjust settings in the `settings/` directory to change editor preferences and themes.
+-  **VS Code**: Adjust settings in the `settings/` directory to change editor preferences and themes.
 
 ## Contributing
 
