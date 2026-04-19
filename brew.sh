@@ -193,6 +193,7 @@ fonts=(
     "font-fontawesome"
     "font-varela-round"
     "font-quicksand"
+    "font-caveat"
 )
 
 for font in "${fonts[@]}"; do
