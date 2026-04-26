@@ -81,6 +81,14 @@ scripts() {
   open "http://127.0.0.1:9111"
 }
 
+# Personal TODO Kanban board
+todos() {
+  local dir="$HOME/My_Drive/YouTube/Scripts/TODO_Personal"
+  (cd "$dir" && uv run python main.py &)
+  sleep 1
+  open "http://127.0.0.1:6969"
+}
+
 # YouTube script initialization
 # Usage:
 #   yt_init              # init current dir
