@@ -45,7 +45,19 @@ alias reg_mode='defaults write com.apple.dock autohide -bool false && killall Do
                defaults write com.apple.finder CreateDesktop -bool true && killall Finder;
                defaults write com.apple.menuextra.clock IsAnalog -bool false && killall SystemUIServer;'
 
-alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/dev/null; rm -rf ~/Downloads/*"
+clean() {
+    osascript -e 'tell application "Finder" to empty the trash' 2>/dev/null
+    rm -rf ~/Downloads/*
+
+    # Clean junk files from YouTube Scripts directory
+    local scripts="$HOME/My_Drive/YouTube/Scripts"
+    fd -t d --hidden --no-ignore '__pycache__' -0 --search-path "$scripts" | xargs -0 rm -rf
+    fd -t d --hidden --no-ignore '\.mypy_cache' -0 --search-path "$scripts" | xargs -0 rm -rf
+    fd -t d --hidden --no-ignore '\.ruff_cache' -0 --search-path "$scripts" | xargs -0 rm -rf
+    fd -t d --hidden --no-ignore '\.ipynb_checkpoints' -0 --search-path "$scripts" | xargs -0 rm -rf
+    fd -t d --hidden --no-ignore '\.pytest_cache' -0 --search-path "$scripts" | xargs -0 rm -rf
+    fd -t f --hidden --no-ignore '\.DS_Store' -0 --search-path "$scripts" | xargs -0 rm -f
+}
 
 # Virtual Environments
 alias wipe_env='rm -rf ~/venvs/tutorial; python3 -m venv ~/venvs/tutorial'
@@ -60,3 +72,123 @@ alias tut_env='source ~/venvs/tutorial/bin/activate'
 alias claude-auto='claude --dangerously-skip-permissions --disallowedTools "Bash(rm *)"'
 alias codex-auto='codex --full-auto'
 alias copilot-auto='copilot --allow-all-tools --deny-tool "shell(rm)"'
+
+# YouTube Script Organizer (Kanban board)
+scripts() {
+  local dir="$HOME/My_Drive/YouTube/Scripts/YT_Script_Organizer"
+  (cd "$dir" && uv run python main.py &)
+  sleep 1
+  open "http://127.0.0.1:9111"
+}
+
+# YouTube script initialization
+# Usage:
+#   yt_init              # init current dir
+#   yt_init project_name # create ./project_name, set it up, but stay where you are
+yt_init() {
+  local template="$HOME/dotfiles/prompts/AGENTS.md"
+  local template_dir="$HOME/My_Drive/YouTube/Youtube-Tutorial-Template"
+  local gitignore_stack="${GITIGNORE_STACK:-python,macos,visualstudiocode,dotenv}"
+  local gitignore_url="https://www.toptal.com/developers/gitignore/api/${gitignore_stack}"
+  local orig="$PWD"
+  local target="."
+  local dir
+
+  # minimal sanity: require template file so we don't error later
+  [[ -f "$template" ]] || { echo "Template not found: $template"; return 1; }
+
+  if [[ $# -eq 1 ]]; then
+    target="$1"
+
+    # Check if target directory exists and is not empty
+    if [[ -d "$target" ]] && [[ -n "$(ls -A "$target" 2>/dev/null)" ]]; then
+      echo "❌ Error: Directory '$target' already exists and is not empty."
+      echo "   Please use an empty directory or remove existing contents."
+      return 1
+    fi
+
+    uv init "$target" || return     # keep uv's error behavior
+  elif [[ $# -eq 0 ]]; then
+
+    # Check if current directory is not empty
+    if [[ -n "$(ls -A . 2>/dev/null)" ]]; then
+      echo "❌ Error: Current directory is not empty."
+      echo "   Please run yt_init from an empty directory or specify a new directory name."
+      return 1
+    fi
+
+    uv init || return
+  else
+    echo "Usage: yt_init [project_name]"
+    return 1
+  fi
+
+  dir="$orig"; [[ "$target" == "." ]] || dir="$orig/$target"
+
+  # .gitignore (overwrite with your preferred stack)
+  if command -v curl >/dev/null; then
+    curl -fsSL "$gitignore_url" -o "$dir/.gitignore" \
+      || echo "⚠️  Could not fetch .gitignore; keeping uv's default."
+  else
+    echo "⚠️  curl not found; keeping uv's default .gitignore."
+  fi
+
+  # Append YT Script Organizer marker file to .gitignore
+  printf '\n# YT Script Organizer\n.tutorial.json\n' >> "$dir/.gitignore"
+
+  # Copilot instructions + empty sandbox files
+  mkdir -p "$dir/.github"
+  mkdir -p "$dir/.claude/commands"
+  cp -f "$template" "$dir/AGENTS.md"
+  : > "$dir/s.txt"
+  : > "$dir/sandbox.txt"
+  : > "$dir/sandbox.py"
+  : > "$dir/snippets.txt"
+  python3 -c "import uuid, json; print(json.dumps({'id': uuid.uuid4().hex, 'type': 'video'}, indent=2))" > "$dir/.tutorial.json"
+
+  # Copy Claude commands from template
+  if [[ -d "$template_dir/.claude/commands" ]]; then
+    cp -f "$template_dir/.claude/commands/"* "$dir/.claude/commands/" 2>/dev/null \
+      && echo "✅ Copied Claude commands from template." \
+      || echo "⚠️  Could not copy Claude commands (directory may be empty)."
+  else
+    echo "⚠️  Template Claude commands directory not found."
+  fi
+
+  # Copy CLAUDE.md from template
+  if [[ -f "$template_dir/CLAUDE.md" ]]; then
+    cp -f "$template_dir/CLAUDE.md" "$dir/CLAUDE.md" \
+      && echo "✅ Copied CLAUDE.md from template." \
+      || echo "⚠️  Could not copy CLAUDE.md."
+  else
+    echo "⚠️  Template CLAUDE.md not found."
+  fi
+
+  # Create virtual environment (run from project root)
+  ( cd "$dir" && uv venv ) || return
+
+  # Initial commit (assumes brand-new repo with no commits)
+  if command -v git >/dev/null; then
+    git -C "$dir" add -A
+    if git -C "$dir" commit -m "Initial Commit"; then
+      echo "✅ Created initial Git commit."
+    else
+      echo "ℹ️  Git commit skipped/failed (possibly re-ran yt_init or git not configured)."
+    fi
+  else
+    echo "⚠️  git not found; skipping initial commit."
+  fi
+
+  echo "✅ Project ready at $dir"
+}
+
+# Copy to clipboard without newlines. Can be piped to or run as a command.
+c() {
+  if [[ $# -eq 0 ]]; then
+    # No arguments, read from stdin (piped input)
+    tr -d '\n' | pbcopy
+  else
+    # Arguments provided, run as command
+    "$@" | tr -d '\n' | pbcopy
+  fi
+}

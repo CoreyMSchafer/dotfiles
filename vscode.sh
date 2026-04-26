@@ -9,6 +9,7 @@ fi
 extensions=(
     batisteo.vscode-django
     charliermarsh.ruff
+    astral-sh.ty
     esbenp.prettier-vscode
     formulahendry.code-runner
     foxundermoon.shell-format
@@ -16,7 +17,6 @@ extensions=(
     github.copilot-chat
     mechatroner.rainbow-csv
     monosans.djlint
-    ms-python.mypy-type-checker
     ms-python.python
     ms-toolsai.jupyter
     ms-vscode.theme-predawnkit
