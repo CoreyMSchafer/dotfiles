@@ -136,9 +136,7 @@ yt_init() {
   # Append YT Script Organizer marker file to .gitignore
   printf '\n# YT Script Organizer\n.tutorial.json\n' >> "$dir/.gitignore"
 
-  # Copilot instructions + empty sandbox files
-  mkdir -p "$dir/.github"
-  mkdir -p "$dir/.claude/commands"
+  # AGENTS.md + empty sandbox files
   cp -f "$template" "$dir/AGENTS.md"
   : > "$dir/s.txt"
   : > "$dir/sandbox.txt"
@@ -146,13 +144,17 @@ yt_init() {
   : > "$dir/snippets.txt"
   python3 -c "import uuid, json; print(json.dumps({'id': uuid.uuid4().hex, 'type': 'video'}, indent=2))" > "$dir/.tutorial.json"
 
-  # Copy Claude commands from template
-  if [[ -d "$template_dir/.claude/commands" ]]; then
-    cp -f "$template_dir/.claude/commands/"* "$dir/.claude/commands/" 2>/dev/null \
-      && echo "✅ Copied Claude commands from template." \
-      || echo "⚠️  Could not copy Claude commands (directory may be empty)."
+  # Copy tutorial prompt files from template to project root
+  local copied_prompts=0
+  for prompt in 1_bullets.md 2_structure.md 3_code_examples.md 4_script.md; do
+    if [[ -f "$template_dir/$prompt" ]]; then
+      cp -f "$template_dir/$prompt" "$dir/$prompt" && copied_prompts=$((copied_prompts + 1))
+    fi
+  done
+  if [[ $copied_prompts -gt 0 ]]; then
+    echo "✅ Copied $copied_prompts tutorial prompt file(s) from template."
   else
-    echo "⚠️  Template Claude commands directory not found."
+    echo "⚠️  Could not copy tutorial prompt files from template."
   fi
 
   # Copy CLAUDE.md from template
