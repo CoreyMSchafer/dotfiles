@@ -34,10 +34,10 @@ else
     echo "/opt/pipx already exists. Skipping directory creation."
 fi
 
-# Update Homebrew and Upgrade any already-installed formulae
+# Update Homebrew and Upgrade any already-installed formulae and casks
+# (brew upgrade has upgraded casks by default since Homebrew 3.2)
 brew update
 brew upgrade
-brew upgrade --cask
 brew cleanup
 
 # Define an array of packages to install using Homebrew.
@@ -64,15 +64,8 @@ packages=(
     "imagemagick"
 )
 
-# Loop over the array to install each application.
-for package in "${packages[@]}"; do
-    if brew list --formula | grep -q "^$package\$"; then
-        echo "$package is already installed. Skipping..."
-    else
-        echo "Installing $package..."
-        brew install "$package"
-    fi
-done
+# brew install is idempotent — already-installed packages are skipped with a notice.
+brew install "${packages[@]}"
 
 # Get the path to Homebrew's zsh
 BREW_ZSH="$(brew --prefix)/bin/zsh"
@@ -103,7 +96,7 @@ fi
 current_name=$($(brew --prefix)/bin/git config --global --get user.name)
 if [ -z "$current_name" ]; then
     echo "Please enter your FULL NAME for Git configuration:"
-    read git_user_name
+    read -r git_user_name
     $(brew --prefix)/bin/git config --global user.name "$git_user_name"
     echo "Git user.name has been set to $git_user_name"
 else
@@ -114,7 +107,7 @@ fi
 current_email=$($(brew --prefix)/bin/git config --global --get user.email)
 if [ -z "$current_email" ]; then
     echo "Please enter your EMAIL for Git configuration:"
-    read git_user_email
+    read -r git_user_email
     $(brew --prefix)/bin/git config --global user.email "$git_user_email"
     echo "Git user.email has been set to $git_user_email"
 else
@@ -168,15 +161,7 @@ apps=(
     "keyboardcleantool"
 )
 
-# Loop over the array to install each application.
-for app in "${apps[@]}"; do
-    if brew list --cask | grep -q "^$app\$"; then
-        echo "$app is already installed. Skipping..."
-    else
-        echo "Installing $app..."
-        brew install --cask "$app"
-    fi
-done
+brew install --cask "${apps[@]}"
 
 # Install fonts. Fonts are now available directly from Homebrew cask
 fonts=(
@@ -198,15 +183,7 @@ fonts=(
     "font-josefin-sans"
 )
 
-for font in "${fonts[@]}"; do
-    # Check if the font is already installed
-    if brew list --cask | grep -q "^$font\$"; then
-        echo "$font is already installed. Skipping..."
-    else
-        echo "Installing $font..."
-        brew install --cask "$font"
-    fi
-done
+brew install --cask "${fonts[@]}"
 
 # Once fonts are installed, import your Terminal Profile
 echo "Import your terminal settings..."
@@ -218,7 +195,6 @@ read
 # Update and clean up again for safe measure
 brew update
 brew upgrade
-brew upgrade --cask
 brew cleanup
 
 echo "Sign in to Google Chrome. Press enter to continue..."

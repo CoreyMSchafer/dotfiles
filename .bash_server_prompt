@@ -1,3 +1,7 @@
+# Standalone bash prompt for remote servers — pulled directly from GitHub onto
+# fresh hosts where the rest of the dotfiles aren't deployed. Self-contained
+# (no .shared_prompt dependency) so it works in isolation.
+
 # If not running interactively, don't do anything
 [[ $- == *i* ]] || return
 

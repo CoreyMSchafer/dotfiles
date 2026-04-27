@@ -12,10 +12,7 @@ prompt_git() {
         [[ -n $(echo "$gitSummary" | grep '^M') ]] && git_status+='+'
         [[ -n $(echo "$gitSummary" | grep '^ M') ]] && git_status+='!'
         [[ -n $(echo "$gitSummary" | grep '^\?\?') ]] && git_status+='?'
-        [[ $(
-            git rev-parse --verify refs/stash &>/dev/null
-            echo "${?}"
-        ) == '0' ]] && git_status+='$'
+        git rev-parse --verify refs/stash &>/dev/null && git_status+='$'
 
         # Get the short symbolic ref or the short SHA for the latest commit.
         branchName="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo '(unknown)')"
@@ -32,6 +29,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 prompt_venv() {
     if [[ -n "$VIRTUAL_ENV" ]]; then
         # Extract the last directory name in the $VIRTUAL_ENV path
+        local venv_name
         venv_name=$(basename "$VIRTUAL_ENV")
         printf "\n%b(%s)\n" "${steel_blue}" "${venv_name}"
     fi

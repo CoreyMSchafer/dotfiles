@@ -1,6 +1,10 @@
 autoload -Uz colors && colors
 setopt PROMPT_SUBST
 
+# Keep PATH (and its array form `path`) deduplicated so re-sourcing this file
+# doesn't grow the variable on every shell invocation.
+typeset -U path PATH
+
 # Don't ask if user is sure when running rm with wildcards (like bash)
 setopt rmstarsilent
 

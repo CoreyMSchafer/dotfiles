@@ -4,14 +4,14 @@ xcode-select --install
 
 echo "Complete the installation of Xcode Command Line Tools before proceeding."
 echo "Press enter to continue..."
-read
+read -r
 
 # Set scroll as traditional instead of natural
+# Note: this is a global preference; a logout/restart is required for it to take effect.
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
-killall Finder
 
 # Set location for screenshots
-mkdir "${HOME}/Desktop/Screenshots"
+mkdir -p "${HOME}/Desktop/Screenshots"
 defaults write com.apple.screencapture location "${HOME}/Desktop/Screenshots"
 killall SystemUIServer
 
