@@ -73,21 +73,18 @@ alias claude-auto='claude --dangerously-skip-permissions --disallowedTools "Bash
 alias codex-auto='codex --full-auto'
 alias copilot-auto='copilot --allow-all-tools --deny-tool "shell(rm)"'
 
-# YouTube Script Organizer (Kanban board)
-scripts() {
-  local dir="$HOME/My_Drive/YouTube/Scripts/YT_Script_Organizer"
-  (cd "$dir" && uv run python main.py &)
-  sleep 1
-  open "http://127.0.0.1:9111"
-}
+# Local launchd services (auto-start at login, auto-restart on crash).
+# Service definitions live in ~/Library/LaunchAgents/ — edit the plists there to change config.
 
-# Personal TODO Kanban board
-todos() {
-  local dir="$HOME/My_Drive/YouTube/Scripts/TODO_Personal"
-  (cd "$dir" && uv run python main.py &)
-  sleep 1
-  open "http://127.0.0.1:6969"
-}
+# Personal YouTube Script Organizer App — http://scripts.localhost:9111
+alias scripts_start='launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.coreyschafer.scripts.plist"'
+alias scripts_stop='launchctl bootout "gui/$(id -u)/com.coreyschafer.scripts"'
+alias scripts_restart='launchctl kickstart -k "gui/$(id -u)/com.coreyschafer.scripts"'
+
+# Personal TODO App — http://todos.localhost:6969
+alias todos_start='launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.coreyschafer.todos.plist"'
+alias todos_stop='launchctl bootout "gui/$(id -u)/com.coreyschafer.todos"'
+alias todos_restart='launchctl kickstart -k "gui/$(id -u)/com.coreyschafer.todos"'
 
 # YouTube script initialization
 # Usage:
@@ -101,6 +98,8 @@ yt_init() {
   local orig="$PWD"
   local target="."
   local dir
+  local prompt_file
+  local copied_prompts=0
 
   # minimal sanity: require template file so we don't error later
   [[ -f "$template" ]] || { echo "Template not found: $template"; return 1; }
@@ -153,10 +152,9 @@ yt_init() {
   python3 -c "import uuid, json; print(json.dumps({'id': uuid.uuid4().hex, 'type': 'video'}, indent=2))" > "$dir/.tutorial.json"
 
   # Copy tutorial prompt files from template to project root
-  local copied_prompts=0
-  for prompt in 1_bullets.md 2_structure.md 3_code_examples.md 4_script.md; do
-    if [[ -f "$template_dir/$prompt" ]]; then
-      cp -f "$template_dir/$prompt" "$dir/$prompt" && copied_prompts=$((copied_prompts + 1))
+  for prompt_file in 1_bullets.md 2_structure.md 3_code_examples.md 4_script.md; do
+    if [[ -f "$template_dir/$prompt_file" ]]; then
+      cp -f "$template_dir/$prompt_file" "$dir/$prompt_file" && copied_prompts=$((copied_prompts + 1))
     fi
   done
   if [[ $copied_prompts -gt 0 ]]; then
