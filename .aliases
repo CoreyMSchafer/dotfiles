@@ -152,7 +152,7 @@ yt_init() {
   python3 -c "import uuid, json; print(json.dumps({'id': uuid.uuid4().hex, 'type': 'video'}, indent=2))" > "$dir/.tutorial.json"
 
   # Copy tutorial prompt files from template to project root
-  for prompt_file in 1_bullets.md 2_structure.md 3_code_examples.md 4_script.md; do
+  for prompt_file in 0_project.md 1_bullets.md 2_structure.md 3_code_examples.md; do
     if [[ -f "$template_dir/$prompt_file" ]]; then
       cp -f "$template_dir/$prompt_file" "$dir/$prompt_file" && copied_prompts=$((copied_prompts + 1))
     fi
@@ -170,6 +170,15 @@ yt_init() {
       || echo "⚠️  Could not copy CLAUDE.md."
   else
     echo "⚠️  Template CLAUDE.md not found."
+  fi
+
+  # Copy useful_prompts.txt from template
+  if [[ -f "$template_dir/useful_prompts.txt" ]]; then
+    cp -f "$template_dir/useful_prompts.txt" "$dir/useful_prompts.txt" \
+      && echo "✅ Copied useful_prompts.txt from template." \
+      || echo "⚠️  Could not copy useful_prompts.txt."
+  else
+    echo "⚠️  Template useful_prompts.txt not found."
   fi
 
   # Create virtual environment (run from project root)
