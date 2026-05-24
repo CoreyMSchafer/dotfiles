@@ -149,6 +149,7 @@ apps=(
     "git-credential-manager"
     "docker-desktop"
     "claude-code"
+    "claude"
     "codex"
     "copilot-cli"
     "spotify"
