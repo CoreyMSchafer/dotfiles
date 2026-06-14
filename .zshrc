@@ -13,10 +13,11 @@ setopt no_nomatch
 
 # Specify the history file and its sizes
 export HISTFILE=~/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
+export HISTSIZE=100000
+export SAVEHIST=100000
 
 # These options improve history behavior across sessions
+setopt EXTENDED_HISTORY       # Record timestamp + elapsed time per entry (: <ts>:<elapsed>;<cmd>)
 setopt SHARE_HISTORY          # Share command history across all open sessions
 setopt APPEND_HISTORY         # Append history rather than overwriting it
 setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks from each command line being added to the history list
