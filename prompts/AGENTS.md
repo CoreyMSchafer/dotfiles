@@ -1,11 +1,131 @@
 # Instructions
 
+General working instructions for any project. Claude Code loads these via a
+`CLAUDE.md` that imports this file (`@AGENTS.md`); other agents (Codex, Gemini,
+Cursor) read this file natively at the project root.
+
 ### Working principles
 
 - **Correctness over speed.** Take the time to verify. Don't generate code from memory when current docs are a tool call away.
 - **State assumptions explicitly.** If you're inferring a version, framework choice, or scope, say so before generating.
 - **Ask before guessing.** If a request is ambiguous in a way that materially changes the answer, ask a clarifying question rather than picking silently.
 - **Surface uncertainty.** "I don't know" or "the sources disagree" is more useful than a confident guess.
+
+### Package Management
+
+- Use UV for all Python package and environment management: `uv add`, `uv run`, `uv sync`.
+
+### Modern Python Best Practices
+
+- Use `pathlib` for file operations instead of built-in `open()`
+  - Example: `Path.read_text()`, `Path.write_text()`, `Path.open()`
+- Use type hints where they aid clarity, but not everywhere (e.g. function definitions)
+- Use context managers for resources
+- Use dataclasses or Pydantic models instead of plain dictionaries for structured data
+- Use modern approaches over legacy patterns
+
+### Code Quality with Ruff and ty
+
+All code should be checked with Ruff and ty (Astral's type checker) before being considered done.
+
+**Process Order (CRITICAL):**
+
+1. Write the code in `main.py` and other Python files
+2. Run `ruff check --fix` to auto-fix issues (includes import sorting)
+3. Run `ruff format` to format the code
+4. Run `uvx ty check` to check for type errors
+5. Review remaining issues from `ruff check` and `ty check`
+6. Apply fixes based on decision criteria (see below)
+
+**Where to run Ruff:**
+
+Run Ruff from the project root, not a subdirectory. Each project is its own root; Ruff uses it as the project root and falls back to the user-level config at `~/.config/ruff/ruff.toml` for rules. This makes first-party imports (`schemas`, `models`, `database`, etc.) resolve correctly without any per-project Ruff config.
+
+**Decision Criteria for Ruff Suggestions:**
+
+For each issue:
+
+1. **Look it up** - Check the Ruff documentation if unfamiliar with the rule
+2. **Evaluate** - Apply these criteria:
+   - Does it improve code quality without overcomplicating?
+   - Does it align with modern Python best practices?
+3. **Flag for review** - If a rule seems questionable, unclear, or doesn't make sense in the current context, FLAG IT. Don't skip it silently - explain your concern so I can decide.
+
+**Key Ruff Behaviors to Remember:**
+
+- Trailing commas: Formatter will move arguments to separate lines when trailing commas are added. You'll get a warning, but this is fine. I prefer the trailing comma, and then format will format it appropriately.
+
+### CLI Tools Available
+
+Project-specific guidance below. For general usage of well-known tools, use them as you normally would.
+
+#### ripgrep (`rg`)
+
+Use `rg` instead of `grep`. Respects `.gitignore`, faster, cleaner output.
+
+#### fd
+
+Use `fd` instead of `find`. Same reasons.
+
+#### Ruff
+
+Required for Python linting, formatting, and import sorting. The workflow lives in **"Code Quality with Ruff and ty"** above — that section is load-bearing.
+
+Run from the project root so first-party imports resolve correctly.
+
+#### ty
+
+Astral's Python type checker. Run via `uvx ty check`. See **"Code Quality with Ruff and ty"** above for how I want type errors handled.
+
+#### djlint
+
+HTML/Jinja formatter and linter. Run from inside the project directory so it picks up the local `.djlintrc`.
+
+- `djlint --reformat <path>` — format
+- `djlint --lint <path>` — lint
+
+#### prettier
+
+JavaScript formatter. Run from inside the project directory so it picks up the local `.prettierrc`.
+
+- `prettier --write <pattern>`
+
+#### uv
+
+All Python package and environment management. See **"Package Management"** above.
+
+#### git
+
+Read-only commands only — `diff`, `log`, `status`. `git diff` is the primary tool for seeing what changed since the last commit. **Do not commit, push, or modify history without an explicit ask.**
+
+#### Homebrew (`brew`)
+
+Available for installing macOS tools. **Always ask me before installing a new tool with brew.** I want to consciously decide what's added to the system.
+
+### Communication and Transparency
+
+#### When You Encounter Issues
+
+- Always tell me immediately if you run into blockers during testing or investigation
+  - Examples: "Address already in use", permission errors, missing dependencies, can't access a file
+- Ask me to help resolve the issue before continuing
+  - Example: "I tried to test X but got error Y. Can you check if Z is running?"
+- Don't work around issues silently - let me know so I can help
+
+#### Be Explicit About What You Can/Cannot Verify
+
+- Clearly distinguish between:
+  - "I tested this and confirmed X"
+  - "I couldn't test this, so I'm inferring X based on Y"
+  - "I made an assumption here that might be wrong"
+- If you're making an educated guess, say so explicitly
+- If you need me to test something on my end, ask me directly
+
+#### Testing and Verification
+
+- If you need specific conditions to test properly (server stopped, port available, etc.), ask me to set them up
+- Don't skip verification steps - if you can't verify something, tell me why
+- When debugging issues together, share what you attempted and what the results were
 
 ### Researching Documentation: WebSearch, Context7, and DeepWiki
 
