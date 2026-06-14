@@ -1,0 +1,23 @@
+{
+  "_comment": "Reference for ~/.claude/settings.json. Your real settings file stays machine-LOCAL (it is NOT symlinked from this public repo), so personal/safety toggles such as skipDangerousModePermissionPrompt live only there, never here. Copy the keys you want into ~/.claude/settings.json. The hooks block below wires the PostToolUse auto-formatter in claude/hooks/format.sh.",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
+  "skipWorkflowUsageWarning": true,
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/dotfiles/claude/hooks/format.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}
