@@ -101,6 +101,7 @@ lint.ignore = [
 # ARG001  # Flake8-unused-arguments – pytest fixtures ensure state exists even when not directly used
 # PLC0415 # Pylint – local imports in tests are valid for test isolation and self-contained tests
 # EM102   # Flake8-errmsg – f-string exceptions in test helpers are acceptable for debugging
-"test_*.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102"]
-"*_test.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102"]
-"conftest.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102"]
+# INP001  # Flake8-no-pep420 – a tests/ dir intentionally has no __init__.py (standard pytest layout)
+"test_*.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102", "INP001"]
+"*_test.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102", "INP001"]
+"conftest.py" = ["S101", "S105", "S106", "S107", "PLR2004", "SLF001", "D", "ANN", "ARG001", "PLC0415", "EM102", "INP001"]
