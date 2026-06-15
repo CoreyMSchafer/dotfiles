@@ -86,6 +86,8 @@ lint.ignore = [
     "EM101", # Flake8-errmsg - Checks for the use of string literals in exception constructors.
     "TC002", # Flake8-type-checking - Checks for usage of typing imports outside of TYPE_CHECKING blocks.
     "TC003", # Flake8-type-checking - Checks for imports from typing that are not within TYPE_CHECKING blocks.
+    "COM812", # Flake8-commas - Missing trailing comma. Conflicts with the formatter, which manages trailing commas itself (magic trailing comma is unaffected); Ruff recommends disabling.
+    "ISC001", # Flake8-implicit-str-concat - Single-line implicit string concatenation. Conflicts with the formatter; Ruff recommends disabling alongside COM812.
 ]
 
 [lint.per-file-ignores]
