@@ -267,6 +267,15 @@ yt_init() {
   echo "✅ Tutorial project ready at $dir"
 }
 
+# ruff_audit [path] — after bumping ruff, see which rules `--select ALL` flags in
+# a project that your curated global config does not enable, so you can adopt any
+# genuinely new/useful ones. NOTE: --select ALL overrides your config's ignores,
+# so intentionally-ignored rules (E501, D1, COM812, ...) will also appear here —
+# scan for codes you DON'T recognize, those are the new candidates.
+ruff_audit() {
+  ruff check "${1:-.}" --select ALL --statistics
+}
+
 # Copy to clipboard without newlines. Can be piped to or run as a command.
 c() {
   if [[ $# -eq 0 ]]; then
