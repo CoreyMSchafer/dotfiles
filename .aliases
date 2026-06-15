@@ -150,7 +150,13 @@ proj_init() {
     return 1
   fi
 
-  dir="$orig"; [[ "$target" == "." ]] || dir="$orig/$target"
+  if [[ "$target" == "." ]]; then
+    dir="$orig"
+  elif [[ "$target" = /* ]]; then
+    dir="$target"            # absolute path (e.g. /tmp/test)
+  else
+    dir="$orig/$target"      # relative to where you ran the command
+  fi
   PROJ_INIT_DIR="$dir"   # expose resolved dir for wrappers (e.g. yt_init)
 
   # .gitignore (overwrite with your preferred stack)
