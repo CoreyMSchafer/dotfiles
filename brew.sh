@@ -57,6 +57,7 @@ packages=(
     "pre-commit"
     "gemini-cli"
     "gh"
+    "gitleaks"
     "ripgrep"
     "dust"
     "fd"
