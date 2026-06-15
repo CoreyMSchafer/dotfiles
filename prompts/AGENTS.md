@@ -33,7 +33,7 @@ All code should be checked with Ruff and ty (Astral's type checker) before being
 1. Write the code in `main.py` and other Python files
 2. Run `ruff check --fix` to auto-fix issues (includes import sorting)
 3. Run `ruff format` to format the code
-4. Run `uvx ty check` to check for type errors
+4. Run `ty check` to check for type errors
 5. Review remaining issues from `ruff check` and `ty check`
 6. Apply fixes based on decision criteria (see below)
 
@@ -75,7 +75,7 @@ Run from the project root so first-party imports resolve correctly.
 
 #### ty
 
-Astral's Python type checker. Run via `uvx ty check`. See **"Code Quality with Ruff and ty"** above for how I want type errors handled.
+Astral's Python type checker. Run via `ty check` (installed as a uv tool). See **"Code Quality with Ruff and ty"** above for how I want type errors handled.
 
 #### djlint
 

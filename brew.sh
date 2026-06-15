@@ -141,6 +141,9 @@ $(brew --prefix)/bin/pipx install djlint
 # Install Ruff, which I use in VSCode for Python Formatting and Linting
 $(brew --prefix)/bin/uv tool install ruff
 
+# Install ty, Astral's Python type checker (used alongside ruff)
+$(brew --prefix)/bin/uv tool install ty
+
 # Define an array of applications to install using Homebrew Cask.
 apps=(
     "google-chrome"
