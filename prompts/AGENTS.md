@@ -39,7 +39,7 @@ All code should be checked with Ruff and ty (Astral's type checker) before being
 
 **Where to run Ruff:**
 
-Run Ruff from the project root, not a subdirectory. Each project is its own root; Ruff uses it as the project root and falls back to the user-level config at `~/.config/ruff/ruff.toml` for rules. This makes first-party imports (`schemas`, `models`, `database`, etc.) resolve correctly without any per-project Ruff config.
+Run Ruff from the project root, not a subdirectory. New projects (created via `proj_init`/`yt_init`) carry a `[tool.ruff]` with `extend` pointing at `~/.config/ruff/ruff.toml`, so the global ruleset loads explicitly; a project with no `[tool.ruff]` at all falls back to that same user-level config automatically. Either way, running from the project root makes first-party imports (`schemas`, `models`, `database`, etc.) resolve correctly.
 
 **Decision Criteria for Ruff Suggestions:**
 
