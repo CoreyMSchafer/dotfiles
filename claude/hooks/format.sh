@@ -25,8 +25,9 @@ case "$file" in
   *.py)
     command -v ruff >/dev/null 2>&1 || exit 0
     cd "$(dirname "$file")" || exit 0      # so ruff discovers this project's config
-    ruff format "$file"       >/dev/null 2>&1 || true
+    # Fix first, then format (matches AGENTS.md process order and ruff-pre-commit).
     ruff check --fix "$file"  >/dev/null 2>&1 || true
+    ruff format "$file"       >/dev/null 2>&1 || true
     # Re-check (no fix): if anything remains, hand it back to Claude as context.
     if ! remaining=$(ruff check "$file" 2>&1); then
       jq -n --arg c "$remaining" \

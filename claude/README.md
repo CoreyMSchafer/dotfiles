@@ -18,7 +18,7 @@ Version-controlled pieces of my [Claude Code](https://claude.com/claude-code) se
 Runs after Claude edits a file (`Edit`/`Write`/`MultiEdit`) and formats it by
 extension, best-effort and non-blocking:
 
-- `.py` → `ruff format` + `ruff check --fix`; any lint ruff can't auto-fix is
+- `.py` → `ruff check --fix` + `ruff format`; any lint ruff can't auto-fix is
   handed back to Claude as context (it is not forced to act on it).
 - `.html` / `.jinja` / `.j2` → `djlint --reformat`
 - `.js` / `.jsx` / `.ts` / `.tsx` / `.css` / `.scss` → `prettier --write`
