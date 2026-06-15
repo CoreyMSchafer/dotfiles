@@ -54,6 +54,7 @@ packages=(
     "node"
     "uv"
     "pipx"
+    "pre-commit"
     "gemini-cli"
     "gh"
     "ripgrep"
