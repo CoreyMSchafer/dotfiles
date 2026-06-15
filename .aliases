@@ -195,6 +195,11 @@ RUFF_EOF
     echo "⚠️  Template .pre-commit-config.yaml not found."
   fi
 
+  # Command runner recipes (just)
+  if [[ -f "$template_dir/justfile" ]]; then
+    cp -f "$template_dir/justfile" "$dir/justfile" && echo "✅ Copied justfile from template."
+  fi
+
   # Scratch files
   : > "$dir/s.txt"
   : > "$dir/sandbox.txt"

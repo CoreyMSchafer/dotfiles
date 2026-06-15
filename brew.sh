@@ -61,6 +61,7 @@ packages=(
     "ripgrep"
     "dust"
     "fd"
+    "just"
     "tealdeer"
     "ffmpeg"
     "imagemagick"
