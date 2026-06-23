@@ -22,6 +22,7 @@ Cursor) read this file natively at the project root.
 - Use type hints where they aid clarity, but not everywhere (e.g. function definitions)
 - Use context managers for resources
 - Use dataclasses or Pydantic models instead of plain dictionaries for structured data
+- Use `pydantic-settings` (with a `.env` file) for app configuration and secrets — preferred over `python-dotenv` for its type hints, validation, and fit with the Pydantic stack
 - Use modern approaches over legacy patterns
 
 ### Code Quality with Ruff and ty
