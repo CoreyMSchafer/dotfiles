@@ -1,9 +1,7 @@
 # Shortcuts
 alias ch='history 0 | grep "git commit"'
 alias hg='history 0 | grep'
-alias yt="code $HOME/My_Drive/YouTube/Scripts/"
-alias cyt="cd $HOME/My_Drive/YouTube/Scripts/"
-alias oyt="open $HOME/My_Drive/YouTube/Scripts/"
+# yt / cyt / oyt (tutorial nav) now live in ~/Work/Tutorial-Template/shell/work.zsh
 
 # Detect which `ls` flavor is in use
 if ls --color >/dev/null 2>&1; then # GNU `ls`
@@ -49,8 +47,8 @@ clean() {
     osascript -e 'tell application "Finder" to empty the trash' 2>/dev/null
     rm -rf ~/Downloads/*
 
-    # Clean junk files from YouTube Scripts directory
-    local scripts="$HOME/My_Drive/YouTube/Scripts"
+    # Clean junk caches from the ~/Work monorepo
+    local scripts="$HOME/Work"
     fd -t d --hidden --no-ignore '__pycache__' -0 --search-path "$scripts" | xargs -0 rm -rf
     fd -t d --hidden --no-ignore '\.mypy_cache' -0 --search-path "$scripts" | xargs -0 rm -rf
     fd -t d --hidden --no-ignore '\.ruff_cache' -0 --search-path "$scripts" | xargs -0 rm -rf
@@ -86,186 +84,9 @@ alias todos_start='launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgent
 alias todos_stop='launchctl bootout "gui/$(id -u)/com.coreyschafer.todos"'
 alias todos_restart='launchctl kickstart -k "gui/$(id -u)/com.coreyschafer.todos"'
 
-# Project / tutorial initialization
-# Usage:
-#   proj_init              # init current dir as a generic project
-#   proj_init project_name # create ./project_name as a generic project
-#   yt_init                # init current dir as a tutorial (generic base + tutorial layer)
-#   yt_init project_name   # same, into ./project_name
-#
-# proj_init is the generic base for ANY project. yt_init wraps it and adds the
-# tutorial files. Both leave you in your original directory.
-
-# Shared initial commit. Uses --no-verify so trusted scaffolding can't be blocked
-# by a pre-commit hook; the gate still guards every real commit afterward.
-_proj_init_commit() {
-  local dir="$1"
-  if command -v git >/dev/null; then
-    git -C "$dir" add -A
-    if git -C "$dir" commit --no-verify -m "Initial Commit"; then
-      echo "✅ Created initial Git commit."
-    else
-      echo "ℹ️  Git commit skipped/failed (possibly re-ran init or git not configured)."
-    fi
-  else
-    echo "⚠️  git not found; skipping initial commit."
-  fi
-}
-
-proj_init() {
-  local template="$HOME/dotfiles/prompts/AGENTS.md"
-  local template_dir="$HOME/My_Drive/YouTube/Youtube-Tutorial-Template"
-  local gitignore_stack="${GITIGNORE_STACK:-python,macos,visualstudiocode,dotenv}"
-  local gitignore_url="https://www.toptal.com/developers/gitignore/api/${gitignore_stack}"
-  local orig="$PWD"
-  local target="."
-  local dir
-
-  # minimal sanity: require template file so we don't error later
-  [[ -f "$template" ]] || { echo "Template not found: $template"; return 1; }
-
-  if [[ $# -eq 1 ]]; then
-    target="$1"
-
-    # Check if target directory exists and is not empty
-    if [[ -d "$target" ]] && [[ -n "$(ls -A "$target" 2>/dev/null)" ]]; then
-      echo "❌ Error: Directory '$target' already exists and is not empty."
-      echo "   Please use an empty directory or remove existing contents."
-      return 1
-    fi
-
-    uv init "$target" || return     # keep uv's error behavior
-  elif [[ $# -eq 0 ]]; then
-
-    # Check if current directory is not empty
-    if [[ -n "$(ls -A . 2>/dev/null)" ]]; then
-      echo "❌ Error: Current directory is not empty."
-      echo "   Please run proj_init from an empty directory or specify a new directory name."
-      return 1
-    fi
-
-    uv init || return
-  else
-    echo "Usage: proj_init [project_name]"
-    return 1
-  fi
-
-  if [[ "$target" == "." ]]; then
-    dir="$orig"
-  elif [[ "$target" = /* ]]; then
-    dir="$target"            # absolute path (e.g. /tmp/test)
-  else
-    dir="$orig/$target"      # relative to where you ran the command
-  fi
-  PROJ_INIT_DIR="$dir"   # expose resolved dir for wrappers (e.g. yt_init)
-
-  # .gitignore (overwrite with your preferred stack)
-  if command -v curl >/dev/null; then
-    curl -fsSL "$gitignore_url" -o "$dir/.gitignore" \
-      || echo "⚠️  Could not fetch .gitignore; keeping uv's default."
-  else
-    echo "⚠️  curl not found; keeping uv's default .gitignore."
-  fi
-
-  # Generic working instructions + a thin CLAUDE.md that imports them.
-  cp -f "$template" "$dir/AGENTS.md"
-  cat > "$dir/CLAUDE.md" <<'CLAUDE_EOF'
-# Project Instructions
-
-This is a thin pointer. General working instructions live in `AGENTS.md`
-(imported below — read natively by Codex/Gemini/Cursor and by Claude Code via
-this import). Add any Claude-Code-specific guidance below the import.
-
-@AGENTS.md
-CLAUDE_EOF
-
-  # Make the global ruff config load explicitly: a local [tool.ruff] would
-  # otherwise drop ~/.config/ruff/ruff.toml. Project rules can layer under this.
-  cat >> "$dir/pyproject.toml" <<RUFF_EOF
-
-[tool.ruff]
-extend = "$HOME/.config/ruff/ruff.toml"
-RUFF_EOF
-
-  # pre-commit config + activate the git hook for this repo.
-  if [[ -f "$template_dir/.pre-commit-config.yaml" ]]; then
-    cp -f "$template_dir/.pre-commit-config.yaml" "$dir/.pre-commit-config.yaml"
-    if command -v pre-commit >/dev/null; then
-      ( cd "$dir" && pre-commit install >/dev/null ) \
-        && echo "✅ pre-commit hook installed." \
-        || echo "⚠️  pre-commit install failed."
-    else
-      echo "⚠️  pre-commit not found; copied config but did not install the hook."
-    fi
-  else
-    echo "⚠️  Template .pre-commit-config.yaml not found."
-  fi
-
-  # Command runner recipes (just)
-  if [[ -f "$template_dir/justfile" ]]; then
-    cp -f "$template_dir/justfile" "$dir/justfile" && echo "✅ Copied justfile from template."
-  fi
-
-  # Scratch files
-  : > "$dir/s.txt"
-  : > "$dir/sandbox.txt"
-  : > "$dir/sandbox.py"
-
-  # Create virtual environment (run from project root)
-  ( cd "$dir" && uv venv ) || return
-
-  # Initial commit, unless a wrapper (yt_init) defers it to make a single commit.
-  if [[ -z "${_PROJ_INIT_DEFER_COMMIT:-}" ]]; then
-    _proj_init_commit "$dir"
-    echo "✅ Project ready at $dir"
-  fi
-}
-
-yt_init() {
-  local template_dir="$HOME/My_Drive/YouTube/Youtube-Tutorial-Template"
-  local dir prompt_file f copied_prompts=0 rc
-
-  # Run the generic base, deferring its commit so we make a single commit at the end.
-  _PROJ_INIT_DEFER_COMMIT=1
-  proj_init "$@"
-  rc=$?
-  unset _PROJ_INIT_DEFER_COMMIT
-  [[ $rc -eq 0 ]] || return $rc
-
-  dir="$PROJ_INIT_DIR"
-
-  # Tutorial marker file (gitignored) + tutorial scratch
-  printf '\n# YT Script Organizer\n.tutorial.json\n' >> "$dir/.gitignore"
-  : > "$dir/snippets.txt"
-  python3 -c "import uuid, json; print(json.dumps({'id': uuid.uuid4().hex, 'type': 'video'}, indent=2))" > "$dir/.tutorial.json"
-
-  # Tutorial prompt files
-  for prompt_file in 0_project.md 1_bullets.md 2_structure.md 3_code_examples.md; do
-    if [[ -f "$template_dir/$prompt_file" ]]; then
-      cp -f "$template_dir/$prompt_file" "$dir/$prompt_file" && copied_prompts=$((copied_prompts + 1))
-    fi
-  done
-  if [[ $copied_prompts -gt 0 ]]; then
-    echo "✅ Copied $copied_prompts tutorial prompt file(s) from template."
-  else
-    echo "⚠️  Could not copy tutorial prompt files from template."
-  fi
-
-  # Tutorial CLAUDE.md (imports @TUTORIAL.md) overrides the generic one, plus layers.
-  for f in CLAUDE.md TUTORIAL.md SERIES.md useful_prompts.txt; do
-    if [[ -f "$template_dir/$f" ]]; then
-      cp -f "$template_dir/$f" "$dir/$f" \
-        && echo "✅ Copied $f from template." \
-        || echo "⚠️  Could not copy $f."
-    else
-      echo "⚠️  Template $f not found."
-    fi
-  done
-
-  _proj_init_commit "$dir"
-  unset PROJ_INIT_DIR
-  echo "✅ Tutorial project ready at $dir"
-}
+# Project / tutorial scaffolding lives in the ~/Work monorepo (synced via GitHub).
+# proj_init / yt_init are defined there and sourced here:
+[ -f "$HOME/Work/Tutorial-Template/shell/work.zsh" ] && source "$HOME/Work/Tutorial-Template/shell/work.zsh"
 
 # ruff_audit [path] — after bumping ruff, see which rules `--select ALL` flags in
 # a project that your curated global config does not enable, so you can adopt any
