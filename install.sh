@@ -26,11 +26,6 @@ done
 mkdir -p "${HOME}/.config/ruff"
 ln -sf "${dotfiledir}/settings/ruff.toml" "${HOME}/.config/ruff/ruff.toml"
 
-# Claude Code: the PostToolUse format hook now lives in the ~/Work monorepo
-# (~/Work/Tutorial-Template/hooks/format.sh, already executable). ~/.claude/settings.json
-# stays machine-local — point its hook at that path. Nothing to seed from dotfiles.
-mkdir -p "${HOME}/.claude"
-
 # Run the MacOS Script
 ./macOS.sh
 

@@ -128,9 +128,6 @@ else
     echo "Already authenticated with GitHub. Skipping login."
 fi
 
-# Create the tutorial virtual environment I use frequently
-$(brew --prefix)/bin/python3 -m venv "${HOME}/tutorial"
-
 # Install Prettier, which I use in VSCode
 $(brew --prefix)/bin/npm install --global prettier
 
