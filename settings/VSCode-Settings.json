@@ -106,7 +106,7 @@
   "djlint.useVenv": false,
   "djlint.executablePath": "/Users/coreyschafer/.local/bin/djlint",
   // DJLint settings (should match "~/Work/djlint.toml")
-  "djlint.ignore": ["H031", "D004", "H023", "D018"],
+  "djlint.ignore": ["H031"],
   "djlint.maxBlankLines": 1,
   "djlint.profile": "jinja",
   "djlint.formatCss": true,
