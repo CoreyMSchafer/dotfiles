@@ -31,7 +31,6 @@ alias update_brew='brew update;
                   brew link --overwrite node;
                   brew cleanup;
                   $(brew --prefix)/bin/npm update --global;
-                  $(brew --prefix)/bin/pipx upgrade-all;
                   $(brew --prefix)/bin/uv tool upgrade --all'
 
 # Show/hide hidden files in Finder

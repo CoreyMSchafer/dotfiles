@@ -1,93 +1,93 @@
 [
   {
     "key": "cmd+b",
-    "command": "code-runner.run"
+    "command": "code-runner.run",
   },
   {
     "key": "shift+cmd+k",
-    "command": "workbench.action.toggleSidebarVisibility"
+    "command": "workbench.action.toggleSidebarVisibility",
   },
   {
     "key": "escape",
     "command": "editor.action.inlineSuggest.hide",
-    "when": "inlineEditIsVisible && editorTextFocus"
+    "when": "inlineEditIsVisible && editorTextFocus",
   },
   {
     "key": "escape",
     "command": "workbench.action.closePanel",
-    "when": "panelVisible && !inlineEditIsVisible"
+    "when": "panelVisible && !inlineEditIsVisible",
   },
   {
     "key": "cmd+y",
     "command": "redo",
-    "when": "textInputFocus && !editorReadonly"
+    "when": "textInputFocus && !editorReadonly",
   },
   {
     "key": "cmd+y",
     "command": "editor.action.webvieweditor.redo",
-    "when": "!editorFocus && !inputFocus && activeEditor == 'WebviewEditor'"
+    "when": "!editorFocus && !inputFocus && activeEditor == 'WebviewEditor'",
   },
   {
     "key": "shift+cmd+z",
-    "command": "workbench.action.toggleZenMode"
+    "command": "workbench.action.toggleZenMode",
   },
   {
     "key": "shift+cmd+z",
     "command": "workbench.action.exitZenMode",
-    "when": "inZenMode"
+    "when": "inZenMode",
   },
   {
     "key": "escape escape",
     "command": "-workbench.action.exitZenMode",
-    "when": "inZenMode"
+    "when": "inZenMode",
   },
   {
     "key": "ctrl+cmd+down",
     "command": "editor.action.moveLinesDownAction",
-    "when": "editorTextFocus && !editorReadonly"
+    "when": "editorTextFocus && !editorReadonly",
   },
   {
     "key": "ctrl+cmd+up",
     "command": "editor.action.moveLinesUpAction",
-    "when": "editorTextFocus && !editorReadonly"
+    "when": "editorTextFocus && !editorReadonly",
   },
   {
     "key": "shift+cmd+w",
-    "command": "editor.action.toggleWordWrap"
+    "command": "editor.action.toggleWordWrap",
   },
   {
     "key": "cmd+l",
     "command": "editor.action.moveSelectionToNextFindMatch",
-    "when": "editorFocus"
+    "when": "editorFocus",
   },
   {
     "key": "shift+cmd+l",
     "command": "editor.action.moveSelectionToPreviousFindMatch",
-    "when": "editorFocus"
+    "when": "editorFocus",
   },
   {
     "key": "shift+cmd+d",
     "command": "cursorUndo",
-    "when": "textInputFocus"
+    "when": "textInputFocus",
   },
   {
     "key": "cmd+u",
     "command": "-cursorUndo",
-    "when": "textInputFocus"
+    "when": "textInputFocus",
   },
   {
     "key": "ctrl+cmd+l",
     "command": "editor.action.selectAllMatches",
-    "when": "editorFocus"
+    "when": "editorFocus",
   },
   {
     "key": "ctrl+cmd+l",
     "command": "editor.action.selectHighlights",
-    "when": "editorFocus"
+    "when": "editorFocus",
   },
   {
     "key": "shift+cmd+j",
     "command": "editor.action.joinLines",
-    "when": "editorTextFocus && !editorReadonly"
-  }
+    "when": "editorTextFocus && !editorReadonly",
+  },
 ]

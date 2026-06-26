@@ -6,9 +6,10 @@
   "window.zoomLevel": -2, // Use 3 for Screen Recordings
   "github.copilot.nextEditSuggestions.enabled": true,
   "editor.inlineSuggest.enabled": true,
+  "workbench.editor.useModal": "off",
 
   // Uncomment Below for Recording...
-  
+
   // "editor.fontSize": 18, // Use 18 for Screen Recordings
   // "debug.console.fontSize": 18, // Use 18 for Screen Recordings
   // "terminal.integrated.fontSize": 18, // Use 18 for Screen Recordings
@@ -46,10 +47,9 @@
   "editor.minimap.enabled": false,
   "editor.stickyScroll.enabled": false,
   "diffEditor.useInlineViewWhenSpaceIsLimited": false,
-
   "files.exclude": {
     "**/.git": false,
-    "**/.mypy_cache": true
+    "**/.mypy_cache": true,
   },
 
   // Zen Mode settings
@@ -61,19 +61,17 @@
   "github.copilot.chat.agent.thinkingTool": true,
   "github.copilot.chat.codesearch.enabled": true,
   "github.copilot.chat.newWorkspace.useContext7": true,
-
   "python.analysis.addHoverSummaries": true,
 
   // Python settings
-  "python.venvPath": "~/venvs",
   "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       // "source.fixAll": "explicit"
-      "source.organizeImports": "explicit"
-    }
+      "source.organizeImports": "explicit",
+    },
   },
   // "python.analysis.inlayHints.variableTypes": true,
   // "python.analysis.inlayHints.functionReturnTypes": true,
@@ -86,7 +84,7 @@
   "code-runner.ignoreSelection": true,
   "code-runner.saveFileBeforeRun": true,
   "code-runner.executorMap": {
-    "python": "\"$pythonPath\" -u $fullFileName"
+    "python": "\"$pythonPath\" -u $fullFileName",
   },
   "code-runner.enableAppInsights": false,
 
@@ -94,20 +92,25 @@
   "django.snippets.use": false,
   "[html][django-html][jinja][jinja-html]": {
     "editor.defaultFormatter": "monosans.djlint",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
   },
   "files.associations": {
     "*.html": "django-html",
-    "*.svg": "html"
+    "*.svg": "html",
   },
   "emmet.includeLanguages": {
     "django-html": "html",
-    "jinja-html": "html"
+    "jinja-html": "html",
   },
   "djlint.useVenv": false,
-  "djlint.pythonPath": "/opt/pipx/venvs/djlint/bin/python",
+  "djlint.executablePath": "/Users/coreyschafer/.local/bin/djlint",
+  // DJLint settings (should match "~/Work/djlint.toml")
   "djlint.ignore": ["H031", "D004", "H023", "D018"],
   "djlint.maxBlankLines": 1,
+  "djlint.profile": "jinja",
+  "djlint.formatCss": true,
+  "djlint.formatJs": true,
   "djlint.lineBreakAfterMultilineTag": false,
 
   // Plaintext settings
@@ -115,20 +118,20 @@
     "editor.quickSuggestions": {
       "comments": "off",
       "strings": "off",
-      "other": "off"
-    }
+      "other": "off",
+    },
   },
 
   // Shell script settings
   "[shellscript]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
+    "editor.defaultFormatter": "foxundermoon.shell-format",
   },
 
   // Notebook settings
   "notebook.defaultFormatter": "charliermarsh.ruff",
   "notebook.formatOnSave.enabled": true,
   "notebook.codeActionsOnSave": {
-    "notebook.source.organizeImports": "explicit"
+    "notebook.source.organizeImports": "explicit",
   },
   "notebook.insertFinalNewline": true,
   "notebook.output.scrolling": true,
@@ -137,7 +140,7 @@
 
   // SQL Tools settings
   "sqltools.useNodeRuntime": true,
-  "liveServer.settings.donotShowInfoMsg": true
+  "liveServer.settings.donotShowInfoMsg": true,
 
   // Terminal settings
   "terminal.integrated.suggest.enabled": false,

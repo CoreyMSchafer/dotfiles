@@ -21,19 +21,6 @@ if ! command -v brew &>/dev/null; then
     exit 1
 fi
 
-# Moving pipx install location for easy reference in VSCode Settings
-if [ ! -d "/opt/pipx" ]; then
-    echo "Creating /opt/pipx and setting up permissions..."
-    sudo mkdir -p /opt/pipx/{bin,share/man}
-    sudo chown -R $(whoami):admin /opt/pipx
-    export PIPX_HOME="/opt/pipx"
-    export PIPX_BIN_DIR="/opt/pipx/bin"
-    export PIPX_MAN_DIR="/opt/pipx/share/man"
-    export PATH="/opt/pipx/bin:$PATH"
-else
-    echo "/opt/pipx already exists. Skipping directory creation."
-fi
-
 # Update Homebrew and Upgrade any already-installed formulae and casks
 # (brew upgrade has upgraded casks by default since Homebrew 3.2)
 brew update
@@ -53,7 +40,6 @@ packages=(
     "tree"
     "node"
     "uv"
-    "pipx"
     "pre-commit"
     "gemini-cli"
     "gh"
@@ -135,7 +121,7 @@ $(brew --prefix)/bin/npm install --global prettier
 $(brew --prefix)/bin/npm install --global eslint
 
 # Install DJLint, which I use in VSCode for Django and Jinja2 Template Formatting
-$(brew --prefix)/bin/pipx install djlint
+$(brew --prefix)/bin/uv tool install djlint
 
 # Install Ruff, which I use in VSCode for Python Formatting and Linting
 $(brew --prefix)/bin/uv tool install ruff

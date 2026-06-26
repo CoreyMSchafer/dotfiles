@@ -1,0 +1,8 @@
+{
+  "overrides": [
+    {
+      "files": ["settings/VSCode-Settings.json", "settings/VSCode-Keybindings.json"],
+      "options": { "parser": "jsonc" }
+    }
+  ]
+}
