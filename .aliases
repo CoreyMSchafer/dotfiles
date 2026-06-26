@@ -55,14 +55,8 @@ alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/de
 # proj_init / yt_init are defined there and sourced here:
 [ -f "$HOME/Work/Tutorial-Template/shell/work.zsh" ] && source "$HOME/Work/Tutorial-Template/shell/work.zsh"
 
-# ruff_audit [path] — after bumping ruff, see which rules `--select ALL` flags in
-# a project that your curated global config does not enable, so you can adopt any
-# genuinely new/useful ones. NOTE: --select ALL overrides your config's ignores,
-# so intentionally-ignored rules (E501, D1, COM812, ...) will also appear here —
-# scan for codes you DON'T recognize, those are the new candidates.
-ruff_audit() {
-  ruff check "${1:-.}" --select ALL --statistics
-}
+# Global `just` catalog (justfile symlinked to ~/.config/just). `j` alone lists; e.g. `j health`.
+alias j='just -g'
 
 # Copy to clipboard without newlines. Can be piped to or run as a command.
 c() {
