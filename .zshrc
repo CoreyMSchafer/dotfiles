@@ -34,7 +34,7 @@ unset file
 # Modified to exclude forward slash for better path component deletion
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-# Created by pipx
+# uv-installed tools (ruff, ty, djlint, …) live here
 export PATH="$PATH:$HOME/.local/bin"
 
 # Added by Antigravity
