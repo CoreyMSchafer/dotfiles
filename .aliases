@@ -4,9 +4,9 @@ alias hg='history 0 | grep'
 
 # Detect which `ls` flavor is in use
 if ls --color >/dev/null 2>&1; then # GNU `ls`
-    colorflag="--color"
+    colorflag="--color=auto" # `=auto`: colorize a terminal, but stay clean when piped
 else # OS X `ls`
-    colorflag="-G"
+    colorflag="-G" # BSD already suppresses color when output isn't a tty
 fi
 
 # List all files colorized in long format, including dot files
@@ -31,7 +31,8 @@ alias update_brew='brew update;
                   brew link --overwrite node;
                   brew cleanup;
                   $(brew --prefix)/bin/npm update --global;
-                  $(brew --prefix)/bin/uv tool upgrade --all'
+                  $(brew --prefix)/bin/uv tool upgrade --all;
+                  $(brew --prefix)/bin/npx skills update -g -y'
 
 # Show/hide hidden files in Finder
 # As of macOS Sierra (10.12) and later, you can simply press Cmd + Shift + . (period) while in Finder to toggle the visibility of hidden files.
