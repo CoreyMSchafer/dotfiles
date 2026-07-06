@@ -24,15 +24,24 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+# fd / rg: search hidden dotfiles by default (so .env, .aliases, etc. aren't silently skipped),
+# but STILL respect .gitignore (node_modules, .venv, build/ stay out) and skip .git internals.
+# For a full unrestricted search that ALSO includes gitignored files, type the flags:
+#   fd -HI     (fd: -H=hidden, -I=no-ignore)
+#   rg -uu     (rg: -uu = --hidden --no-ignore; note rg's hidden flag is -., not -H)
+alias fd='fd --hidden --exclude .git'
+alias rg='rg --hidden --glob=!.git'
+
 # Update/upgrade Homebrew and their installed packages
-alias update_brew='brew update;
+alias update_all='brew update;
                   brew upgrade;
                   brew upgrade --cask;
                   brew link --overwrite node;
                   brew cleanup;
                   $(brew --prefix)/bin/npm update --global;
                   $(brew --prefix)/bin/uv tool upgrade --all;
-                  $(brew --prefix)/bin/npx skills update -g -y'
+                  $(brew --prefix)/bin/npx skills update -g -y;
+                  $(brew --prefix)/bin/just -g repos'
 
 # Show/hide hidden files in Finder
 # As of macOS Sierra (10.12) and later, you can simply press Cmd + Shift + . (period) while in Finder to toggle the visibility of hidden files.
