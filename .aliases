@@ -62,11 +62,8 @@ alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/de
             rm -rf ~/Downloads/*"
 
 # Project / tutorial scaffolding lives in the ~/Work monorepo (synced via GitHub).
-# proj_init / yt_init are defined there and sourced here:
+# proj_init / yt_init — and the `j` global-justfile alias — are defined there and sourced here:
 [ -f "$HOME/Work/Tutorial-Template/shell/work.zsh" ] && source "$HOME/Work/Tutorial-Template/shell/work.zsh"
-
-# Global `just` catalog (justfile symlinked to ~/.config/just). `j` alone lists; e.g. `j health`.
-alias j='just -g'
 
 # Copy to clipboard without newlines. Can be piped to or run as a command.
 c() {
