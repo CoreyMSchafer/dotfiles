@@ -30,7 +30,9 @@ brew cleanup
 # Define an array of packages to install using Homebrew.
 packages=(
     "bash"
+    "cairo"
     "coreutils"
+    "d2"
     "dust"
     "exiftool"
     "fd"
@@ -43,6 +45,7 @@ packages=(
     "imagemagick"
     "just"
     "node"
+    "pkgconf"
     "pre-commit"
     "python"
     "python-tk"
