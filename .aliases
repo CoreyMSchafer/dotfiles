@@ -27,7 +27,7 @@ alias egrep='egrep --color=auto'
 # Update/upgrade Homebrew and their installed packages
 alias update_all='brew update;
                   brew upgrade;
-                  brew upgrade --cask;
+                  brew upgrade --cask --force;
                   brew link --overwrite node;
                   brew cleanup;
                   $(brew --prefix)/bin/npm update --global;
