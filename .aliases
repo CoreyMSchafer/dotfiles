@@ -24,14 +24,6 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# fd / rg: search hidden dotfiles by default (so .env, .aliases, etc. aren't silently skipped),
-# but STILL respect .gitignore (node_modules, .venv, build/ stay out) and skip .git internals.
-# For a full unrestricted search that ALSO includes gitignored files, type the flags:
-#   fd -HI     (fd: -H=hidden, -I=no-ignore)
-#   rg -uu     (rg: -uu = --hidden --no-ignore; note rg's hidden flag is -., not -H)
-alias fd='fd --hidden --exclude .git'
-alias rg='rg --hidden --glob=!.git'
-
 # Update/upgrade Homebrew and their installed packages
 alias update_all='brew update;
                   brew upgrade;
