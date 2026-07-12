@@ -1,0 +1,8 @@
+# ~/.config/atuin/config.toml
+auto_sync = false
+update_check = false
+style = "compact"
+inline_height = 20
+search_mode = "fuzzy"
+filter_mode = "global"
+enter_accept = true

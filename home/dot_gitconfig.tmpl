@@ -1,0 +1,38 @@
+[user]
+    name  = {{ .name }}
+    email = {{ .email }}
+
+[init]
+    defaultBranch = main
+
+[core]
+    editor = nvim
+    pager  = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    line-numbers = true
+
+[merge]
+    conflictstyle = zdiff3
+
+[diff]
+    colorMoved = default
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+
+[alias]
+    s  = status -sb
+    lg = log --oneline --graph --decorate --all
+    co = checkout
+    br = branch
+    aa = add --all
+    cm = commit -m
+    wt = worktree

@@ -1,0 +1,18 @@
+# ~/.zshenv — wird für ALLE zsh-Aufrufe gelesen. Schlank halten.
+
+# XDG Base Directories — zähmt den ~-Wildwuchs
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# Editor überall = nvim
+export EDITOR="nvim"
+export VISUAL="nvim"
+export LANG="de_DE.UTF-8"
+
+# Zettelkasten
+export ZK_NOTEBOOK_DIR="$HOME/zk"
+
+# Secrets (lokal, NICHT im Repo). Vorlage: secrets.zsh.example
+[ -f "$XDG_CONFIG_HOME/zsh/secrets.zsh" ] && source "$XDG_CONFIG_HOME/zsh/secrets.zsh"

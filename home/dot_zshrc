@@ -1,0 +1,61 @@
+# ============================================================================
+#  ~/.zshrc  — sauber, schnell, ohne Netz-Aufrufe beim Start.
+# ============================================================================
+
+# Powerlevel10k Instant Prompt (muss oben bleiben)
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# --- oh-my-zsh ---
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+HYPHEN_INSENSITIVE="true"
+zstyle ':omz:update' mode auto
+zstyle ':omz:update' frequency 7
+plugins=(
+  git macos brew npm
+  zsh-interactive-cd
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  fzf
+)
+source "$ZSH/oh-my-zsh.sh"
+
+# --- Moderne Tools initialisieren ---
+command -v mise   >/dev/null && eval "$(mise activate zsh)"
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+command -v atuin  >/dev/null && eval "$(atuin init zsh)"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# --- Aliase: klassisch -> modern (Originale bleiben nutzbar) ---
+if command -v eza >/dev/null; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza -l --git --icons --group-directories-first'
+  alias la='eza -la --git --icons --group-directories-first'
+  alias lt='eza --tree --level=2 --icons'
+fi
+command -v bat     >/dev/null && alias cat='bat --paging=never'
+command -v lazygit >/dev/null && alias lg='lazygit'
+command -v nvim    >/dev/null && alias v='nvim' vi='nvim'
+alias zshconfig='nvim ~/.config/nvim'   # via chezmoi-Quelle bearbeiten: `chezmoi edit`
+
+# yazi: Dateimanager, wechselt beim Verlassen ins gewählte Verzeichnis
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
+# Begrüßung NUR auf Zuruf (nicht bei jedem Shell-Start)
+function greet() {
+  command -v fastfetch >/dev/null && fastfetch || { command -v neofetch >/dev/null && neofetch; }
+  command -v fortune   >/dev/null && fortune
+  curl -s "wttr.in/Mainz?format=3" 2>/dev/null
+}
+
+# --- p10k Prompt-Config ---
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -1,0 +1,13 @@
+# Aktive Repos -> werden nach ~/dev geklont. Eine Zeile pro Repo.
+https://github.com/ur-grue/game-running-backwards
+https://github.com/ur-grue/thepitchdoctor
+https://github.com/ur-grue/ccwriter
+https://github.com/ur-grue/playbook
+https://github.com/ur-grue/autopunk-media-skills
+https://github.com/ur-grue/toptop
+https://github.com/ur-grue/diss
+https://github.com/ur-grue/thinktank
+https://github.com/ur-grue/etsy_factory
+https://github.com/ur-grue/champions-walk
+https://github.com/ur-grue/autopunk.io
+https://github.com/ur-grue/serious-game

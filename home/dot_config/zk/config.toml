@@ -1,0 +1,20 @@
+[note]
+language = "de"
+default-title = "Untitled"
+filename = "{{id}}-{{slug title}}"
+extension = "md"
+
+[tool]
+editor = "nvim"
+
+[group.diss]
+paths = ["diss"]
+[group.ap]
+paths = ["ap"]
+[group.p]
+paths = ["p"]
+
+[alias]
+nd = 'zk new diss --title "$*"'
+na = 'zk new ap --title "$*"'
+np = 'zk new p --title "$*"'

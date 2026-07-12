@@ -1,0 +1,8 @@
+# ~/.config/mise/config.toml  — globale Standard-Runtimes
+[tools]
+node = "lts"
+python = "3.12"
+ruby = "3.3"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node", "python", "ruby"]

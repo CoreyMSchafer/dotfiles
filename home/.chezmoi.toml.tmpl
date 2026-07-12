@@ -1,0 +1,9 @@
+{{- $name  := promptStringOnce . "name"  "Voller Name (für git)" -}}
+{{- $email := promptStringOnce . "email" "E-Mail (für git)" -}}
+[data]
+    name  = {{ $name  | quote }}
+    email = {{ $email | quote }}
+
+# Quelle dauerhaft verankern -> späteres `chezmoi apply`/`chezmoi edit`
+# findet das Repo auch ohne --source-Flag.
+sourceDir = {{ .chezmoi.sourceDir | quote }}

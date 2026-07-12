@@ -1,0 +1,27 @@
+# ~/.config/newsboat/config
+auto-reload yes
+reload-time 180
+reload-threads 16
+download-full-page no
+show-read-feeds no
+show-read-articles no
+max-items 200
+text-width 90
+scrolloff 3
+confirm-exit no
+
+# macOS: Standard = echter Browser
+browser "open %u"
+
+# Macros (Prefix ist Komma):
+macro o set browser "open %u" ; open-in-browser                                         -- "im Browser"
+macro w set browser "w3m %u" ; open-in-browser ; set browser "open %u"                  -- "im Terminal (w3m)"
+macro v set browser "mpv %u >/dev/null 2>&1 &" ; open-in-browser ; set browser "open %u" -- "Video (mpv)"
+
+# Komfort-Binds (vim-artig)
+bind-key j down
+bind-key k up
+bind-key g home
+bind-key G end
+bind-key l open
+bind-key h quit

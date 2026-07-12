@@ -1,0 +1,6 @@
+.DS_Store
+*.log
+# Secrets landen NIE im Repo (nur die .example ist getrackt):
+home/dot_config/zsh/secrets.zsh
+# lazy-lock wird pro Maschine erzeugt:
+home/dot_config/nvim/lazy-lock.json

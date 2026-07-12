@@ -1,0 +1,32 @@
+# ~/.config/newsboat/urls  —  t drücken, um nach Tag zu filtern.
+# Feeds verrotten; falls einer 404 gibt, in newsboat entfernen.
+
+# ── KI-Labore ──────────────────────────────────────────────
+https://openai.com/news/rss.xml                          "ki-labore"
+https://www.anthropic.com/rss.xml                        "ki-labore"
+https://huggingface.co/blog/feed.xml                     "ki-labore"
+https://research.google/blog/rss/                        "ki-labore"
+https://machinelearning.apple.com/rss.xml                "ki-labore"
+https://deepmind.google/blog/rss.xml                     "ki-labore"
+
+# ── KI-Forschung (arXiv, hohes Volumen -> scannen) ─────────
+https://rss.arxiv.org/rss/cs.AI                          "ki-forschung"
+https://rss.arxiv.org/rss/cs.LG                          "ki-forschung"
+https://rss.arxiv.org/rss/cs.CL                          "ki-forschung"
+
+# ── KI-Analyse ─────────────────────────────────────────────
+https://simonwillison.net/atom/everything/               "ki-analyse"
+https://magazine.sebastianraschka.com/feed               "ki-analyse"
+https://importai.substack.com/feed                       "ki-analyse"
+https://www.technologyreview.com/topic/artificial-intelligence/feed "ki-analyse"
+https://thegradient.pub/rss/                             "ki-analyse"
+
+# ── Wissenschaft (EN) ──────────────────────────────────────
+https://www.quantamagazine.org/feed/                     "wissenschaft"
+https://www.nature.com/nature.rss                        "wissenschaft"
+https://feeds.arstechnica.com/arstechnica/science        "wissenschaft"
+https://news.mit.edu/rss/feed                            "wissenschaft"
+
+# ── Wissenschaft (DE) ──────────────────────────────────────
+https://www.spektrum.de/rss/                             "wissenschaft-de"
+https://www.deutschlandfunk.de/forschung-aktuell-100.xml "wissenschaft-de"

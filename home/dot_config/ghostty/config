@@ -1,0 +1,20 @@
+# ~/.config/ghostty/config
+# Hell/Dunkel folgt macOS automatisch:
+theme = light:rose-pine-dawn,dark:rose-pine
+
+font-family = "FiraCode Nerd Font"
+font-size = 15
+adjust-cell-height = 12%
+
+window-padding-x = 10
+window-padding-y = 8
+window-save-state = always
+macos-titlebar-style = tabs
+mouse-hide-while-typing = true
+copy-on-select = clipboard
+scrollback-limit = 10000000
+clipboard-paste-protection = true
+
+# schnelleres Fühlen
+window-inherit-working-directory = true
+confirm-close-surface = false
