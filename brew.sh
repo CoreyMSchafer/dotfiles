@@ -30,7 +30,9 @@ brew cleanup
 # Define an array of packages to install using Homebrew.
 packages=(
     "bash"
+    "betterleaks"
     "cairo"
+    "charmbracelet/tap/freeze"
     "coreutils"
     "d2"
     "dust"
@@ -56,6 +58,7 @@ packages=(
     "tealdeer"
     "tesseract"
     "tree"
+    "typst"
     "uv"
     "vhs"
     "zsh"
