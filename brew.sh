@@ -143,6 +143,7 @@ $(brew --prefix)/bin/uv tool install ty
 # Define an array of applications to install using Homebrew Cask.
 apps=(
     "brave-browser"
+    "chatgpt"
     "claude"
     "claude-code"
     "codex"
