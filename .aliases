@@ -41,17 +41,17 @@ alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && kill
 alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
 
 # To prep before screencasts
-alias tut_mode='defaults write com.apple.dock autohide -bool true && killall Dock;
+alias tut_mode="defaults write com.apple.dock autohide -bool true && killall Dock;
               defaults write com.apple.finder CreateDesktop -bool false && killall Finder;
-              defaults write com.apple.menuextra.clock IsAnalog -bool true && killall SystemUIServer;
-              osascript -e 'tell application "Finder" to empty the trash' 2>/dev/null;
-              rm -rf ~/Downloads/*'
+              defaults write com.apple.menuextra.clock IsAnalog -bool true && killall ControlCenter;
+              osascript -e 'tell application \"Finder\" to empty the trash' 2>/dev/null;
+              rm -rf ~/Downloads/*(N)"
 alias reg_mode='defaults write com.apple.dock autohide -bool false && killall Dock;
               defaults write com.apple.finder CreateDesktop -bool true && killall Finder;
-              defaults write com.apple.menuextra.clock IsAnalog -bool false && killall SystemUIServer;'
+              defaults write com.apple.menuextra.clock IsAnalog -bool false && killall ControlCenter;'
 
 alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/dev/null;
-            rm -rf ~/Downloads/*"
+            rm -rf ~/Downloads/*(N)"
 
 # Project / tutorial scaffolding lives in the ~/Work monorepo (synced via GitHub).
 # proj_init / yt_init — and the `j` global-justfile alias — are defined there and sourced here:
