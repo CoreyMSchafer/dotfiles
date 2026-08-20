@@ -36,6 +36,12 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 ### Installation
 
+> **Note:** On a brand-new Mac, the first `git clone` will pop up a dialog
+> asking to install the Xcode Command Line Tools (macOS ships a `git` stub
+> that requests them). Click Install, wait for it to finish, then re-run the
+> clone command. This is expected — the real install can't begin until the
+> tools that download it exist.
+
 1. Clone the repository to your local machine:
    ```sh
    git clone https://github.com/CoreyMSchafer/dotfiles.git ~/dotfiles
