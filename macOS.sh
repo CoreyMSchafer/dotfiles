@@ -1,29 +1,56 @@
 #!/usr/bin/env zsh
+############################
+# macOS system settings.
+# Safe to re-run: settings are only written (and the affected system UI
+# only restarted) when the current value differs.
+############################
 
-xcode-select --install
+set -euo pipefail
 
-echo "Complete the installation of Xcode Command Line Tools before proceeding."
-echo "Press enter to continue..."
-read -r
+SCRIPT_DIR="${0:A:h}"
+source "${SCRIPT_DIR}/lib.sh"
+
+# Xcode Command Line Tools (git, compilers — needed by Homebrew)
+if xcode-select -p &>/dev/null; then
+    info "Xcode Command Line Tools are already installed. Skipping."
+else
+    xcode-select --install
+    pause_for "Complete the installation of Xcode Command Line Tools before proceeding."
+fi
 
 # Set scroll as traditional instead of natural
 # Note: this is a global preference; a logout/restart is required for it to take effect.
-defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+if [[ "$(defaults read NSGlobalDomain com.apple.swipescrolldirection 2>/dev/null || true)" != "0" ]]; then
+    defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+    info "Set scroll direction to traditional (takes effect after logout/restart)."
+else
+    info "Scroll direction is already set to traditional. Skipping."
+fi
 
 # Set location for screenshots
-mkdir -p "${HOME}/Desktop/Screenshots"
-defaults write com.apple.screencapture location "${HOME}/Desktop/Screenshots"
-killall SystemUIServer
+SCREENSHOT_DIR="${HOME}/Desktop/Screenshots"
+mkdir -p "${SCREENSHOT_DIR}"
+if [[ "$(defaults read com.apple.screencapture location 2>/dev/null || true)" != "${SCREENSHOT_DIR}" ]]; then
+    defaults write com.apple.screencapture location "${SCREENSHOT_DIR}"
+    killall SystemUIServer &>/dev/null || true
+    info "Screenshots will now be saved to ${SCREENSHOT_DIR}."
+else
+    info "Screenshot location is already set. Skipping."
+fi
 
 # Add Bluetooth to Menu Bar for battery percentages
-defaults write com.apple.controlcenter "NSStatusItem Visible Bluetooth" -bool true
-killall ControlCenter
+if [[ "$(defaults read com.apple.controlcenter "NSStatusItem Visible Bluetooth" 2>/dev/null || true)" != "1" ]]; then
+    defaults write com.apple.controlcenter "NSStatusItem Visible Bluetooth" -bool true
+    killall ControlCenter &>/dev/null || true
+    info "Added Bluetooth to the menu bar."
+else
+    info "Bluetooth is already in the menu bar. Skipping."
+fi
 
-# Get the absolute path to the image
-IMAGE_PATH="${HOME}/dotfiles/settings/Desktop.png"
-
-# AppleScript command to set the desktop background
-osascript <<EOF
+# Set the desktop background to the image used in my tutorials
+IMAGE_PATH="${SCRIPT_DIR}/settings/Desktop.png"
+if [[ -f "${IMAGE_PATH}" ]]; then
+    if ! osascript <<EOF
 tell application "System Events"
     set desktopCount to count of desktops
     repeat with desktopNumber from 1 to desktopCount
@@ -33,3 +60,9 @@ tell application "System Events"
     end repeat
 end tell
 EOF
+    then
+        warn "Could not set the desktop background (System Events may need Automation permission)."
+    fi
+else
+    warn "Desktop image not found at ${IMAGE_PATH}. Skipping desktop background."
+fi

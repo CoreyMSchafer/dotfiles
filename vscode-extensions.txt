@@ -1,0 +1,21 @@
+# VS Code extensions installed by vscode.sh — one extension ID per line.
+# Lines starting with # (and blank lines) are ignored.
+astral-sh.ty
+batisteo.vscode-django
+charliermarsh.ruff
+esbenp.prettier-vscode
+formulahendry.code-runner
+foxundermoon.shell-format
+github.copilot
+github.copilot-chat
+mechatroner.rainbow-csv
+monosans.djlint
+ms-python.python
+ms-toolsai.jupyter
+ms-vscode.theme-predawnkit
+mtxr.sqltools
+mtxr.sqltools-driver-sqlite
+ritwickdey.liveServer
+tamasfe.even-better-toml
+teabyii.ayu
+tomoki1207.pdf
