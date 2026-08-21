@@ -140,7 +140,6 @@
 
   // SQL Tools settings
   "sqltools.useNodeRuntime": true,
-  "liveServer.settings.donotShowInfoMsg": true,
 
   // Terminal settings
   "terminal.integrated.suggest.enabled": false,

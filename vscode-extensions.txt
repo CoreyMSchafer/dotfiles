@@ -10,10 +10,10 @@ mechatroner.rainbow-csv
 monosans.djlint
 ms-python.python
 ms-toolsai.jupyter
+ms-vscode.live-server
 ms-vscode.theme-predawnkit
 mtxr.sqltools
 mtxr.sqltools-driver-sqlite
-ritwickdey.liveServer
 tamasfe.even-better-toml
 teabyii.ayu
 tomoki1207.pdf
