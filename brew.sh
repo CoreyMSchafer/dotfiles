@@ -102,16 +102,15 @@ else
     info "Already authenticated with GitHub. Skipping login."
 fi
 
-# Global npm tools: Prettier and ESLint, which I use in VSCode
-npm install --global prettier eslint
+# Global npm tools, which I use in VSCode (one per line so the full list is
+# visible at a glance)
+npm install --global prettier # Code formatter
+npm install --global eslint   # JavaScript linter
 
-# Global uv tools, which I use in VSCode:
-#   djlint - Django and Jinja2 template formatting
-#   ruff   - Python formatting and linting
-#   ty     - Astral's Python type checker (used alongside ruff)
-for tool in djlint ruff ty; do
-    uv tool install "$tool"
-done
+# Global uv tools, which I use in VSCode
+uv tool install djlint # Django and Jinja2 template formatting
+uv tool install ruff   # Python formatting and linting
+uv tool install ty     # Astral's Python type checker (used alongside ruff)
 
 # Once fonts are installed, import your Terminal Profile
 pause_for "Import your terminal settings...
