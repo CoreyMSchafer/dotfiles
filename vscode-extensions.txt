@@ -6,7 +6,6 @@ charliermarsh.ruff
 esbenp.prettier-vscode
 formulahendry.code-runner
 foxundermoon.shell-format
-github.copilot
 mechatroner.rainbow-csv
 monosans.djlint
 ms-python.python
