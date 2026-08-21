@@ -4,12 +4,14 @@
 # Docs: https://docs.brew.sh/Brew-Bundle-and-Brewfile
 
 tap "charmbracelet/tap"
+tap "cirruslabs/cli"
 
 # CLI packages
 brew "bash"
 brew "betterleaks"
 brew "cairo"
 brew "charmbracelet/tap/freeze"
+brew "cirruslabs/cli/tart"
 brew "coreutils"
 brew "d2"
 brew "dust"

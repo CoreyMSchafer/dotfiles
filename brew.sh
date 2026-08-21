@@ -40,7 +40,7 @@ brew upgrade
 
 # Homebrew 6+ requires explicitly trusting third-party tap formulae
 # (`|| true`: pre-6 Homebrew has no trust command and doesn't need it)
-brew trust --formula charmbracelet/tap/freeze || true
+brew trust --formula charmbracelet/tap/freeze cirruslabs/cli/tart cirruslabs/cli/softnet || true
 
 # Install all packages, apps, and fonts listed in the Brewfile.
 # `brew bundle` is idempotent — anything already installed is skipped.
