@@ -8,7 +8,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="${0:A:h}"
-source "${SCRIPT_DIR}/lib.sh"
+source "${SCRIPT_DIR}/helpers.sh"
 
 # Install Homebrew if it isn't already installed
 if ! command -v brew &>/dev/null; then
@@ -48,9 +48,13 @@ brew trust --formula charmbracelet/tap/freeze || true
 # `brew bundle` is idempotent — anything already installed is skipped.
 brew bundle install --file="${SCRIPT_DIR}/Brewfile"
 
-# Make Homebrew's zsh the default shell
+# Make Homebrew's zsh the default shell.
+# Ask directory services for the real login shell rather than trusting $SHELL —
+# $SHELL is stale inside a session that predates a shell change, which would
+# re-trigger a pointless chsh password prompt on re-runs.
 BREW_ZSH="$(brew --prefix)/bin/zsh"
-if [[ "$SHELL" != "$BREW_ZSH" ]]; then
+CURRENT_LOGIN_SHELL="$(dscl . -read "/Users/${USER}" UserShell 2>/dev/null | awk '{print $2}')"
+if [[ "$CURRENT_LOGIN_SHELL" != "$BREW_ZSH" ]]; then
     # Homebrew's zsh has to be listed in /etc/shells before chsh accepts it
     if ! grep -Fxq "$BREW_ZSH" /etc/shells; then
         info "Adding Homebrew zsh to allowed shells (requires sudo)..."

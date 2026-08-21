@@ -74,7 +74,7 @@ The script is safe to re-run — steps that are already done are skipped.
 -  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control
 -  `Brewfile`: The list of Homebrew packages, apps, and fonts that `brew.sh` installs via `brew bundle`
 -  `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
--  `lib.sh`: Small helpers (logging, backup-then-symlink) shared by the install scripts
+-  `helpers.sh`: Small helpers (logging, backup-then-symlink) shared by the install scripts
 -  `settings/`: Directory containing editor settings and configurations for Visual Studio Code.
 
 ### Customizing Your Setup

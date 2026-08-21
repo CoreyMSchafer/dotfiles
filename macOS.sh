@@ -8,7 +8,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="${0:A:h}"
-source "${SCRIPT_DIR}/lib.sh"
+source "${SCRIPT_DIR}/helpers.sh"
 
 # Xcode Command Line Tools (git, compilers — needed by Homebrew)
 if xcode-select -p &>/dev/null; then
@@ -48,8 +48,14 @@ else
 fi
 
 # Set the desktop background to the image used in my tutorials
+# (skipped when desktop 1 already shows it, so re-runs don't re-trigger
+# the System Events Automation permission)
 IMAGE_PATH="${SCRIPT_DIR}/settings/Desktop.png"
-if [[ -f "${IMAGE_PATH}" ]]; then
+if [[ ! -f "${IMAGE_PATH}" ]]; then
+    warn "Desktop image not found at ${IMAGE_PATH}. Skipping desktop background."
+elif [[ "$(osascript -e 'tell application "System Events" to get picture of desktop 1' 2>/dev/null || true)" == "${IMAGE_PATH}" ]]; then
+    info "Desktop background is already set. Skipping."
+else
     if ! osascript <<EOF
 tell application "System Events"
     set desktopCount to count of desktops
@@ -62,7 +68,7 @@ end tell
 EOF
     then
         warn "Could not set the desktop background (System Events may need Automation permission)."
+    else
+        info "Desktop background set."
     fi
-else
-    warn "Desktop image not found at ${IMAGE_PATH}. Skipping desktop background."
 fi

@@ -23,7 +23,7 @@ if [[ "${dotfiledir}" != "${HOME}/dotfiles" ]]; then
     exit 1
 fi
 
-source "${dotfiledir}/lib.sh"
+source "${dotfiledir}/helpers.sh"
 
 cd "${dotfiledir}"
 
