@@ -65,10 +65,12 @@ else
     info "Homebrew zsh is already the default shell. Skipping configuration."
 fi
 
-# Set up fzf key bindings and completion
+# Set up fzf key bindings and completion, non-interactively.
+# --no-update-rc: don't let the installer append to .zshrc (it's a symlink
+# into this repo); .zshrc already sources ~/.fzf.zsh
 if [[ ! -f "${HOME}/.fzf.zsh" ]]; then
     info "Setting up fzf shell integration..."
-    "$(brew --prefix)/opt/fzf/install"
+    "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc
 else
     info "fzf shell integration already configured. Skipping configuration."
 fi
