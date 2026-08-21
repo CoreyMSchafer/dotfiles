@@ -65,6 +65,10 @@ else
     info "Homebrew zsh is already the default shell. Skipping configuration."
 fi
 
+# chsh's password prompt can leave the terminal in a raw state (no echo,
+# Enter broken); reset it so the prompts below still work
+stty sane 2>/dev/null || true
+
 # Set up fzf key bindings and completion, non-interactively.
 # --no-update-rc: don't let the installer append to .zshrc (it's a symlink
 # into this repo); .zshrc already sources ~/.fzf.zsh
