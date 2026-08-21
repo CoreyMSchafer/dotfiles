@@ -90,7 +90,7 @@
 
   // HTML, Jinja2, and Django settings
   "django.snippets.use": false,
-  "[html][django-html][jinja][jinja-html]": {
+  "[html][django-html]": {
     "editor.defaultFormatter": "monosans.djlint",
     "editor.tabSize": 2,
     "editor.formatOnSave": true,
@@ -101,7 +101,6 @@
   },
   "emmet.includeLanguages": {
     "django-html": "html",
-    "jinja-html": "html",
   },
   "djlint.useVenv": false,
   "djlint.executablePath": "/Users/coreyschafer/.local/bin/djlint",
