@@ -4,7 +4,6 @@ astral-sh.ty
 batisteo.vscode-django
 charliermarsh.ruff
 esbenp.prettier-vscode
-formulahendry.code-runner
 foxundermoon.shell-format
 mechatroner.rainbow-csv
 monosans.djlint
