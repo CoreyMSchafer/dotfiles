@@ -11,10 +11,13 @@
 # folder under ~/.dotfiles_backup/
 ############################
 
+# -e: stop on the first error, -u: error on unset variables,
+# -o pipefail: a pipeline fails if any command in it fails
 set -euo pipefail
 
-# The shell prompts and settings reference this repo at ~/dotfiles,
-# so fail early with a clear message if it lives anywhere else.
+# The folder this script lives in (:A = absolute path, :h = parent dir).
+# The shell prompts reference this repo at ~/dotfiles, so fail early
+# with a clear message if it lives anywhere else.
 dotfiledir="${0:A:h}"
 if [[ "${dotfiledir}" != "${HOME}/dotfiles" ]]; then
     echo "This repo must live at ${HOME}/dotfiles (currently running from ${dotfiledir})." >&2
@@ -23,6 +26,7 @@ if [[ "${dotfiledir}" != "${HOME}/dotfiles" ]]; then
     exit 1
 fi
 
+# Load shared logging + backup functions
 source "${dotfiledir}/helpers.sh"
 
 cd "${dotfiledir}"

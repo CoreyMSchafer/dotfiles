@@ -6,8 +6,6 @@ charliermarsh.ruff
 esbenp.prettier-vscode
 formulahendry.code-runner
 foxundermoon.shell-format
-# NOTE: github.copilot-chat is intentionally absent — VS Code ships it built-in
-# now, and installing the marketplace version fails as a "downgrade".
 github.copilot
 mechatroner.rainbow-csv
 monosans.djlint

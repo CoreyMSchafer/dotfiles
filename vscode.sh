@@ -8,6 +8,7 @@
 
 set -euo pipefail
 
+# The folder this script lives in (:A = absolute path, :h = parent dir)
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
@@ -23,10 +24,9 @@ if ! command -v code &>/dev/null; then
     exit 1
 fi
 
-# Install any extensions from vscode-extensions.txt that aren't already installed.
-# One failing extension shouldn't abort the rest — failures are collected and
-# reported at the end (an ID can go stale when VS Code absorbs an extension as
-# built-in, or it gets renamed/removed from the marketplace).
+# Install any extensions from vscode-extensions.txt that aren't already
+# installed. One failing extension shouldn't abort the rest — failures are
+# collected and reported at the end.
 installed_extensions=$(code --list-extensions)
 failed_extensions=()
 

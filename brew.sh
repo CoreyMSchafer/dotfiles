@@ -7,6 +7,7 @@
 
 set -euo pipefail
 
+# The folder this script lives in (:A = absolute path, :h = parent dir)
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
@@ -18,8 +19,8 @@ else
     info "Homebrew is already installed."
 fi
 
-# Put brew on the PATH for the rest of this script
-# (Apple Silicon and Intel install locations)
+# Put brew on the PATH for the rest of this script: `brew shellenv` prints
+# export statements and eval applies them (Apple Silicon and Intel locations)
 if [[ -x /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ -x /usr/local/bin/brew ]]; then
@@ -37,21 +38,16 @@ fi
 brew update
 brew upgrade
 
-# Homebrew 6+ blocks formulae from third-party taps until they're explicitly
-# trusted. Trust just the formulae the Brewfile needs (narrower than trusting
-# the whole tap). `|| true` keeps this working on pre-6 Homebrew, which has no
-# `trust` command and doesn't need it — if trust genuinely failed on 6+, the
-# `brew bundle` right below fails loudly anyway.
+# Homebrew 6+ requires explicitly trusting third-party tap formulae
+# (`|| true`: pre-6 Homebrew has no trust command and doesn't need it)
 brew trust --formula charmbracelet/tap/freeze || true
 
 # Install all packages, apps, and fonts listed in the Brewfile.
 # `brew bundle` is idempotent — anything already installed is skipped.
 brew bundle install --file="${SCRIPT_DIR}/Brewfile"
 
-# Make Homebrew's zsh the default shell.
-# Ask directory services for the real login shell rather than trusting $SHELL —
-# $SHELL is stale inside a session that predates a shell change, which would
-# re-trigger a pointless chsh password prompt on re-runs.
+# Make Homebrew's zsh the default shell. dscl reports the real login shell —
+# $SHELL can be stale inside an existing session.
 BREW_ZSH="$(brew --prefix)/bin/zsh"
 CURRENT_LOGIN_SHELL="$(dscl . -read "/Users/${USER}" UserShell 2>/dev/null | awk '{print $2}')"
 if [[ "$CURRENT_LOGIN_SHELL" != "$BREW_ZSH" ]]; then
@@ -106,8 +102,7 @@ else
     info "Already authenticated with GitHub. Skipping login."
 fi
 
-# Global npm tools, which I use in VSCode (one per line so the full list is
-# visible at a glance)
+# Global npm tools, which I use in VSCode
 npm install --global prettier # Code formatter
 npm install --global eslint   # JavaScript linter
 
