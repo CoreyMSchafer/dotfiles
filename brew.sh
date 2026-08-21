@@ -37,6 +37,13 @@ fi
 brew update
 brew upgrade
 
+# Homebrew 6+ blocks formulae from third-party taps until they're explicitly
+# trusted. Trust just the formulae the Brewfile needs (narrower than trusting
+# the whole tap). `|| true` keeps this working on pre-6 Homebrew, which has no
+# `trust` command and doesn't need it — if trust genuinely failed on 6+, the
+# `brew bundle` right below fails loudly anyway.
+brew trust --formula charmbracelet/tap/freeze || true
+
 # Install all packages, apps, and fonts listed in the Brewfile.
 # `brew bundle` is idempotent — anything already installed is skipped.
 brew bundle install --file="${SCRIPT_DIR}/Brewfile"
