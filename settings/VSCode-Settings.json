@@ -64,6 +64,7 @@
   "python.analysis.addHoverSummaries": true,
 
   // Python settings
+  "python.languageServer": "Default", // Pylance — the ty extension offers to switch this to "None"
   "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
