@@ -31,6 +31,14 @@ source "${dotfiledir}/helpers.sh"
 
 cd "${dotfiledir}"
 
+# Ask for the administrator password once up front, then keep sudo's
+# timestamp fresh in the background so the rest of the run never re-prompts
+info "This setup needs administrator access. Please enter your password:"
+sudo -v
+( while kill -0 "$$" 2>/dev/null; do sudo -n true; sleep 60; done ) &
+SUDO_KEEPALIVE_PID=$!
+trap 'kill "${SUDO_KEEPALIVE_PID}" 2>/dev/null' EXIT
+
 # list of files to symlink into $HOME
 files=(zshrc zprofile zprompt bashrc bash_profile bash_prompt aliases)
 

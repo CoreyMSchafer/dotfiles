@@ -11,10 +11,12 @@ set -euo pipefail
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
-# Install Homebrew if it isn't already installed
+# Install Homebrew if it isn't already installed.
+# NONINTERACTIVE skips the installer's "Press RETURN to continue" pause;
+# install.sh has already warmed up sudo.
 if ! command -v brew &>/dev/null; then
     info "Homebrew not installed. Installing Homebrew."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
     info "Homebrew is already installed."
 fi
@@ -32,6 +34,10 @@ if ! command -v brew &>/dev/null; then
     error "Failed to configure Homebrew in PATH. Please add Homebrew to your PATH manually."
     exit 1
 fi
+
+# Download packages one at a time with visible progress bars, instead of
+# Homebrew's concurrent downloads that sit silent for the whole batch
+export HOMEBREW_DOWNLOAD_CONCURRENCY=1
 
 # Update Homebrew and upgrade any already-installed formulae and casks
 # (brew upgrade has upgraded casks by default since Homebrew 3.2)
@@ -53,10 +59,12 @@ CURRENT_LOGIN_SHELL="$(dscl . -read "/Users/${USER}" UserShell 2>/dev/null | awk
 if [[ "$CURRENT_LOGIN_SHELL" != "$BREW_ZSH" ]]; then
     # Homebrew's zsh has to be listed in /etc/shells before chsh accepts it
     if ! grep -Fxq "$BREW_ZSH" /etc/shells; then
-        info "Adding Homebrew zsh to allowed shells (requires sudo)..."
+        info "Adding Homebrew zsh to allowed shells..."
         echo "$BREW_ZSH" | sudo tee -a /etc/shells >/dev/null
     fi
-    if chsh -s "$BREW_ZSH"; then
+    # Via sudo so it skips its own password prompt (which can also corrupt
+    # terminal state on newer macOS)
+    if sudo chsh -s "$BREW_ZSH" "$USER"; then
         info "Default shell changed to Homebrew zsh."
     else
         warn "Could not change the default shell. Run this yourself later: chsh -s ${BREW_ZSH}"
