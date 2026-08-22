@@ -37,8 +37,5 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 # uv-installed tools (ruff, ty, djlint, …) live here
 export PATH="$PATH:$HOME/.local/bin"
 
-# Added by Antigravity
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-
 # Added by fzf installer
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

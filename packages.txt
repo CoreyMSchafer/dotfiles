@@ -12,7 +12,6 @@ exiftool
 fd
 ffmpeg
 fzf
-gemini-cli
 gh
 git
 gitleaks
