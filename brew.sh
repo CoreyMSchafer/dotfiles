@@ -12,12 +12,9 @@ set -euo pipefail
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
-# Install Homebrew if it isn't already installed.
-# NONINTERACTIVE skips the installer's "Press RETURN to continue" pause;
-# install.sh has already warmed up sudo.
+# Install Homebrew if it isn't already installed
 if ! command -v brew &>/dev/null; then
     info "Homebrew not installed. Installing Homebrew."
-    export NONINTERACTIVE=1
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
     info "Homebrew is already installed."
@@ -72,10 +69,6 @@ fi
 # --quiet: trim the per-package output
 brew install --yes --quiet "${packages[@]}"
 
-# Re-validate sudo right before the cask installs (their installers use it);
-# instant no-op while the upfront credentials are still fresh
-sudo -v
-
 # Install the apps (Homebrew casks)
 brew install --cask --yes --quiet "${apps[@]}"
 
@@ -92,8 +85,8 @@ if [[ "$CURRENT_LOGIN_SHELL" != "$BREW_ZSH" ]]; then
         info "Adding Homebrew zsh to allowed shells..."
         echo "$BREW_ZSH" | sudo tee -a /etc/shells >/dev/null
     fi
-    # Via sudo so it skips its own password prompt (which can also corrupt
-    # terminal state on newer macOS)
+    # Via sudo — chsh's own password prompt can corrupt terminal state
+    # on newer macOS
     if sudo chsh -s "$BREW_ZSH" "$USER"; then
         info "Default shell changed to Homebrew zsh."
     else

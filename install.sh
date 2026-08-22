@@ -31,20 +31,6 @@ source "${dotfiledir}/helpers.sh"
 
 cd "${dotfiledir}"
 
-# Ask for the administrator password once up front, then extend sudo's
-# 5-minute credential lifetime to cover the whole run (current macOS no
-# longer honors the classic background-keepalive refresh). The override is
-# syntax-checked with visudo before installing, and removed when the script
-# exits; sudo ignores the .tmp file if one is ever left behind.
-SUDO_OVERRIDE="/etc/sudoers.d/dotfiles_install"
-info "This setup needs administrator access. Please enter your password:"
-sudo -v
-sudo sh -c "echo 'Defaults timestamp_timeout=180' > ${SUDO_OVERRIDE}.tmp \
-    && chmod 440 ${SUDO_OVERRIDE}.tmp \
-    && visudo -cf ${SUDO_OVERRIDE}.tmp >/dev/null \
-    && mv ${SUDO_OVERRIDE}.tmp ${SUDO_OVERRIDE}"
-trap 'sudo -n rm -f "${SUDO_OVERRIDE}" "${SUDO_OVERRIDE}.tmp" 2>/dev/null || true' EXIT
-
 # list of files to symlink into $HOME
 files=(zshrc zprofile zprompt bashrc bash_profile bash_prompt aliases)
 
