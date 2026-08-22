@@ -37,10 +37,6 @@ if ! command -v brew &>/dev/null; then
     exit 1
 fi
 
-# Download packages one at a time with visible progress bars, instead of
-# Homebrew's concurrent downloads that sit silent for the whole batch
-export HOMEBREW_DOWNLOAD_CONCURRENCY=1
-
 # Update Homebrew and upgrade any already-installed formulae and casks
 # (brew upgrade has upgraded casks by default since Homebrew 3.2)
 brew update
