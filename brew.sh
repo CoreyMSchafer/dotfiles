@@ -45,10 +45,6 @@ export HOMEBREW_DOWNLOAD_CONCURRENCY=1
 brew update
 brew upgrade
 
-# Homebrew 6+ requires explicitly trusting third-party tap formulae
-# (`|| true`: pre-6 Homebrew has no trust command and doesn't need it)
-brew trust --formula charmbracelet/tap/freeze cirruslabs/cli/tart cirruslabs/cli/softnet || true
-
 # Read a manifest file's entries, skipping comments and blank lines
 read_manifest() {
     grep -vE '^#|^$' "${SCRIPT_DIR}/$1"
@@ -58,6 +54,20 @@ read_manifest() {
 packages=(${(f)"$(read_manifest packages.txt)"})
 apps=(${(f)"$(read_manifest apps.txt)"})
 fonts=(${(f)"$(read_manifest fonts.txt)"})
+
+# Homebrew 6+ requires trusting a third-party tap before installing from it.
+# Any manifest entry with a slash (e.g. charmbracelet/tap/freeze) comes from
+# one, so derive the taps to trust from the manifests themselves — nothing
+# to keep in sync by hand. Trusting the tap (not just the formula) also
+# covers same-tap dependencies. Older Homebrew has no trust command and
+# doesn't need one.
+if brew trust --help &>/dev/null; then
+    for pkg in "${packages[@]}" "${apps[@]}" "${fonts[@]}"; do
+        if [[ "$pkg" == */* ]]; then
+            brew trust "${pkg%/*}" # strip the formula name, keep user/tap
+        fi
+    done
+fi
 
 # brew install is idempotent — already-installed packages are skipped with a notice.
 # Fully-qualified names (e.g. charmbracelet/tap/freeze) tap their tap automatically.
