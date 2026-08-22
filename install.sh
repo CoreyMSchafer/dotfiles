@@ -48,13 +48,8 @@ link_with_backup "${dotfiledir}/.private" "${HOME}/.private"
 mkdir -p "${HOME}/.config/ruff"
 link_with_backup "${dotfiledir}/settings/ruff.toml" "${HOME}/.config/ruff/ruff.toml"
 
-# Run the MacOS Script
 ./macOS.sh
-
-# Run the Homebrew Script
 ./brew.sh
-
-# Run VS Code Script
 ./vscode.sh
 
 echo ""

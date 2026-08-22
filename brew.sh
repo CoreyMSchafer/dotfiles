@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 ############################
-# Installs Homebrew (if needed) and everything listed in packages.txt,
-# apps.txt, and fonts.txt, installs
-# global npm/uv tools, and configures git, GitHub, and the default shell.
+# Installs Homebrew (if needed), everything listed in packages.txt,
+# apps.txt, and fonts.txt, and global npm/uv tools, then configures git,
+# GitHub, and the default shell.
 # Safe to re-run: each step checks before it changes anything.
 ############################
 
@@ -72,7 +72,7 @@ brew install --yes --quiet "${packages[@]}"
 # Install the apps (Homebrew casks)
 brew install --cask --yes --quiet "${apps[@]}"
 
-# Install fonts. Fonts are available directly from Homebrew cask
+# Install the fonts (Homebrew casks)
 brew install --cask --yes --quiet "${fonts[@]}"
 
 # Make Homebrew's zsh the default shell. dscl reports the real login shell —
@@ -96,8 +96,8 @@ else
     info "Homebrew zsh is already the default shell. Skipping configuration."
 fi
 
-# chsh's password prompt can leave the terminal in a raw state (no echo,
-# Enter broken); reset it so the prompts below still work
+# Password prompts on newer macOS can leave the terminal in a raw state
+# (no echo, Enter broken); reset it so the prompts below still work
 stty sane 2>/dev/null || true
 
 # Set up fzf key bindings and completion, non-interactively.

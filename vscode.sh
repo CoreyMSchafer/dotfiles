@@ -61,6 +61,6 @@ link_with_backup "${SCRIPT_DIR}/settings/VSCode-Keybindings.json" "${VSCODE_USER
 
 info "VS Code settings and keybindings have been linked."
 
-# Open VS Code to sign-in to extensions
+# Open VS Code for the account sign-ins
 code "${SCRIPT_DIR}"
-pause_for "Login to extensions (Copilot, Grammarly, etc) within VS Code."
+pause_for "Sign in to your accounts (GitHub Copilot, etc.) within VS Code."
