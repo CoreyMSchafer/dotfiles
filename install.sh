@@ -35,7 +35,8 @@ cd "${dotfiledir}"
 # timestamp fresh in the background so the rest of the run never re-prompts
 info "This setup needs administrator access. Please enter your password:"
 sudo -v
-( while kill -0 "$$" 2>/dev/null; do sudo -n true; sleep 60; done ) &
+# (set +e so one failed refresh can't silently kill the loop)
+( set +e; while kill -0 "$$" 2>/dev/null; do sudo -n true 2>/dev/null; sleep 30; done ) &
 SUDO_KEEPALIVE_PID=$!
 trap 'kill "${SUDO_KEEPALIVE_PID}" 2>/dev/null' EXIT
 

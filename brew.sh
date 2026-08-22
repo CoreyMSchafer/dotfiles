@@ -17,7 +17,8 @@ source "${SCRIPT_DIR}/helpers.sh"
 # install.sh has already warmed up sudo.
 if ! command -v brew &>/dev/null; then
     info "Homebrew not installed. Installing Homebrew."
-    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    export NONINTERACTIVE=1
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
     info "Homebrew is already installed."
 fi
@@ -43,7 +44,7 @@ export HOMEBREW_DOWNLOAD_CONCURRENCY=1
 # Update Homebrew and upgrade any already-installed formulae and casks
 # (brew upgrade has upgraded casks by default since Homebrew 3.2)
 brew update
-brew upgrade
+brew upgrade --yes
 
 # Read a manifest file's entries, skipping comments and blank lines
 read_manifest() {
@@ -71,13 +72,19 @@ fi
 
 # brew install is idempotent — already-installed packages are skipped with a notice.
 # Fully-qualified names (e.g. charmbracelet/tap/freeze) tap their tap automatically.
-brew install "${packages[@]}"
+# --yes: don't ask for confirmation (Homebrew 6 asks by default)
+# --quiet: trim the per-package output
+brew install --yes --quiet "${packages[@]}"
+
+# Re-validate sudo right before the cask installs (their installers use it);
+# instant no-op while the upfront credentials are still fresh
+sudo -v
 
 # Install the apps (Homebrew casks)
-brew install --cask "${apps[@]}"
+brew install --cask --yes --quiet "${apps[@]}"
 
 # Install fonts. Fonts are available directly from Homebrew cask
-brew install --cask "${fonts[@]}"
+brew install --cask --yes --quiet "${fonts[@]}"
 
 # Make Homebrew's zsh the default shell. dscl reports the real login shell —
 # $SHELL can be stale inside an existing session.
