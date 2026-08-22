@@ -1,0 +1,23 @@
+# Homebrew cask apps installed by brew.sh — one per line.
+# Lines starting with # (and blank lines) are ignored.
+brave-browser
+chatgpt
+claude
+claude-code
+codex
+copilot-cli
+discord
+docker-desktop
+firefox
+gcloud-cli
+gimp
+git-credential-manager
+google-chrome
+google-drive
+keyboardcleantool
+libreoffice
+postman
+rectangle
+spotify
+visual-studio-code
+vlc

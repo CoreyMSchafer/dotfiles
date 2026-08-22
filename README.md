@@ -59,7 +59,7 @@ This script will:
 
 -  Create symlinks for dotfiles (`.bashrc`, `.zshrc`, etc.), backing up any existing files to `~/.dotfiles_backup/`
 -  Run macOS-specific configurations (`macOS.sh`)
--  Install Homebrew, then the packages, apps, and fonts listed in the `Brewfile` (`brew.sh`)
+-  Install Homebrew, then everything listed in `packages.txt`, `apps.txt`, and `fonts.txt` (`brew.sh`)
 -  Configure Visual Studio Code and install the extensions listed in `vscode-extensions.txt` (`vscode.sh`)
 
 The script is safe to re-run — steps that are already done are skipped.
@@ -72,7 +72,7 @@ The script is safe to re-run — steps that are already done are skipped.
 -  `.bash_profile`: Setting system-wide environment variables
 -  `.aliases`: Aliases for common commands. Some are personalized to my machines specifically (e.g. the 'yt' alias opening my YouTube Scripts')
 -  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control
--  `Brewfile`: The list of Homebrew packages, apps, and fonts that `brew.sh` installs via `brew bundle`
+-  `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
 -  `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
 -  `helpers.sh`: Small helpers (logging, backup-then-symlink) shared by the install scripts
 -  `settings/`: Directory containing editor settings and configurations for Visual Studio Code.

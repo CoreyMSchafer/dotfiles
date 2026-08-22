@@ -3,7 +3,7 @@
 # Sets up a new macOS machine:
 #   1. Symlinks dotfiles from this repo into $HOME
 #   2. Applies macOS system settings          (macOS.sh)
-#   3. Installs Homebrew packages and apps    (brew.sh + Brewfile)
+#   3. Installs Homebrew packages and apps    (brew.sh + manifest files)
 #   4. Sets up VS Code                        (vscode.sh)
 #
 # Safe to re-run: every step checks before it changes anything, and any

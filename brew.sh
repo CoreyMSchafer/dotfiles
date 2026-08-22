@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 ############################
-# Installs Homebrew (if needed) and everything in the Brewfile, installs
+# Installs Homebrew (if needed) and everything listed in packages.txt,
+# apps.txt, and fonts.txt, installs
 # global npm/uv tools, and configures git, GitHub, and the default shell.
 # Safe to re-run: each step checks before it changes anything.
 ############################
@@ -48,9 +49,25 @@ brew upgrade
 # (`|| true`: pre-6 Homebrew has no trust command and doesn't need it)
 brew trust --formula charmbracelet/tap/freeze cirruslabs/cli/tart cirruslabs/cli/softnet || true
 
-# Install all packages, apps, and fonts listed in the Brewfile.
-# `brew bundle` is idempotent — anything already installed is skipped.
-brew bundle install --file="${SCRIPT_DIR}/Brewfile"
+# Read a manifest file's entries, skipping comments and blank lines
+read_manifest() {
+    grep -vE '^#|^$' "${SCRIPT_DIR}/$1"
+}
+
+# ${(f)...} splits the output into an array, one entry per line
+packages=(${(f)"$(read_manifest packages.txt)"})
+apps=(${(f)"$(read_manifest apps.txt)"})
+fonts=(${(f)"$(read_manifest fonts.txt)"})
+
+# brew install is idempotent — already-installed packages are skipped with a notice.
+# Fully-qualified names (e.g. charmbracelet/tap/freeze) tap their tap automatically.
+brew install "${packages[@]}"
+
+# Install the apps (Homebrew casks)
+brew install --cask "${apps[@]}"
+
+# Install fonts. Fonts are available directly from Homebrew cask
+brew install --cask "${fonts[@]}"
 
 # Make Homebrew's zsh the default shell. dscl reports the real login shell —
 # $SHELL can be stale inside an existing session.
