@@ -3,6 +3,8 @@
 # macOS system settings.
 # Safe to re-run: settings are only written (and the affected system UI
 # only restarted) when the current value differs.
+# Some settings rely on undocumented "magic" values that can change between
+# macOS releases — periodically check that each still does what it says.
 ############################
 
 set -euo pipefail
@@ -40,8 +42,9 @@ else
 fi
 
 # Add Bluetooth to Menu Bar for battery percentages
-if [[ "$(defaults read com.apple.controlcenter "NSStatusItem Visible Bluetooth" 2>/dev/null || true)" != "1" ]]; then
-    defaults write com.apple.controlcenter "NSStatusItem Visible Bluetooth" -bool true
+# (stored per-host by Control Center; 2 = show in menu bar)
+if [[ "$(defaults -currentHost read com.apple.controlcenter Bluetooth 2>/dev/null || true)" != "2" ]]; then
+    defaults -currentHost write com.apple.controlcenter Bluetooth -int 2
     killall ControlCenter &>/dev/null || true
     info "Added Bluetooth to the menu bar."
 else
