@@ -16,7 +16,7 @@ The setup includes automated scripts for installing essential software, configur
 
 **WARNING:** The configurations and scripts in this repository are **HIGHLY PERSONALIZED** to my own preferences and workflows. If you decide to use them, please be aware that they will **MODIFY** your current system, potentially making some changes that are **IRREVERSIBLE** without a fresh installation of your operating system.
 
-Furthermore, while I strive to backup files wherever possible, I cannot guarantee that all files are backed up. The backup mechanism is designed to backup SOME files **ONCE**. If the script is run more than once, the initial backups will be **OVERWRITTEN**, potentially resulting in loss of data. While I could implement timestamped backups to preserve multiple versions, this setup is optimized for my personal use, and a single backup suffices for me.
+The scripts are safe to re-run: each step checks the current state before changing anything, and any existing file that would be replaced by a symlink (e.g. an existing `.zshrc` or VS Code `settings.json`) is first moved into a timestamped folder under `~/.dotfiles_backup/`, so earlier backups are never overwritten. That said, not everything can be backed up — system settings changed via `defaults write` and installed/upgraded software have no backup mechanism — so the warning above still stands.
 
 If you would like a development environment similar to mine, I highly encourage you to fork this repository and make your own personalized changes to these scripts instead of running them exactly as I have them written for myself.
 
@@ -36,6 +36,12 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 ### Installation
 
+> **Note:** On a brand-new Mac, the first `git clone` will pop up a dialog
+> asking to install the Xcode Command Line Tools (macOS ships a `git` stub
+> that requests them). Click Install, wait for it to finish, then re-run the
+> clone command. This is expected — the real install can't begin until the
+> tools that download it exist.
+
 1. Clone the repository to your local machine:
    ```sh
    git clone https://github.com/CoreyMSchafer/dotfiles.git ~/dotfiles
@@ -51,19 +57,24 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 This script will:
 
--  Create symlinks for dotfiles (`.bashrc`, `.zshrc`, etc.)
--  Run macOS-specific configurations
--  Install Homebrew packages and casks
--  Configure Visual Studio Code
+-  Create symlinks for dotfiles (`.bashrc`, `.zshrc`, etc.), backing up any existing files to `~/.dotfiles_backup/`
+-  Run macOS-specific configurations (`macOS.sh`)
+-  Install Homebrew, then everything listed in `packages.txt`, `apps.txt`, and `fonts.txt` (`brew.sh`)
+-  Configure Visual Studio Code and install the extensions listed in `vscode-extensions.txt` (`vscode.sh`)
+
+The script is safe to re-run — steps that are already done are skipped.
 
 ## Configuration Files
 
 -  `.bashrc` & `.zshrc`: Shell configuration files for Bash and Zsh.
 -  `.shared_prompt`: Custom prompt setup used by both `.bash_prompt` & `.zprompt`
 -  `.bash_prompt` & `.zprompt`: Custom prompt setup for Bash and Zsh.
--  `.bash_profile: Setting system-wide environment variables
+-  `.bash_profile`: Setting system-wide environment variables
 -  `.aliases`: Aliases for common commands. Some are personalized to my machines specifically (e.g. the 'yt' alias opening my YouTube Scripts')
--  `.private`: This is a file you'll create locally to hold private information and shouldn't be uploaded to version control
+-  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control
+-  `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
+-  `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
+-  `helpers.sh`: Small helpers (logging, backup-then-symlink) shared by the install scripts
 -  `settings/`: Directory containing editor settings and configurations for Visual Studio Code.
 
 ### Customizing Your Setup

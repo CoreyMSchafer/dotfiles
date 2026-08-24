@@ -1,7 +1,12 @@
 [
   {
     "key": "cmd+b",
-    "command": "code-runner.run",
+    "command": "python.execInTerminal",
+    "when": "editorLangId == python",
+  },
+  {
+    "key": "cmd+b",
+    "command": "-workbench.action.toggleSidebarVisibility",
   },
   {
     "key": "shift+cmd+k",

@@ -1,63 +1,66 @@
 #!/usr/bin/env zsh
+############################
+# Sets up VS Code: installs the extensions listed in vscode-extensions.txt
+# and symlinks settings/keybindings from this repo.
+# Safe to re-run: installed extensions are skipped, and existing settings
+# files are backed up before being replaced with symlinks.
+############################
 
-# Check if Homebrew's bin exists and if it's not already in the PATH
-if [ -x "/opt/homebrew/bin/brew" ] && [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]]; then
-    export PATH="/opt/homebrew/bin:$PATH"
+set -euo pipefail
+
+# The folder this script lives in (:A = absolute path, :h = parent dir)
+SCRIPT_DIR="${0:A:h}"
+source "${SCRIPT_DIR}/helpers.sh"
+
+# Make sure brew-installed apps (including the `code` command) are on the PATH
+if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-# Install VS Code Extensions
-extensions=(
-    batisteo.vscode-django
-    charliermarsh.ruff
-    astral-sh.ty
-    esbenp.prettier-vscode
-    formulahendry.code-runner
-    foxundermoon.shell-format
-    github.copilot
-    github.copilot-chat
-    mechatroner.rainbow-csv
-    monosans.djlint
-    ms-python.python
-    ms-toolsai.jupyter
-    ms-vscode.theme-predawnkit
-    mtxr.sqltools
-    mtxr.sqltools-driver-sqlite
-    ritwickdey.liveServer
-    tamasfe.even-better-toml
-    teabyii.ayu
-    tomoki1207.pdf
-)
+if ! command -v code &>/dev/null; then
+    error "The 'code' command was not found. Install VS Code first (brew.sh does this)."
+    exit 1
+fi
 
-# Get a list of all currently installed extensions.
+# Install any extensions from vscode-extensions.txt that aren't already
+# installed. One failing extension shouldn't abort the rest — failures are
+# collected and reported at the end.
 installed_extensions=$(code --list-extensions)
+failed_extensions=()
 
-for extension in "${extensions[@]}"; do
-    if echo "$installed_extensions" | grep -qi "^$extension$"; then
-        echo "$extension is already installed. Skipping..."
+while IFS= read -r extension; do
+    # Skip blank lines and comments
+    [[ -z "$extension" || "$extension" == \#* ]] && continue
+    if grep -qixF "$extension" <<<"$installed_extensions"; then
+        info "$extension is already installed. Skipping."
     else
-        echo "Installing $extension..."
-        code --install-extension "$extension"
+        info "Installing $extension..."
+        if ! code --install-extension "$extension"; then
+            warn "Failed to install ${extension} — continuing with the rest."
+            failed_extensions+=("$extension")
+        fi
     fi
-done
+done <"${SCRIPT_DIR}/vscode-extensions.txt"
 
-echo "VS Code extensions have been installed."
-
-# Define the target directory for VS Code user settings on macOS
-VSCODE_USER_SETTINGS_DIR="${HOME}/Library/Application Support/Code/User"
-
-# Check if VS Code settings directory exists
-if [ -d "$VSCODE_USER_SETTINGS_DIR" ]; then
-    # Copy your custom settings.json and keybindings.json to the VS Code settings directory
-    ln -sf "${HOME}/dotfiles/settings/VSCode-Settings.json" "${VSCODE_USER_SETTINGS_DIR}/settings.json"
-    ln -sf "${HOME}/dotfiles/settings/VSCode-Keybindings.json" "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
-
-    echo "VS Code settings and keybindings have been updated."
+if (( ${#failed_extensions[@]} > 0 )); then
+    warn "These extensions did not install: ${failed_extensions[*]}"
+    warn "They may now be built into VS Code, renamed, or gone from the marketplace — check and update vscode-extensions.txt."
 else
-    echo "VS Code user settings directory does not exist. Please ensure VS Code is installed."
+    info "VS Code extensions have been installed."
 fi
 
-# Open VS Code to sign-in to extensions
-code .
-echo "Login to extensions (Copilot, Grammarly, etc) within VS Code."
-echo "Press enter to continue..."
-read
+# Symlink settings and keybindings into VS Code's user settings directory.
+# Any existing files are backed up first (see link_with_backup in helpers.sh).
+VSCODE_USER_SETTINGS_DIR="${HOME}/Library/Application Support/Code/User"
+mkdir -p "${VSCODE_USER_SETTINGS_DIR}"
+
+link_with_backup "${SCRIPT_DIR}/settings/VSCode-Settings.json" "${VSCODE_USER_SETTINGS_DIR}/settings.json"
+link_with_backup "${SCRIPT_DIR}/settings/VSCode-Keybindings.json" "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
+
+info "VS Code settings and keybindings have been linked."
+
+# Open VS Code for the account sign-ins
+code "${SCRIPT_DIR}"
+pause_for "Sign in to your accounts (GitHub Copilot, etc.) within VS Code."

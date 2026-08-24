@@ -1,0 +1,35 @@
+# Homebrew packages installed by brew.sh — one per line.
+# Lines starting with # (and blank lines) are ignored.
+bash
+betterleaks
+cairo
+charmbracelet/tap/freeze
+cirruslabs/cli/tart
+coreutils
+d2
+dust
+exiftool
+fd
+ffmpeg
+fzf
+gh
+git
+gitleaks
+imagemagick
+just
+node
+ocrmypdf
+pkgconf
+poppler
+pre-commit
+python
+python-tk
+ripgrep
+tcl-tk
+tealdeer
+tesseract
+tree
+typst
+uv
+vhs
+zsh

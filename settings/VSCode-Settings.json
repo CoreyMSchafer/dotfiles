@@ -64,6 +64,7 @@
   "python.analysis.addHoverSummaries": true,
 
   // Python settings
+  "python.languageServer": "Default", // Pylance — the ty extension offers to switch this to "None"
   "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -75,22 +76,12 @@
   },
   // "python.analysis.inlayHints.variableTypes": true,
   // "python.analysis.inlayHints.functionReturnTypes": true,
-  "python.analysis.typeCheckingMode": "off", // Disable Pylance Checking so MyPy Extension is only used
+  "python.analysis.typeCheckingMode": "off", // Disable Pylance type checking so ty is the only type checker
   "python.analysis.autoFormatStrings": true,
-
-  // Code Runner settings
-  "code-runner.clearPreviousOutput": true,
-  "code-runner.showExecutionMessage": false,
-  "code-runner.ignoreSelection": true,
-  "code-runner.saveFileBeforeRun": true,
-  "code-runner.executorMap": {
-    "python": "\"$pythonPath\" -u $fullFileName",
-  },
-  "code-runner.enableAppInsights": false,
 
   // HTML, Jinja2, and Django settings
   "django.snippets.use": false,
-  "[html][django-html][jinja][jinja-html]": {
+  "[html][django-html]": {
     "editor.defaultFormatter": "monosans.djlint",
     "editor.tabSize": 2,
     "editor.formatOnSave": true,
@@ -101,10 +92,8 @@
   },
   "emmet.includeLanguages": {
     "django-html": "html",
-    "jinja-html": "html",
   },
   "djlint.useVenv": false,
-  "djlint.executablePath": "/Users/coreyschafer/.local/bin/djlint",
   // DJLint settings (should match "~/Work/djlint.toml")
   "djlint.ignore": ["H031"],
   "djlint.maxBlankLines": 1,
@@ -140,7 +129,6 @@
 
   // SQL Tools settings
   "sqltools.useNodeRuntime": true,
-  "liveServer.settings.donotShowInfoMsg": true,
 
   // Terminal settings
   "terminal.integrated.suggest.enabled": false,
