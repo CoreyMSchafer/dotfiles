@@ -10,6 +10,7 @@ discord
 docker-desktop
 firefox
 gcloud-cli
+ghostty
 gimp
 git-credential-manager
 google-chrome

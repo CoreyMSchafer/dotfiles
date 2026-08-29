@@ -148,11 +148,6 @@ uv tool install djlint # Django and Jinja2 template formatting
 uv tool install ruff   # Python formatting and linting
 uv tool install ty     # Astral's Python type checker (used alongside ruff)
 
-# Once fonts are installed, import your Terminal Profile
-pause_for "Import your terminal settings...
-Terminal -> Settings -> Profiles -> Import...
-Import from ${SCRIPT_DIR}/settings/CMS.terminal"
-
 # Clean up downloads and outdated versions
 brew cleanup
 

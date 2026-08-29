@@ -3,68 +3,92 @@
 # (no .shared_prompt dependency) so it works in isolation.
 
 # If not running interactively, don't do anything
-[[ $- == *i* ]] || return
+[[ $- == *i* ]] || return 0
 
-# Shell prompt based on the Solarized Dark theme.
-# Screenshot: http://i.imgur.com/EkEtphC.png
-# Heavily inspired by @necolas’s prompt: https://github.com/necolas/dotfiles
-# iTerm → Profiles → Text → use 13pt Monaco with 1.1 vertical spacing.
+# If the client terminal's TERM has no terminfo entry on this host (e.g.
+# Ghostty's xterm-ghostty on a fresh server), fall back to xterm-256color.
+if ! infocmp "$TERM" >/dev/null 2>&1 && infocmp xterm-256color >/dev/null 2>&1; then
+    export TERM='xterm-256color'
+fi
 
-if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
-	export TERM='gnome-256color';
-elif infocmp xterm-256color >/dev/null 2>&1; then
-	export TERM='xterm-256color';
-fi;
+bold=$(tput bold 2>/dev/null || printf '\e[1m')
+reset=$(tput sgr0 2>/dev/null || printf '\e[0m')
 
-if tput setaf 1 &> /dev/null; then
-	tput sgr0; # reset colors
-	bold=$(tput bold);
-	reset=$(tput sgr0);
-	# Solarized colors, taken from http://git.io/solarized-colors.
-	black=$(tput setaf 0);
-	blue=$(tput setaf 153);
-	green=$(tput setaf 71);
-	orange=$(tput setaf 166);
-	red=$(tput setaf 167);
-	white=$(tput setaf 15);
-	yellow=$(tput setaf 228);
+# Exact 24-bit colors when the terminal advertises support, nearest
+# 256-color approximations otherwise. COLORTERM rarely survives SSH, so
+# the approximations are the common case here — same graceful degradation
+# as ~/dotfiles/.shared_prompt.
+#
+# To get the exact colors over SSH on a server you control, let the client
+# forward COLORTERM:
+#   1. Server: add `AcceptEnv COLORTERM` to /etc/ssh/sshd_config, then
+#      `sudo systemctl reload ssh`
+#   2. Client: Ghostty's ssh-env integration already sends it; from other
+#      clients, add `SendEnv COLORTERM` to ~/.ssh/config
+if [[ "${COLORTERM}" == "truecolor" || "${COLORTERM}" == "24bit" ]]; then
+    # Turn a hex value like "e47030" into its 24-bit color escape sequence
+    color() { printf '\033[38;2;%d;%d;%dm' "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
+    blue=$(color afd7ff)
+    green=$(color 5faf5f)
+    magenta=$(color b48ead)
+    orange=$(color e47030)
+    red=$(color d75f5f)
+    white=$(color f1f1f1)
+    yellow=$(color ffff87)
+elif tput setaf 1 >/dev/null 2>&1; then
+    blue=$(tput setaf 153)
+    green=$(tput setaf 71)
+    magenta=$(tput setaf 139)
+    orange=$(tput setaf 166)
+    red=$(tput setaf 167)
+    white=$(tput setaf 15)
+    yellow=$(tput setaf 228)
+else # last resort: the basic 16 colors
+    blue="\e[1;34m"
+    green="\e[1;32m"
+    magenta="\e[1;35m"
+    orange="\e[1;33m"
+    red="\e[1;31m"
+    white="\e[1;37m"
+    yellow="\e[1;33m"
+fi
+
+# ls file-type colors (GNU syntax), matching LSCOLORS in ~/dotfiles/.aliases:
+# bold yellow dirs, green executables, blue symlinks. These reference the
+# terminal's palette slots, so they wear whatever theme the client runs.
+export LS_COLORS='di=01;33:ln=34:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+alias ls='ls --color=auto'
+alias la='ls -lahF --color=auto'
+
+# Highlight the user name when logged in as root ($EUID rather than $USER —
+# the shell always sets it, even in minimal environments like containers).
+if (( EUID == 0 )); then
+    userStyle="${red}"
+    marker='#' # root keeps the traditional marker
 else
-	bold='';
-	reset="\e[0m";
-	black="\e[1;30m";
-	blue="\e[1;34m";
-	green="\e[1;32m";
-	orange="\e[1;33m";
-	red="\e[1;31m";
-	white="\e[1;37m";
-	yellow="\e[1;33m";
-fi;
+    userStyle="${orange}"
+    marker='›'
+fi
 
-# Highlight the user name when logged in as root.
-if [[ "${USER}" == "root" ]]; then
-	userStyle="${red}";
-else
-	userStyle="${orange}";
-fi;
-
-# Highlight the hostname when connected via SSH.
+# Highlight the hostname when connected via SSH (magenta so it can't be
+# confused with the red root warning on the username).
 if [[ "${SSH_TTY}" ]]; then
-	hostStyle="${bold}${red}";
+    hostStyle="${bold}${magenta}"
 else
-	hostStyle="${yellow}";
-fi;
+    hostStyle="${yellow}"
+fi
 
 # Set the terminal title to the current working directory.
-PS1="\[\033]0;\w\007\]";
-PS1+="\[${bold}\]\n"; # newline
-PS1+="\[${userStyle}\]\u"; # username
-PS1+="\[${white}\] at ";
-PS1+="\[${hostStyle}\]\h"; # host
-PS1+="\[${white}\] in ";
-PS1+="\[${green}\]\W"; # working directory
-PS1+="\n";
-PS1+="\[${white}\]\$ \[${reset}\]"; # `$` (and reset color)
-export PS1;
+PS1="\[\033]0;\w\007\]"
+PS1+="\[${bold}\]\n" # newline
+PS1+="\[${userStyle}\]\u" # username
+PS1+="\[${white}\] at "
+PS1+="\[${hostStyle}\]\h" # host
+PS1+="\[${white}\] in "
+PS1+="\[${green}\]\W" # working directory
+PS1+="\n"
+PS1+="\[${white}\]${marker} \[${reset}\]" # input marker (and reset color)
+export PS1
 
-PS2="\[${yellow}\]→ \[${reset}\]";
-export PS2;
+PS2="\[${yellow}\]➜ \[${reset}\]"
+export PS2

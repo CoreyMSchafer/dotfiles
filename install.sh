@@ -48,6 +48,19 @@ link_with_backup "${dotfiledir}/.private" "${HOME}/.private"
 mkdir -p "${HOME}/.config/ruff"
 link_with_backup "${dotfiledir}/settings/ruff.toml" "${HOME}/.config/ruff/ruff.toml"
 
+# Ghostty terminal config
+mkdir -p "${HOME}/.config/ghostty"
+link_with_backup "${dotfiledir}/settings/ghostty-config" "${HOME}/.config/ghostty/config"
+
+# The presence of this file suppresses the "Last login: ..." line that
+# new terminal windows print (see `man login`)
+touch "${HOME}/.hushlogin"
+
+# SSH client config; config.local holds personal hosts and stays out of
+# version control (ssh ignores the Include if it doesn't exist)
+mkdir -p "${HOME}/.ssh" && chmod 700 "${HOME}/.ssh"
+link_with_backup "${dotfiledir}/settings/ssh-config" "${HOME}/.ssh/config"
+
 ./macOS.sh
 ./brew.sh
 ./vscode.sh

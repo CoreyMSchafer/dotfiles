@@ -1,8 +1,20 @@
 
 source "${HOME}/dotfiles/.shared_prompt"
 
+# Blank separator line before each prompt. zsh automatically calls a
+# function named `precmd` before every prompt (a hook, like Python's dunder
+# methods) — but not on prompt redraws, so screen clears (Cmd+K) put the
+# prompt back at the very top instead of one line down. The first prompt of
+# a session skips the separator so new windows start flush at the top.
+precmd() {
+    if [[ -n "${_prompt_seen}" ]]; then
+        print ''
+    fi
+    _prompt_seen=1
+}
+
 PS1="\$(prompt_venv)" # virtual environment
-PS1+="%{${bold}%}"$'\n' # newline
+PS1+="%{${bold}%}" # the whole prompt line renders in the bold face
 PS1+="%{${userStyle}%}%n" # username
 PS1+="%{${white}%} at "
 PS1+="%{${hostStyle}%}%m" # host
@@ -10,8 +22,8 @@ PS1+="%{${white}%} in "
 PS1+="%{${green}%}%1~" # working directory
 PS1+="\$(prompt_git)" # Git repository details
 PS1+=$'\n'
-PS1+="%{${white}%}\$ %{${reset}%}" # `$` (and reset color)
+PS1+="%{${white}%}› %{${reset}%}" # input marker (and reset color)
 export PS1
 
-PS2="%{${yellow}%}→ %{${reset}%}"
+PS2="%{${yellow}%}➜ %{${reset}%}"
 export PS2

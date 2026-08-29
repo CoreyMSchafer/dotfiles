@@ -1,0 +1,11 @@
+# Linked to ~/.ssh/config by install.sh.
+# In ssh configs the FIRST matching value for an option wins, so the
+# machine-specific include comes first and can override anything below.
+
+# Personal/machine-specific hosts — not in version control (like ~/.private)
+Include config.local
+
+Host *
+    # Forward COLORTERM so servers that accept it (AcceptEnv COLORTERM in
+    # their sshd_config) can render exact 24-bit colors
+    SendEnv COLORTERM

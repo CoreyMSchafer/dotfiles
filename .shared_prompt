@@ -1,28 +1,32 @@
-# Define the prompt_git function for git repository status
+# Git segment for the prompt: branch name plus change markers
+# (+ staged, ! unstaged, ? untracked, $ stashed).
 prompt_git() {
-    local git_status=''
-    local branchName=''
+    local output line branch=''
+    local staged='' unstaged='' untracked='' git_status=''
 
-    # Check if the current directory is in a Git repository.
-    if git rev-parse --is-inside-work-tree &>/dev/null; then
-        # Get the status summary.
-        local gitSummary=$(git status --porcelain)
+    # One porcelain call reports the branch and every kind of change;
+    # it exits non-zero outside a git repository.
+    output=$(git status --porcelain --branch 2>/dev/null) || return
 
-        # Check for uncommitted changes in the index, unstaged changes, untracked files, and stashed files.
-        [[ -n $(echo "$gitSummary" | grep '^M') ]] && git_status+='+'
-        [[ -n $(echo "$gitSummary" | grep '^ M') ]] && git_status+='!'
-        [[ -n $(echo "$gitSummary" | grep '^\?\?') ]] && git_status+='?'
-        git rev-parse --verify refs/stash &>/dev/null && git_status+='$'
+    while IFS= read -r line; do
+        case "${line}" in
+            "## No commits yet on "*) branch="${line#"## No commits yet on "}" ;;
+            "## HEAD (no branch)"*) branch=$(git rev-parse --short HEAD) ;;
+            "## "*) branch="${line#"## "}" && branch="${branch%%...*}" ;;
+            "??"*) untracked='?' ;;
+            *)
+                # Column 1 holds the staged state, column 2 the unstaged state.
+                [[ "${line:0:1}" != " " ]] && staged='+'
+                [[ "${line:1:1}" != " " ]] && unstaged='!'
+                ;;
+        esac
+    done <<<"${output}"
 
-        # Get the short symbolic ref or the short SHA for the latest commit.
-        branchName="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo '(unknown)')"
+    git_status="${staged}${unstaged}${untracked}"
+    git rev-parse --verify refs/stash &>/dev/null && git_status+='$'
+    [[ -n "${git_status}" ]] && git_status=" [${git_status}]"
 
-        [ -n "${git_status}" ] && git_status=" [${git_status}]"
-
-        printf "%b on %b%s%s" "${white}" "${blue}" "${branchName}" "${git_status}"
-    else
-        return
-    fi
+    printf "%b on %b%s%s" "${white}" "${blue}" "${branch}" "${git_status}"
 }
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -35,17 +39,33 @@ prompt_venv() {
     fi
 }
 
-# Using tput for colors and formatting.
-tput sgr0 # reset colors
 bold=$(tput bold)
 reset=$(tput sgr0)
-blue=$(tput setaf 153)
-steel_blue=$(tput setaf 67)
-green=$(tput setaf 71)
-orange=$(tput setaf 166)
-red=$(tput setaf 167)
-white=$(tput setaf 15)
-yellow=$(tput setaf 228)
+
+# Exact 24-bit colors on terminals that support them (COLORTERM is the
+# de facto signal; it doesn't survive SSH, so remote sessions fall back).
+# The fallback tput indexes are the nearest 256-color approximations.
+if [[ "${COLORTERM}" == "truecolor" || "${COLORTERM}" == "24bit" ]]; then
+    # Turn a hex value like "e47030" into its 24-bit color escape sequence:
+    # slice it into the R/G/B pairs and let printf's %d convert each
+    # 0x-prefixed pair from hex to the decimal the escape code needs.
+    color() { printf '\033[38;2;%d;%d;%dm' "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
+    blue=$(color afd7ff)
+    steel_blue=$(color 5f87af)
+    green=$(color 5faf5f)
+    orange=$(color e47030)
+    red=$(color d75f5f)
+    white=$(color f1f1f1)
+    yellow=$(color ffff87)
+else
+    blue=$(tput setaf 153)
+    steel_blue=$(tput setaf 67)
+    green=$(tput setaf 71)
+    orange=$(tput setaf 166)
+    red=$(tput setaf 167)
+    white=$(tput setaf 15)
+    yellow=$(tput setaf 228)
+fi
 
 # Highlight the user name when logged in as root.
 if [[ "${USER}" == "root" ]]; then
