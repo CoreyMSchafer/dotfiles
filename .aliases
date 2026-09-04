@@ -2,26 +2,33 @@
 alias ch='history 0 | grep "git commit"'
 alias hg='history 0 | grep'
 
-# `--color=auto` colorizes a terminal but stays clean when piped; modern
-# macOS ls accepts it too, so the fallback only matters on older systems
-if ls --color >/dev/null 2>&1; then
-    colorflag="--color=auto"
+# Listings: eza (modern ls) when installed, keeping the classic command names
+# for muscle memory and tutorials; plain ls otherwise (servers, fresh boxes)
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza'
+    alias la='eza -lahF --git' # long, all, header row, classify, git status column
+    alias tree='eza --tree'
 else
-    colorflag="-G" # older BSD ls; suppresses color when output isn't a tty
+    # `--color=auto` colorizes a terminal but stays clean when piped; modern
+    # macOS ls accepts it too, so the -G fallback only matters on older systems
+    if ls --color >/dev/null 2>&1; then
+        colorflag="--color=auto"
+    else
+        colorflag="-G"
+    fi
+    alias ls="command ls ${colorflag}"
+    alias la="ls -lahF ${colorflag}"
 fi
 
-# List all files colorized in long format, including dot files
-alias la="ls -lahF ${colorflag}"
-
-# Always use color output for `ls`
-alias ls="command ls ${colorflag}"
-
-# ls file-type colors: 11 foreground/background letter pairs, in order:
-# dir, symlink, socket, pipe, executable, block, char, setuid, setgid,
-# dir-sticky, dir-writable. a-h = the 8 ANSI slots (d=yellow, e=blue, ...),
-# capital = bold, x = default. So dirs are bold yellow, executables green.
-# Full legend: `man ls`, LSCOLORS section.
+# File-type colors: bold yellow dirs, blue symlinks, green executables.
+# LS_COLORS is the GNU syntax (what eza and Linux ls read); LSCOLORS is the
+# BSD equivalent for plain macOS ls (legend: `man ls`, LSCOLORS section).
+export LS_COLORS='di=01;33:ln=34:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 export LSCOLORS='Dxexcxdxcxegedabagacad'
+
+# cat with syntax highlighting: -p keeps cat's plain layout, and bat drops
+# the colors automatically when piped, so scripts and redirects are unaffected
+command -v bat >/dev/null 2>&1 && alias cat='bat -p --paging=never'
 
 # Always enable colored `grep` output
 # Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.

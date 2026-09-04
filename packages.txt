@@ -1,35 +1,120 @@
 # Homebrew packages installed by brew.sh — one per line.
 # Lines starting with # (and blank lines) are ignored.
+
 bash
+# Modern Bash (macOS ships 3.2)
+
+bat
+# cat with syntax highlighting
+
 betterleaks
+# Secret scanner (audited alongside gitleaks)
+
 cairo
+# 2D graphics library (Manim dependency)
+
 charmbracelet/tap/freeze
+# Code/terminal screenshots as SVG/PNG
+
 cirruslabs/cli/tart
+# macOS/Linux VMs on Apple Silicon
+
 coreutils
+# GNU versions of core commands (Linux parity)
+
 d2
+# Diagrams as code
+
 dust
+# Disk usage as a tree
+
 exiftool
+# Read/write file metadata
+
+eza
+# Modern ls (also replaces tree)
+
 fd
+# Fast find
+
 ffmpeg
+# Audio/video conversion
+
 fzf
+# Fuzzy finder (shell history/file search)
+
 gh
+# GitHub CLI
+
 git
+# Git (newer than Apple's)
+
 gitleaks
+# Secret scanner (pre-commit gate)
+
 imagemagick
+# Image conversion/processing
+
+jq
+# JSON processor
+
 just
+# Task runner
+
 node
+# JavaScript runtime
+
 ocrmypdf
+# OCR for PDFs
+
 pkgconf
+# Build helper (Manim dependency)
+
 poppler
+# PDF utilities (pdftotext etc.)
+
 pre-commit
+# Git pre-commit hooks
+
 python
+# System-wide Python
+
 python-tk
+# tkinter for Homebrew Python
+
 ripgrep
+# Fast grep
+
 tcl-tk
+# Tk GUI toolkit (tkinter dependency)
+
 tealdeer
+# tldr pages (command cheat sheets)
+
 tesseract
-tree
+# OCR engine (ocrmypdf dependency)
+
+
 typst
+# Typesetting (handouts, cheat sheets)
+
 uv
+# Python package/project manager
+
 vhs
+# Terminal recordings to GIF/MP4
+
+whisper-cpp
+# Local speech-to-text
+
+woff2
+# Web font compression
+
+yt-dlp
+# Video downloader
+
+zoxide
+# Smarter cd (jumps by frecency)
+
 zsh
+# zsh (newer than macOS's)

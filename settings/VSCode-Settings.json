@@ -34,7 +34,6 @@
   "editor.fontFamily": "Source Code Pro",
   "debug.console.fontFamily": "Source Code Pro",
   "editor.fontWeight": "500",
-  "terminal.integrated.fontWeight": "600",
   "workbench.settings.openDefaultSettings": true,
   "workbench.settings.useSplitJSON": true,
   "workbench.settings.editor": "json",
@@ -66,6 +65,7 @@
   // Python settings
   "python.languageServer": "Default", // Pylance — the ty extension offers to switch this to "None"
   "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+  "python.terminal.activateEnvironment": false, // I activate manually or use `uv run`; Pylance still picks up the project .venv
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
@@ -130,8 +130,42 @@
   // SQL Tools settings
   "sqltools.useNodeRuntime": true,
 
-  // Terminal settings
+  // Terminal settings (the integrated terminal is its own emulator — these
+  // mirror the Ghostty config so both look the same; the shell side comes
+  // from the dotfiles either way)
+  "terminal.external.osxExec": "Ghostty.app",
+  "terminal.integrated.fontFamily": "Source Code Pro",
+  "terminal.integrated.fontWeight": "600",
+  "terminal.integrated.fontWeightBold": "900",
+  "terminal.integrated.letterSpacing": 3, // tuned by eye at fontSize 18 to match Ghostty's cell width
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.drawBoldTextInBrightColors": false, // bold keeps its palette slot, like Ghostty
+  "terminal.integrated.minimumContrastRatio": 1.1, // same scale and value as Ghostty's minimum-contrast
+  "terminal.integrated.macOptionIsMeta": true,
   "terminal.integrated.suggest.enabled": false,
+  // CMS palette (canonical copy with slot roles: dotfiles/settings/ghostty-config)
+  "workbench.colorCustomizations": {
+    "terminal.background": "#1b1d1e",
+    "terminal.foreground": "#e6e6d6",
+    "terminal.selectionBackground": "#55444480",
+    "terminalCursor.foreground": "#cccccc",
+    "terminal.ansiBlack": "#3d352a",
+    "terminal.ansiRed": "#cd5c5c",
+    "terminal.ansiGreen": "#b4d388",
+    "terminal.ansiYellow": "#f49d62",
+    "terminal.ansiBlue": "#92bfbf",
+    "terminal.ansiMagenta": "#b48ead",
+    "terminal.ansiCyan": "#92bfbf",
+    "terminal.ansiWhite": "#bbaa99",
+    "terminal.ansiBrightBlack": "#554444",
+    "terminal.ansiBrightRed": "#cd5c5c",
+    "terminal.ansiBrightGreen": "#b4d388",
+    "terminal.ansiBrightYellow": "#ede480",
+    "terminal.ansiBrightBlue": "#bddcdc",
+    "terminal.ansiBrightMagenta": "#b48ead",
+    "terminal.ansiBrightCyan": "#bddcdc",
+    "terminal.ansiBrightWhite": "#f1f1f1",
+  },
 
   // Miscellaneous settings (Likely added Dynamically)
 }

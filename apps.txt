@@ -1,24 +1,56 @@
 # Homebrew cask apps installed by brew.sh — one per line.
 # Lines starting with # (and blank lines) are ignored.
-brave-browser
+
 chatgpt
+# ChatGPT desktop app
+
 claude
+# Claude desktop app
+
 claude-code
+# Claude Code CLI
+
 codex
-copilot-cli
+# OpenAI Codex CLI
+
 discord
+# Chat/community
+
 docker-desktop
-firefox
+# Containers
+
 gcloud-cli
+# Google Cloud CLI
+
 ghostty
+# Terminal
+
 gimp
+# Image editor
+
 git-credential-manager
+# Stores git HTTPS credentials
+
 google-chrome
+# Browser (sign in first — unlocks the password manager)
+
 google-drive
+# Drive file sync
+
 keyboardcleantool
-libreoffice
+# Locks the keyboard for cleaning
+
 postman
+# API client
+
 rectangle
+# Window snapping/tiling
+
 spotify
+# Music
+
 visual-studio-code
+# Editor
+
 vlc
+# Media player

@@ -39,3 +39,6 @@ export PATH="$PATH:$HOME/.local/bin"
 
 # Added by fzf installer
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# zoxide: smarter cd — `z <dir>` jumps by frecency, `zi` picks with fzf
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"

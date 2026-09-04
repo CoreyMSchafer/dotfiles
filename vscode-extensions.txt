@@ -1,18 +1,50 @@
 # VS Code extensions installed by vscode.sh — one extension ID per line.
 # Lines starting with # (and blank lines) are ignored.
+
 astral-sh.ty
+# Python type checking
+
 batisteo.vscode-django
+# Django template syntax/snippets
+
 charliermarsh.ruff
+# Python formatting/linting
+
 esbenp.prettier-vscode
+# JS/CSS/HTML formatting
+
 foxundermoon.shell-format
+# Shell script formatting
+
 mechatroner.rainbow-csv
+# Colorized CSV columns
+
 monosans.djlint
+# Django/Jinja template formatting
+
 ms-python.python
+# Python language support (Pylance)
+
 ms-toolsai.jupyter
+# Notebooks
+
 ms-vscode.live-server
+# Live-reloading web preview
+
 ms-vscode.theme-predawnkit
+# Predawn color theme
+
 mtxr.sqltools
+# SQL client
+
 mtxr.sqltools-driver-sqlite
+# SQLite driver for SQLTools
+
 tamasfe.even-better-toml
+# TOML support (pyproject.toml)
+
 teabyii.ayu
+# Ayu file icons
+
 tomoki1207.pdf
+# PDF viewer
