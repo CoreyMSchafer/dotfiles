@@ -37,6 +37,9 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 # uv-installed tools (ruff, ty, djlint, …) live here
 export PATH="$PATH:$HOME/.local/bin"
 
+# fzf: draw with the terminal's 16-color palette instead of its own 256-color theme
+export FZF_DEFAULT_OPTS='--color=16'
+
 # Added by fzf installer
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

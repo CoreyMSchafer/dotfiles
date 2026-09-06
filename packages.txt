@@ -61,6 +61,9 @@ jq
 just
 # Task runner
 
+librsvg
+# SVG rasterizer (freeze uses it for PNG output with system fonts)
+
 node
 # JavaScript runtime
 

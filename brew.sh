@@ -110,6 +110,14 @@ else
     info "fzf shell integration already configured. Skipping configuration."
 fi
 
+# Register the color scheme linked into ~/.config/bat/themes by install.sh
+if bat --list-themes 2>/dev/null | grep -qx "Predawn"; then
+    info "bat theme cache already built. Skipping."
+else
+    info "Building bat's theme cache..."
+    bat cache --build >/dev/null
+fi
+
 # Git config name (prompt only if not already set)
 if [[ -z "$(git config --global --get user.name || true)" ]]; then
     read -r "git_user_name?Please enter your FULL NAME for Git configuration: "

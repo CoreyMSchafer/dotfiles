@@ -26,6 +26,12 @@ fi
 export LS_COLORS='di=01;33:ln=34:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 export LSCOLORS='Dxexcxdxcxegedabagacad'
 
+# Quiet eza's metadata columns (its defaults: rainbow permission bits, bold
+# yellow user): permissions, user, and size units in the terminal's white
+# slot, execute bits green, setuid red, sizes in the plain foreground.
+# Dates and git flags keep their defaults.
+export EZA_COLORS='ur=37:uw=37:ux=32:ue=32:gr=37:gw=37:gx=32:tr=37:tw=37:tx=32:su=31:sf=31:xa=37:sn=0:sb=37:uu=37:un=37:uR=31:gu=37:gn=37:gR=31:hd=4;37:lc=37:lm=37'
+
 # cat with syntax highlighting: -p keeps cat's plain layout, and bat drops
 # the colors automatically when piped, so scripts and redirects are unaffected
 command -v bat >/dev/null 2>&1 && alias cat='bat -p --paging=never'

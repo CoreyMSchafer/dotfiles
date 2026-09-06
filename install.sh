@@ -52,6 +52,12 @@ link_with_backup "${dotfiledir}/settings/ruff.toml" "${HOME}/.config/ruff/ruff.t
 mkdir -p "${HOME}/.config/ghostty"
 link_with_backup "${dotfiledir}/settings/ghostty-config" "${HOME}/.config/ghostty/config"
 
+# bat (cat with syntax highlighting) config and color scheme; brew.sh
+# registers the theme once bat is installed
+mkdir -p "${HOME}/.config/bat"
+link_with_backup "${dotfiledir}/settings/bat-config" "${HOME}/.config/bat/config"
+link_with_backup "${dotfiledir}/settings/bat-themes" "${HOME}/.config/bat/themes"
+
 # The presence of this file suppresses the "Last login: ..." line that
 # new terminal windows print (see `man login`)
 touch "${HOME}/.hushlogin"
