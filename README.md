@@ -70,12 +70,12 @@ The script is safe to re-run — steps that are already done are skipped.
 -  `.shared_prompt`: Custom prompt setup used by both `.bash_prompt` & `.zprompt`
 -  `.bash_prompt` & `.zprompt`: Custom prompt setup for Bash and Zsh.
 -  `.bash_profile`: Setting system-wide environment variables
--  `.aliases`: Aliases for common commands. Some are personalized to my machines specifically (e.g. the 'yt' alias opening my YouTube Scripts')
+-  `.aliases`: Aliases for common commands (`ls`/`la`/`tree` run `eza`, `cat` runs `bat`, with plain fallbacks when those aren't installed).
 -  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control
 -  `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
 -  `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
 -  `helpers.sh`: Small helpers (logging, backup-then-symlink) shared by the install scripts
--  `settings/`: Directory containing editor settings and configurations for Visual Studio Code.
+-  `settings/`: Config files that `install.sh` symlinks into place — Ghostty (my terminal), VS Code settings/keybindings, `~/.ssh/config`, `bat`, and `ruff`.
 
 ### Customizing Your Setup
 

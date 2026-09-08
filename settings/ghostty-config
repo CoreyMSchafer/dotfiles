@@ -73,6 +73,14 @@ selection-foreground = cell-foreground
 # Option acts as Meta/Alt for shell shortcuts instead of typing special characters
 macos-option-as-alt = true
 
+# Copy plain text by default. Ghostty's default ("mixed") also puts an HTML
+# copy on the clipboard, which rich-text fields (browser chat boxes, docs)
+# prefer — and that renders each colored prompt segment on its own line.
+# Cmd+Shift+C keeps the formatted copy for when colors are wanted.
+keybind = super+c=copy_to_clipboard:plain
+keybind = copy=copy_to_clipboard:plain
+keybind = super+shift+c=copy_to_clipboard:html
+
 # When SSHing to hosts that don't know Ghostty's terminfo, send
 # TERM=xterm-256color instead (broken line editing otherwise) and offer
 # COLORTERM to hosts that accept it
