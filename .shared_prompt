@@ -53,6 +53,7 @@ if [[ "${COLORTERM}" == "truecolor" || "${COLORTERM}" == "24bit" ]]; then
     blue=$(color afd7ff)
     steel_blue=$(color 5f87af)
     green=$(color 5faf5f)
+    magenta=$(color b48ead)
     orange=$(color e47030)
     red=$(color d75f5f)
     white=$(color f1f1f1)
@@ -61,6 +62,7 @@ else
     blue=$(tput setaf 153)
     steel_blue=$(tput setaf 67)
     green=$(tput setaf 71)
+    magenta=$(tput setaf 139)
     orange=$(tput setaf 166)
     red=$(tput setaf 167)
     white=$(tput setaf 15)
@@ -74,9 +76,10 @@ else
     userStyle="${orange}"
 fi
 
-# Highlight the hostname when connected via SSH.
+# Highlight the hostname when connected via SSH (magenta, so it can't be
+# confused with the red root warning on the username).
 if [[ "${SSH_TTY}" ]]; then
-    hostStyle="${bold}${red}"
+    hostStyle="${bold}${magenta}"
 else
     hostStyle="${yellow}"
 fi

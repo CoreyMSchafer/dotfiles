@@ -75,3 +75,15 @@ EOF
         info "Desktop background set."
     fi
 fi
+
+# Let SSH clients pass COLORTERM to this Mac, so prompts render in exact
+# 24-bit color when SSHing in (sshd only accepts whitelisted variables).
+# A drop-in file survives macOS updates; Apple's own settings live in
+# 100-macos.conf. Only matters once Remote Login is enabled.
+SSHD_DROPIN="/etc/ssh/sshd_config.d/200-colorterm.conf"
+if [[ "$(cat "${SSHD_DROPIN}" 2>/dev/null)" == "AcceptEnv COLORTERM" ]]; then
+    info "sshd already accepts COLORTERM. Skipping."
+else
+    echo "AcceptEnv COLORTERM" | sudo tee "${SSHD_DROPIN}" >/dev/null
+    info "sshd will accept COLORTERM from SSH clients (${SSHD_DROPIN})."
+fi
