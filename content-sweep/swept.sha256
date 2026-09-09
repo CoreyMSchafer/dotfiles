@@ -1,8 +1,0 @@
-# Content-sweep ledger — files already reviewed. Do not hand-edit; use the
-# shared ~/Work/content-sweep/check.py (--record / --record-all / --reseal).
-# Format: `<sha256>  <path>` (shasum -a 256).
-483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a  LICENSE-MIT.txt
-22258d012a015acb679aa0373802bd0d94872fc3482c2dc3526e3961b182c62d  apps.txt
-14a0108a58716f6a2dc96ac1dec3eff60fcb6809b6a3738febc6c16e2a7f5b0f  fonts.txt
-e2d86d6d95b9d267f5c3048fd440efc0b1f20feb8273e6af7c37eae9c5a6c3b2  packages.txt
-469c807efe13d349011816a8de32a3b5c70f747594fce8e18f8db59a57a32cc1  vscode-extensions.txt

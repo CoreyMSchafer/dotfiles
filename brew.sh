@@ -62,6 +62,10 @@ if brew trust --help &>/dev/null; then
     done
 fi
 
+# Install only what's missing; `brew upgrade` above already handled updates.
+# Without this, `brew install` re-downloads every `version :latest` cask (the fonts).
+export HOMEBREW_NO_INSTALL_UPGRADE=1
+
 # Already-installed packages are skipped. --yes: skip Homebrew 6's
 # confirmation prompts; --quiet: trim per-package output
 brew install --yes --quiet "${packages[@]}"
