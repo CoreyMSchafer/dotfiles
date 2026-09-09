@@ -1,18 +1,16 @@
 #!/usr/bin/env zsh
 ############################
-# Sets up VS Code: installs the extensions listed in vscode-extensions.txt
-# and symlinks settings/keybindings from this repo.
-# Safe to re-run: installed extensions are skipped, and existing settings
-# files are backed up before being replaced with symlinks.
+# Sets up VS Code: installs the extensions in vscode-extensions.txt and
+# symlinks settings/keybindings. Safe to re-run.
 ############################
 
 set -euo pipefail
 
-# The folder this script lives in (:A = absolute path, :h = parent dir)
+# This script's folder (:A absolute, :h parent)
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
-# Make sure brew-installed apps (including the `code` command) are on the PATH
+# Put brew (and its `code` command) on the PATH
 if [[ -x /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ -x /usr/local/bin/brew ]]; then
@@ -24,9 +22,7 @@ if ! command -v code &>/dev/null; then
     exit 1
 fi
 
-# Install any extensions from vscode-extensions.txt that aren't already
-# installed. One failing extension shouldn't abort the rest — failures are
-# collected and reported at the end.
+# Install missing extensions; one failure shouldn't abort the rest
 installed_extensions=$(code --list-extensions)
 failed_extensions=()
 
@@ -51,8 +47,7 @@ else
     info "VS Code extensions have been installed."
 fi
 
-# Symlink settings and keybindings into VS Code's user settings directory.
-# Any existing files are backed up first (see link_with_backup in helpers.sh).
+# Symlink settings and keybindings (existing files are backed up)
 VSCODE_USER_SETTINGS_DIR="${HOME}/Library/Application Support/Code/User"
 mkdir -p "${VSCODE_USER_SETTINGS_DIR}"
 

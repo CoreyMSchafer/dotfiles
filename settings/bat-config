@@ -1,5 +1,4 @@
 # bat (cat with syntax highlighting), linked to ~/.config/bat/config by install.sh
 
-# Predawn: the editor's color scheme (settings/bat-themes). After editing a
-# theme file, run `bat cache --build` so bat picks up the change.
+# Predawn (settings/bat-themes); after editing a theme, run `bat cache --build`
 --theme=Predawn

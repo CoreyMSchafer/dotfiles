@@ -1,21 +1,18 @@
 #!/usr/bin/env zsh
 ############################
-# Installs Homebrew (if needed), everything listed in packages.txt,
-# apps.txt, and fonts.txt, and global npm/uv tools, then configures git,
-# GitHub, and the default shell.
-# Safe to re-run: each step checks before it changes anything.
+# Installs Homebrew, the manifests (packages/apps/fonts.txt), and global
+# npm/uv tools, then configures git, GitHub, and the default shell.
+# Safe to re-run.
 ############################
 
 set -euo pipefail
 
-# The folder this script lives in (:A = absolute path, :h = parent dir)
+# This script's folder (:A absolute, :h parent)
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
-# Put brew on this script's PATH: `brew shellenv` prints export statements
-# and eval applies them (Apple Silicon and Intel locations). Runs BEFORE the
-# install check so a re-run from a shell opened before Homebrew existed still
-# finds it — otherwise the installer would run again over the existing install.
+# Put brew on this script's PATH (Apple Silicon or Intel). Runs before the
+# install check so a re-run from a pre-Homebrew shell still finds it.
 brew_shellenv() {
     if [[ -x /opt/homebrew/bin/brew ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -40,8 +37,7 @@ if ! command -v brew &>/dev/null; then
     exit 1
 fi
 
-# Update Homebrew and upgrade any already-installed formulae and casks
-# (brew upgrade has upgraded casks by default since Homebrew 3.2)
+# Update Homebrew and upgrade everything installed (casks included)
 brew update
 brew upgrade --yes
 
@@ -55,12 +51,9 @@ packages=(${(f)"$(read_manifest packages.txt)"})
 apps=(${(f)"$(read_manifest apps.txt)"})
 fonts=(${(f)"$(read_manifest fonts.txt)"})
 
-# Homebrew 6+ requires trusting a third-party tap before installing from it.
-# Any manifest entry with a slash (e.g. charmbracelet/tap/freeze) comes from
-# one, so derive the taps to trust from the manifests themselves — nothing
-# to keep in sync by hand. Trusting the tap (not just the formula) also
-# covers same-tap dependencies. Older Homebrew has no trust command and
-# doesn't need one.
+# Homebrew 6+ requires trusting third-party taps first. Entries with a slash
+# (e.g. charmbracelet/tap/freeze) come from one, so derive the taps from the
+# manifests. Older Homebrew has no trust command and doesn't need one.
 if brew trust --help &>/dev/null; then
     for pkg in "${packages[@]}" "${apps[@]}" "${fonts[@]}"; do
         if [[ "$pkg" == */* ]]; then
@@ -69,10 +62,8 @@ if brew trust --help &>/dev/null; then
     done
 fi
 
-# brew install is idempotent — already-installed packages are skipped with a notice.
-# Fully-qualified names (e.g. charmbracelet/tap/freeze) tap their tap automatically.
-# --yes: don't ask for confirmation (Homebrew 6 asks by default)
-# --quiet: trim the per-package output
+# Already-installed packages are skipped. --yes: skip Homebrew 6's
+# confirmation prompts; --quiet: trim per-package output
 brew install --yes --quiet "${packages[@]}"
 
 # Install the apps (Homebrew casks)
@@ -81,8 +72,7 @@ brew install --cask --yes --quiet "${apps[@]}"
 # Install the fonts (Homebrew casks)
 brew install --cask --yes --quiet "${fonts[@]}"
 
-# Make Homebrew's zsh the default shell. dscl reports the real login shell —
-# $SHELL can be stale inside an existing session.
+# Make Homebrew's zsh the login shell (dscl reports the real one; $SHELL can be stale)
 BREW_ZSH="$(brew --prefix)/bin/zsh"
 CURRENT_LOGIN_SHELL="$(dscl . -read "/Users/${USER}" UserShell 2>/dev/null | awk '{print $2}')"
 if [[ "$CURRENT_LOGIN_SHELL" != "$BREW_ZSH" ]]; then
@@ -91,8 +81,7 @@ if [[ "$CURRENT_LOGIN_SHELL" != "$BREW_ZSH" ]]; then
         info "Adding Homebrew zsh to allowed shells..."
         echo "$BREW_ZSH" | sudo tee -a /etc/shells >/dev/null
     fi
-    # Via sudo — chsh's own password prompt can corrupt terminal state
-    # on newer macOS
+    # Via sudo: chsh's own password prompt can corrupt the terminal on newer macOS
     if sudo chsh -s "$BREW_ZSH" "$USER"; then
         info "Default shell changed to Homebrew zsh."
     else
@@ -102,13 +91,11 @@ else
     info "Homebrew zsh is already the default shell. Skipping configuration."
 fi
 
-# Password prompts on newer macOS can leave the terminal in a raw state
-# (no echo, Enter broken); reset it so the prompts below still work
+# Password prompts can leave the terminal raw on newer macOS; reset it
 stty sane 2>/dev/null || true
 
-# Set up fzf key bindings and completion, non-interactively.
-# --no-update-rc: don't let the installer append to .zshrc (it's a symlink
-# into this repo); .zshrc already sources ~/.fzf.zsh
+# fzf key bindings + completion. --no-update-rc: .zshrc already sources
+# ~/.fzf.zsh (and it's a symlink into this repo)
 if [[ ! -f "${HOME}/.fzf.zsh" ]]; then
     info "Setting up fzf shell integration..."
     "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc
@@ -116,7 +103,7 @@ else
     info "fzf shell integration already configured. Skipping configuration."
 fi
 
-# Register the color scheme linked into ~/.config/bat/themes by install.sh
+# Register the Predawn theme linked by install.sh
 if bat --list-themes 2>/dev/null | grep -qx "Predawn"; then
     info "bat theme cache already built. Skipping."
 else
@@ -145,7 +132,7 @@ fi
 # Github uses "main" as the default branch name
 git config --global init.defaultBranch main
 
-# Check if already authenticated with GitHub to avoid re-authentication prompt
+# GitHub login (skipped if already authenticated)
 if ! gh auth status &>/dev/null; then
     info "You will need to authenticate with GitHub. Follow the prompts to login..."
     gh auth login

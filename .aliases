@@ -2,15 +2,13 @@
 alias ch='history 0 | grep "git commit"'
 alias hg='history 0 | grep'
 
-# Listings: eza (modern ls) when installed, keeping the classic command names
-# for muscle memory and tutorials; plain ls otherwise (servers, fresh boxes)
+# Listings via eza, keeping the classic names; plain ls where eza is missing
 if command -v eza >/dev/null 2>&1; then
     alias ls='eza'
     alias la='eza -lahF --git' # long, all, header row, classify, git status column
     alias tree='eza --tree'
 else
-    # `--color=auto` colorizes a terminal but stays clean when piped; modern
-    # macOS ls accepts it too, so the -G fallback only matters on older systems
+    # --color=auto stays clean when piped; -G is the older-BSD fallback
     if ls --color >/dev/null 2>&1; then
         colorflag="--color=auto"
     else
@@ -20,29 +18,23 @@ else
     alias la="ls -lahF ${colorflag}"
 fi
 
-# File-type colors: bold yellow dirs, blue symlinks, green executables.
-# LS_COLORS is the GNU syntax (what eza and Linux ls read); LSCOLORS is the
-# BSD equivalent for plain macOS ls (legend: `man ls`, LSCOLORS section).
+# File-type colors (bold yellow dirs, blue symlinks, green executables):
+# LS_COLORS for eza/Linux ls, LSCOLORS for macOS ls (legend: `man ls`)
 export LS_COLORS='di=01;33:ln=34:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 export LSCOLORS='Dxexcxdxcxegedabagacad'
 
-# Quiet eza's metadata columns (its defaults: rainbow permission bits, bold
-# yellow user): permissions, user, and size units in the terminal's white
-# slot, execute bits green, setuid red, sizes in the plain foreground.
-# Dates and git flags keep their defaults.
+# Quiet eza's metadata columns (white by default, green execute bits, red setuid)
 export EZA_COLORS='ur=37:uw=37:ux=32:ue=32:gr=37:gw=37:gx=32:tr=37:tw=37:tx=32:su=31:sf=31:xa=37:sn=0:sb=37:uu=37:un=37:uR=31:gu=37:gn=37:gR=31:hd=4;37:lc=37:lm=37'
 
-# cat with syntax highlighting: -p keeps cat's plain layout, and bat drops
-# the colors automatically when piped, so scripts and redirects are unaffected
+# cat with syntax highlighting; -p keeps cat's layout, and piped output stays plain
 command -v bat >/dev/null 2>&1 && alias cat='bat -p --paging=never'
 
-# Always enable colored `grep` output
-# Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
+# Colored grep output (GREP_OPTIONS is deprecated, hence aliases)
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# Update/upgrade Homebrew and their installed packages
+# Update everything: Homebrew, casks, npm/uv tools, skills, repos
 alias update_all='brew update;
                   brew upgrade --yes;
                   brew upgrade --cask --force --yes;
@@ -54,7 +46,7 @@ alias update_all='brew update;
                   $(brew --prefix)/bin/just -g repos'
 
 # Show/hide hidden files in Finder
-# As of macOS Sierra (10.12) and later, you can simply press Cmd + Shift + . (period) while in Finder to toggle the visibility of hidden files.
+# (Cmd+Shift+. toggles this in Finder too)
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
 
@@ -71,17 +63,17 @@ alias reg_mode='defaults write com.apple.dock autohide -bool false && killall Do
 alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/dev/null;
             rm -rf ~/Downloads/*(N)"
 
-# Project / tutorial scaffolding lives in the ~/Work monorepo (synced via GitHub).
+# Project/tutorial scaffolding from the ~/Work monorepo:
 # proj_init / yt_init — and the `j` global-justfile alias — are defined there and sourced here:
 [ -f "$HOME/Work/Tutorial-Template/shell/work.zsh" ] && source "$HOME/Work/Tutorial-Template/shell/work.zsh"
 
-# Copy to clipboard without newlines. Can be piped to or run as a command.
+# Copy to clipboard without newlines; pipe into it or give it a command
 c() {
   if [[ $# -eq 0 ]]; then
-    # No arguments, read from stdin (piped input)
+    # piped input
     tr -d '\n' | pbcopy
   else
-    # Arguments provided, run as command
+    # run the command
     "$@" | tr -d '\n' | pbcopy
   fi
 }

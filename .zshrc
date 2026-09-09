@@ -1,8 +1,7 @@
 autoload -Uz colors && colors
 setopt PROMPT_SUBST
 
-# Keep PATH (and its array form `path`) deduplicated so re-sourcing this file
-# doesn't grow the variable on every shell invocation.
+# Deduplicate PATH so re-sourcing doesn't grow it
 typeset -U path PATH
 
 # Don't ask if user is sure when running rm with wildcards (like bash)
@@ -11,17 +10,17 @@ setopt rmstarsilent
 # If wildcard pattern has no matches, return an empty string (like bash)
 setopt no_nomatch
 
-# Specify the history file and its sizes
+# History file and size
 export HISTFILE=~/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=100000
 
-# These options improve history behavior across sessions
-setopt EXTENDED_HISTORY       # Record timestamp + elapsed time per entry (: <ts>:<elapsed>;<cmd>)
+# History behavior
+setopt EXTENDED_HISTORY       # Record timestamp + elapsed time per entry
 setopt SHARE_HISTORY          # Share command history across all open sessions
 setopt APPEND_HISTORY         # Append history rather than overwriting it
-setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks from each command line being added to the history list
-setopt HIST_IGNORE_SPACE      # Ignore commands that start with a space (for secret or experimental commands)
+setopt HIST_REDUCE_BLANKS     # Trim extra blanks
+setopt HIST_IGNORE_SPACE      # Skip commands that start with a space
 setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first when trimming history
 
 # Load dotfiles:
@@ -30,18 +29,17 @@ for file in ~/.{zprompt,aliases,private}; do
 done
 unset file
 
-# Default WORDCHARS: *?_-.[]~=/&;!#$%^(){}<>
-# Modified to exclude forward slash for better path component deletion
+# Default minus "/" so word-deletion stops at path components
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 # uv-installed tools (ruff, ty, djlint, …) live here
 export PATH="$PATH:$HOME/.local/bin"
 
-# fzf: draw with the terminal's 16-color palette instead of its own 256-color theme
+# fzf: use the terminal's 16-color palette
 export FZF_DEFAULT_OPTS='--color=16'
 
 # Added by fzf installer
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# zoxide: smarter cd — `z <dir>` jumps by frecency, `zi` picks with fzf
+# zoxide: `z <dir>` jumps to frequently used directories
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"

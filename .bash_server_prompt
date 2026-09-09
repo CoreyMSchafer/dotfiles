@@ -1,12 +1,10 @@
-# Standalone bash prompt for remote servers — pulled directly from GitHub onto
-# fresh hosts where the rest of the dotfiles aren't deployed. Self-contained
-# (no .shared_prompt dependency) so it works in isolation.
+# Standalone bash prompt for remote servers — pulled onto fresh hosts where
+# the rest of the dotfiles aren't deployed, so no .shared_prompt dependency.
 
 # If not running interactively, don't do anything
 [[ $- == *i* ]] || return 0
 
-# If the client terminal's TERM has no terminfo entry on this host (e.g.
-# Ghostty's xterm-ghostty on a fresh server), fall back to xterm-256color.
+# Fall back to xterm-256color if the client's TERM has no terminfo here (e.g. xterm-ghostty)
 if ! infocmp "$TERM" >/dev/null 2>&1 && infocmp xterm-256color >/dev/null 2>&1; then
     export TERM='xterm-256color'
 fi
@@ -14,19 +12,12 @@ fi
 bold=$(tput bold 2>/dev/null || printf '\e[1m')
 reset=$(tput sgr0 2>/dev/null || printf '\e[0m')
 
-# Exact 24-bit colors when the terminal advertises support, nearest
-# 256-color approximations otherwise. COLORTERM rarely survives SSH, so
-# the approximations are the common case here — same graceful degradation
-# as ~/dotfiles/.shared_prompt.
-#
-# To get the exact colors over SSH on a server you control, let the client
-# forward COLORTERM:
-#   1. Server: add `AcceptEnv COLORTERM` to /etc/ssh/sshd_config, then
-#      `sudo systemctl reload ssh`
-#   2. Client: Ghostty's ssh-env integration already sends it; from other
-#      clients, add `SendEnv COLORTERM` to ~/.ssh/config
+# Exact 24-bit colors when the terminal advertises them, else the nearest
+# 256-color values (COLORTERM rarely survives SSH). To forward it: server
+# needs `AcceptEnv COLORTERM` in sshd_config (then reload ssh); Ghostty's
+# ssh-env sends it, other clients need `SendEnv COLORTERM` in ~/.ssh/config.
 if [[ "${COLORTERM}" == "truecolor" || "${COLORTERM}" == "24bit" ]]; then
-    # Turn a hex value like "e47030" into its 24-bit color escape sequence
+    # hex "e47030" -> its 24-bit escape (printf %d converts each 0x pair)
     color() { printf '\033[38;2;%d;%d;%dm' "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
     blue=$(color afd7ff)
     green=$(color 5faf5f)
@@ -53,15 +44,12 @@ else # last resort: the basic 16 colors
     yellow="\e[1;33m"
 fi
 
-# ls file-type colors (GNU syntax), matching LSCOLORS in ~/dotfiles/.aliases:
-# bold yellow dirs, green executables, blue symlinks. These reference the
-# terminal's palette slots, so they wear whatever theme the client runs.
+# ls colors (GNU syntax) matching LSCOLORS in .aliases: bold yellow dirs, green executables
 export LS_COLORS='di=01;33:ln=34:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 alias ls='ls --color=auto'
 alias la='ls -lahF --color=auto'
 
-# Highlight the user name when logged in as root ($EUID rather than $USER —
-# the shell always sets it, even in minimal environments like containers).
+# Red username + traditional # when root ($EUID is set even where $USER isn't)
 if (( EUID == 0 )); then
     userStyle="${red}"
     marker='#' # root keeps the traditional marker
@@ -70,15 +58,14 @@ else
     marker='›'
 fi
 
-# Highlight the hostname when connected via SSH (magenta so it can't be
-# confused with the red root warning on the username).
+# Magenta hostname over SSH (distinct from the red root warning)
 if [[ "${SSH_TTY}" ]]; then
     hostStyle="${bold}${magenta}"
 else
     hostStyle="${yellow}"
 fi
 
-# Set the terminal title to the current working directory.
+# Terminal title = current directory
 PS1="\[\033]0;\w\007\]"
 PS1+="\[${bold}\]\n" # newline
 PS1+="\[${userStyle}\]\u" # username

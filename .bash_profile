@@ -3,7 +3,7 @@ if [ -f ~/.bashrc ]; then
     source ~/.bashrc
 fi
 
-# Homebrew (Apple Silicon or Intel) — shellenv sets PATH (bin + sbin) and HOMEBREW_* vars
+# Homebrew (Apple Silicon or Intel) on the PATH
 if [ -x /opt/homebrew/bin/brew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ -x /usr/local/bin/brew ]; then

@@ -1,11 +1,9 @@
 #!/usr/bin/env zsh
 ############################
-# Shared helpers sourced by install.sh, macOS.sh, brew.sh, and vscode.sh.
-# This file is meant to be sourced, not executed directly.
+# Shared helpers, sourced by the install scripts (not run directly)
 ############################
 
-# All backups from one install run land in a single timestamped folder,
-# created only when something actually needs backing up
+# One timestamped backup folder per run, created only if needed
 export BACKUP_DIR="${BACKUP_DIR:-${HOME}/.dotfiles_backup/$(date +%Y-%m-%d_%H-%M-%S)}"
 
 info() { print -P "%F{blue}[info]%f $1"; }
@@ -19,9 +17,8 @@ pause_for() {
     read -r "?Press enter to continue..."
 }
 
-# link_with_backup <source> <target>
-# Symlink <target> -> <source>, first moving any real file at <target> into
-# $BACKUP_DIR. Re-runs skip links that already point at <source>.
+# link_with_backup <source> <target>: symlink, backing up any real file
+# already at <target>. Skips links that already point at <source>.
 link_with_backup() {
     local src="$1"
     local dst="$2"
@@ -31,13 +28,13 @@ link_with_backup() {
         return 0
     fi
 
-    # Already linked to the right place — nothing to do (:A = resolve to absolute path)
+    # :A resolves to an absolute path
     if [[ -L "$dst" && "${dst:A}" == "${src:A}" ]]; then
         info "${dst} is already linked. Skipping."
         return 0
     fi
 
-    # A real file/folder is in the way — move it into the backup folder.
+    # Back up a real file that's in the way
     if [[ -e "$dst" && ! -L "$dst" ]]; then
         mkdir -p "$BACKUP_DIR"
         mv "$dst" "${BACKUP_DIR}/${dst:t}" # :t = just the filename

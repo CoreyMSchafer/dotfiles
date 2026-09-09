@@ -4,8 +4,7 @@ prompt_git() {
     local output line branch=''
     local staged='' unstaged='' untracked='' git_status=''
 
-    # One porcelain call reports the branch and every kind of change;
-    # it exits non-zero outside a git repository.
+    # One call gets the branch + every change; fails outside a repo
     output=$(git status --porcelain --branch 2>/dev/null) || return
 
     while IFS= read -r line; do
@@ -15,7 +14,7 @@ prompt_git() {
             "## "*) branch="${line#"## "}" && branch="${branch%%...*}" ;;
             "??"*) untracked='?' ;;
             *)
-                # Column 1 holds the staged state, column 2 the unstaged state.
+                # col 1 = staged, col 2 = unstaged
                 [[ "${line:0:1}" != " " ]] && staged='+'
                 [[ "${line:1:1}" != " " ]] && unstaged='!'
                 ;;
@@ -32,7 +31,6 @@ prompt_git() {
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 prompt_venv() {
     if [[ -n "$VIRTUAL_ENV" ]]; then
-        # Extract the last directory name in the $VIRTUAL_ENV path
         local venv_name
         venv_name=$(basename "$VIRTUAL_ENV")
         printf "\n%b(%s)\n" "${steel_blue}" "${venv_name}"
@@ -42,13 +40,10 @@ prompt_venv() {
 bold=$(tput bold)
 reset=$(tput sgr0)
 
-# Exact 24-bit colors on terminals that support them (COLORTERM is the
-# de facto signal; it doesn't survive SSH, so remote sessions fall back).
-# The fallback tput indexes are the nearest 256-color approximations.
+# Exact 24-bit colors when the terminal advertises them (COLORTERM doesn't
+# survive SSH, so remote sessions get the nearest 256-color values)
 if [[ "${COLORTERM}" == "truecolor" || "${COLORTERM}" == "24bit" ]]; then
-    # Turn a hex value like "e47030" into its 24-bit color escape sequence:
-    # slice it into the R/G/B pairs and let printf's %d convert each
-    # 0x-prefixed pair from hex to the decimal the escape code needs.
+    # hex "e47030" -> its 24-bit escape (printf %d converts each 0x pair)
     color() { printf '\033[38;2;%d;%d;%dm' "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
     blue=$(color afd7ff)
     steel_blue=$(color 5f87af)
@@ -69,15 +64,14 @@ else
     yellow=$(tput setaf 228)
 fi
 
-# Highlight the user name when logged in as root.
+# Red username when root
 if [[ "${USER}" == "root" ]]; then
     userStyle="${red}"
 else
     userStyle="${orange}"
 fi
 
-# Highlight the hostname when connected via SSH (magenta, so it can't be
-# confused with the red root warning on the username).
+# Magenta hostname over SSH (distinct from the red root warning)
 if [[ "${SSH_TTY}" ]]; then
     hostStyle="${bold}${magenta}"
 else

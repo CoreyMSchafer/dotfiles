@@ -1,10 +1,7 @@
 # Ghostty terminal settings, linked to ~/.config/ghostty/config by install.sh
-# Based on "Predawn" theme
 
-# CMS — custom Ghostty theme ("warm dusty pastel accents over dark earth
-# neutrals"; Predawn-derived, with grays from Arthur and magenta from Nord).
-# Ghostty comments can't share a line with a value, so each slot's role
-# is noted above it.
+# CMS theme: Predawn-derived (grays from Arthur, magenta from Nord).
+# Comments can't share a line with a value, so each slot's role sits above it.
 background = #1b1d1e
 foreground = #e6e6d6
 
@@ -60,30 +57,25 @@ window-padding-x = 18
 window-padding-y = 18
 window-padding-balance = true
 
-# Auto-brighten any text color that would be unreadable against the
-# background (Terminal.app's "Dynamic foreground colors")
+# Auto-brighten text that would be unreadable against the background
 minimum-contrast = 1.1
 
-# Slot 8's dim brown — a quiet, warm highlight
+# Slot 8's dim brown
 selection-background = #554444
-# Selected text keeps each character's own color (how Terminal.app behaves);
-# unset would instead repaint selected text in the window background color
+# Selected text keeps each character's own color (unset would invert it)
 selection-foreground = cell-foreground
 
-# Option acts as Meta/Alt for shell shortcuts instead of typing special characters
+# Option acts as Meta/Alt for shell shortcuts
 macos-option-as-alt = true
 
-# Copy plain text by default. Ghostty's default ("mixed") also puts an HTML
-# copy on the clipboard, which rich-text fields (browser chat boxes, docs)
-# prefer — and that renders each colored prompt segment on its own line.
-# Cmd+Shift+C keeps the formatted copy for when colors are wanted.
+# Plain-text copy by default (the "mixed" default adds an HTML copy that
+# rich-text fields prefer, splitting colored prompts across lines).
+# Cmd+Shift+C copies with formatting when colors are wanted.
 keybind = super+c=copy_to_clipboard:plain
 keybind = copy=copy_to_clipboard:plain
 keybind = super+shift+c=copy_to_clipboard:html
 
-# When SSHing to hosts that don't know Ghostty's terminfo, send
-# TERM=xterm-256color instead (broken line editing otherwise) and offer
-# COLORTERM to hosts that accept it
+# Over SSH send TERM=xterm-256color (hosts rarely know xterm-ghostty) and offer COLORTERM
 shell-integration-features = ssh-env
 
 # Use non-native macOS fullscreen, hide the menu bar

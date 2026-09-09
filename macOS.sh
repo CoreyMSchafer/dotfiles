@@ -1,15 +1,13 @@
 #!/usr/bin/env zsh
 ############################
-# macOS system settings.
-# Safe to re-run: settings are only written (and the affected system UI
-# only restarted) when the current value differs.
-# Some settings rely on undocumented "magic" values that can change between
-# macOS releases — periodically check that each still does what it says.
+# macOS system settings. Safe to re-run: each setting is written (and its
+# UI restarted) only when the current value differs. Some values are
+# undocumented "magic" numbers — recheck them after macOS upgrades.
 ############################
 
 set -euo pipefail
 
-# The folder this script lives in (:A = absolute path, :h = parent dir)
+# This script's folder (:A absolute, :h parent)
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
@@ -21,8 +19,7 @@ else
     pause_for "Complete the installation of Xcode Command Line Tools before proceeding."
 fi
 
-# Set scroll as traditional instead of natural
-# Note: this is a global preference; a logout/restart is required for it to take effect.
+# Traditional (non-"natural") scrolling; takes effect after logout
 if [[ "$(defaults read NSGlobalDomain com.apple.swipescrolldirection 2>/dev/null || true)" != "0" ]]; then
     defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
     info "Set scroll direction to traditional (takes effect after logout/restart)."
@@ -41,8 +38,7 @@ else
     info "Screenshot location is already set. Skipping."
 fi
 
-# Add Bluetooth to Menu Bar for battery percentages
-# (stored per-host by Control Center; 2 = show in menu bar)
+# Bluetooth in the menu bar (per-host Control Center setting; 2 = show)
 if [[ "$(defaults -currentHost read com.apple.controlcenter Bluetooth 2>/dev/null || true)" != "2" ]]; then
     defaults -currentHost write com.apple.controlcenter Bluetooth -int 2
     killall ControlCenter &>/dev/null || true
@@ -51,8 +47,7 @@ else
     info "Bluetooth is already in the menu bar. Skipping."
 fi
 
-# Set the desktop background to the image used in my tutorials
-# (skipped when desktop 1 already shows it)
+# Desktop background used in my tutorials (skipped if desktop 1 already has it)
 IMAGE_PATH="${SCRIPT_DIR}/settings/Desktop.png"
 if [[ ! -f "${IMAGE_PATH}" ]]; then
     warn "Desktop image not found at ${IMAGE_PATH}. Skipping desktop background."
@@ -76,10 +71,8 @@ EOF
     fi
 fi
 
-# Let SSH clients pass COLORTERM to this Mac, so prompts render in exact
-# 24-bit color when SSHing in (sshd only accepts whitelisted variables).
-# A drop-in file survives macOS updates; Apple's own settings live in
-# 100-macos.conf. Only matters once Remote Login is enabled.
+# Accept COLORTERM from SSH clients so prompts get exact colors when SSHing
+# into this Mac. A drop-in file survives macOS updates.
 SSHD_DROPIN="/etc/ssh/sshd_config.d/200-colorterm.conf"
 if [[ "$(cat "${SSHD_DROPIN}" 2>/dev/null)" == "AcceptEnv COLORTERM" ]]; then
     info "sshd already accepts COLORTERM. Skipping."
