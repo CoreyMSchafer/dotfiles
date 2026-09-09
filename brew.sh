@@ -12,20 +12,26 @@ set -euo pipefail
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
+# Put brew on this script's PATH: `brew shellenv` prints export statements
+# and eval applies them (Apple Silicon and Intel locations). Runs BEFORE the
+# install check so a re-run from a shell opened before Homebrew existed still
+# finds it — otherwise the installer would run again over the existing install.
+brew_shellenv() {
+    if [[ -x /opt/homebrew/bin/brew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -x /usr/local/bin/brew ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+}
+brew_shellenv
+
 # Install Homebrew if it isn't already installed
 if ! command -v brew &>/dev/null; then
     info "Homebrew not installed. Installing Homebrew."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew_shellenv
 else
     info "Homebrew is already installed."
-fi
-
-# Put brew on the PATH for the rest of this script: `brew shellenv` prints
-# export statements and eval applies them (Apple Silicon and Intel locations)
-if [[ -x /opt/homebrew/bin/brew ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -x /usr/local/bin/brew ]]; then
-    eval "$(/usr/local/bin/brew shellenv)"
 fi
 
 # Verify brew is now accessible
