@@ -16,7 +16,7 @@ cairo
 charmbracelet/tap/freeze
 # Code/terminal screenshots as SVG/PNG
 
-cirruslabs/cli/tart
+openai/tools/tart
 # macOS/Linux VMs on Apple Silicon
 
 coreutils
