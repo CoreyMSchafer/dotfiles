@@ -1,0 +1,121 @@
+# winget packages installed by windows/install.ps1 — one ID per line.
+# Lines starting with # (and blank lines) are ignored. IDs are exact
+# (`winget search <name>` to find one). Same tools as the Mac manifests where
+# a Windows build exists; the rest are noted at the bottom.
+
+# --- Shell and terminal
+Microsoft.PowerShell
+# PowerShell 7 (Windows ships 5.1; the profile targets 7)
+
+Microsoft.WindowsTerminal
+# Terminal (the Ghostty counterpart; preinstalled on 11, kept for updates)
+
+Microsoft.PowerToys
+# FancyZones = the Rectangle counterpart (window snapping)
+
+# --- CLI tools
+sharkdp.bat
+# cat with syntax highlighting
+
+Betterleaks.Betterleaks
+# Secret scanner (audited alongside gitleaks)
+
+bootandy.dust
+# Disk usage as a tree
+
+eza-community.eza
+# Modern ls (also replaces tree)
+
+sharkdp.fd
+# Fast find
+
+Gyan.FFmpeg
+# Audio/video conversion
+
+junegunn.fzf
+# Fuzzy finder (shell history/file search)
+
+GitHub.cli
+# GitHub CLI
+
+Git.Git
+# Git (bundles Git Bash and Git Credential Manager)
+
+Gitleaks.Gitleaks
+# Secret scanner (pre-commit gate)
+
+ImageMagick.ImageMagick
+# Image conversion/processing
+
+jqlang.jq
+# JSON processor
+
+Casey.Just
+# Task runner
+
+OpenJS.NodeJS.LTS
+# JavaScript runtime
+
+oschwartz10612.Poppler
+# PDF utilities (pdftotext etc.)
+
+Python.Python.3.14
+# System-wide Python (python.org build; includes tkinter)
+
+BurntSushi.ripgrep.MSVC
+# Fast grep
+
+dbrgn.tealdeer
+# tldr pages (command cheat sheets)
+
+UB-Mannheim.TesseractOCR
+# OCR engine (ocrmypdf dependency)
+
+astral-sh.uv
+# Python package/project manager
+
+yt-dlp.yt-dlp
+# Video downloader
+
+ajeetdsouza.zoxide
+# Smarter cd (jumps by frecency)
+
+# --- Apps
+OpenAI.ChatGPT
+# ChatGPT desktop app
+
+Anthropic.Claude
+# Claude desktop app
+
+Anthropic.ClaudeCode
+# Claude Code CLI
+
+Discord.Discord
+# Chat/community
+
+Docker.DockerDesktop
+# Containers (WSL2 backend)
+
+Google.Chrome
+# Browser (sign in first — unlocks the password manager)
+
+Google.GoogleDrive
+# Drive file sync
+
+Postman.Postman
+# API client
+
+Microsoft.VisualStudioCode
+# Editor
+
+VideoLAN.VLC
+# Media player
+
+# --- Not on winget (installed elsewhere or not applicable)
+# ocrmypdf, pre-commit: uv tools (install.ps1 does these, like brew.sh)
+# codex: npm (@openai/codex), like the Mac
+# woff2: GitHub release binary; manual for now
+# ghostty, tart, rectangle: Mac-only (Windows Terminal / Fusion / PowerToys instead)
+# bash, zsh, coreutils, cairo, pkgconf, python-tk, tcl-tk: the WSL side (ubuntu/apt.txt)
+# freeze, d2, vhs, typst, whisper-cpp, exiftool, librsvg, gimp, spotify, gcloud, keyboardcleantool:
+#   on purpose only on the Mac (tutorial production and personal-use tools)

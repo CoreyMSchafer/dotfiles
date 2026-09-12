@@ -23,6 +23,10 @@ setopt HIST_REDUCE_BLANKS     # Trim extra blanks
 setopt HIST_IGNORE_SPACE      # Skip commands that start with a space
 setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first when trimming history
 
+# uv-installed tools (ruff, ty, djlint, …) live here; on Linux, bat and fd too.
+# Before the dotfiles load so .aliases can see them.
+export PATH="$PATH:$HOME/.local/bin"
+
 # Load dotfiles:
 for file in ~/.{zprompt,aliases,private}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file"
@@ -31,9 +35,6 @@ unset file
 
 # Default minus "/" so word-deletion stops at path components
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-
-# uv-installed tools (ruff, ty, djlint, …) live here
-export PATH="$PATH:$HOME/.local/bin"
 
 # fzf: use the terminal's 16-color palette
 export FZF_DEFAULT_OPTS='--color=16'

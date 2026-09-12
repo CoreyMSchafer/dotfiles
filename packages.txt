@@ -97,7 +97,6 @@ tealdeer
 tesseract
 # OCR engine (ocrmypdf dependency)
 
-
 typst
 # Typesetting (handouts, cheat sheets)
 

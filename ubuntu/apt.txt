@@ -1,0 +1,77 @@
+# apt packages installed by ubuntu/install.sh — one per line.
+# Lines starting with # (and blank lines) are ignored. Same tools as
+# packages.txt where Ubuntu ships them; the rest are noted at the bottom.
+zsh
+# zsh (the login shell)
+
+bat
+# cat with syntax highlighting (Ubuntu's binary is batcat; install.sh links bat)
+
+eza
+# Modern ls (also replaces tree)
+
+fd-find
+# Fast find (Ubuntu's binary is fdfind; install.sh links fd)
+
+fzf
+# Fuzzy finder (shell history/file search)
+
+ripgrep
+# Fast grep
+
+jq
+# JSON processor
+
+git
+# Git
+
+gh
+# GitHub CLI
+
+just
+# Task runner
+
+zoxide
+# Smarter cd (jumps by frecency)
+
+tealdeer
+# tldr pages (command cheat sheets)
+
+ffmpeg
+# Audio/video conversion
+
+imagemagick
+# Image conversion/processing
+
+poppler-utils
+# PDF utilities (pdftotext etc.)
+
+tesseract-ocr
+# OCR engine (ocrmypdf dependency)
+
+ocrmypdf
+# OCR for PDFs
+
+woff2
+# Web font compression
+
+libcairo2-dev
+# 2D graphics library (Manim dependency)
+
+pkg-config
+# Build helper (Manim dependency)
+
+python3-tk
+# tkinter for the system Python
+
+build-essential
+# Compilers (pip builds, cargo, etc.)
+
+# --- Not in apt (installed by install.sh another way, or not applicable)
+# uv: official installer script (uv then provides Pythons, ruff, ty, djlint, pre-commit)
+# node: apt, but from NodeSource's repo (install.sh adds it); Ubuntu's own package is years old
+# gitleaks, betterleaks: GitHub release binaries; manual for now
+# freeze, d2, vhs, typst, whisper-cpp, exiftool, librsvg, gimp, spotify, gcloud: on purpose only on the Mac
+# dust: apt has it from Ubuntu 24.10 (du-dust); on 24.04 use the GitHub release
+# bash, coreutils: already GNU on Ubuntu
+# tart, apps, fonts: the host's side (macOS: brew.sh; Windows: windows/install.ps1)

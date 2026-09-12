@@ -32,7 +32,7 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 ### Prerequisites
 
--  macOS (The scripts are tailored for macOS)
+-  macOS (see [Other systems](#other-systems) for Windows and Ubuntu)
 
 ### Installation
 
@@ -57,31 +57,38 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 This script will:
 
--  Create symlinks for dotfiles (`.bashrc`, `.zshrc`, etc.), backing up any existing files to `~/.dotfiles_backup/`
+-  Create symlinks for dotfiles (`.zshrc`, `.aliases`, etc.), backing up any existing files to `~/.dotfiles_backup/`
 -  Run macOS-specific configurations (`macOS.sh`)
 -  Install Homebrew, then everything listed in `packages.txt`, `apps.txt`, and `fonts.txt` (`brew.sh`)
 -  Configure Visual Studio Code and install the extensions listed in `vscode-extensions.txt` (`vscode.sh`)
 
 The script is safe to re-run — steps that are already done are skipped.
 
+### Other systems
+
+I occasionally need this setup on other machines. Those installs live in their own folders, each with its own README:
+
+-  Windows 11: [`windows/`](windows/) (winget, PowerShell 7, Windows Terminal)
+-  Ubuntu, including WSL2 on Windows: [`ubuntu/`](ubuntu/)
+
 ## Configuration Files
 
--  `.bashrc` & `.zshrc`: Shell configuration files for Bash and Zsh.
--  `.shared_prompt`: Custom prompt setup used by both `.bash_prompt` & `.zprompt`
--  `.bash_prompt` & `.zprompt`: Custom prompt setup for Bash and Zsh.
--  `.bash_profile`: Setting system-wide environment variables
+-  `.zshrc`: Shell configuration for Zsh (the only shell these dotfiles target).
+-  `.zprompt`: The prompt — user, host, directory, and Git branch/status.
 -  `.aliases`: Aliases for common commands (`ls`/`la`/`tree` run `eza`, `cat` runs `bat`, with plain fallbacks when those aren't installed).
 -  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control
 -  `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
+-  `helpers.sh`: Logging, backup-then-symlink, and manifest helpers shared by the macOS and Linux scripts
+-  `windows/`: The Windows port — `install.ps1`, `winget.txt`, and `settings/` (PowerShell profile, Windows Terminal color scheme and defaults)
+-  `ubuntu/`: The Ubuntu/WSL installer — `install.sh` and `apt.txt`
 -  `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
--  `helpers.sh`: Small helpers (logging, backup-then-symlink) shared by the install scripts
 -  `settings/`: Config files that `install.sh` symlinks into place — Ghostty (my terminal), VS Code settings/keybindings, `~/.ssh/config`, `bat`, and `ruff`.
 
 ### Customizing Your Setup
 
 You're encouraged to modify the scripts and configuration files to suit your preferences. Here are some tips for customization:
 
--  **Dotfiles**: Edit `.shared_prompt`, `.zprompt`, `.bash_prompt` to add or modify shell configurations.
+-  **Dotfiles**: Edit `.zshrc`, `.zprompt`, and `.aliases` to add or modify shell configurations.
 -  **VS Code**: Adjust settings in the `settings/` directory to change editor preferences and themes.
 
 ## Contributing

@@ -1,5 +1,82 @@
+# Git segment for the prompt: branch name plus change markers
+# (+ staged, ! unstaged, ? untracked, $ stashed).
+prompt_git() {
+    local output line branch=''
+    local staged='' unstaged='' untracked='' git_status=''
 
-source "${HOME}/dotfiles/.shared_prompt"
+    # One call gets the branch + every change; fails outside a repo
+    output=$(git status --porcelain --branch 2>/dev/null) || return
+
+    while IFS= read -r line; do
+        case "${line}" in
+            "## No commits yet on "*) branch="${line#"## No commits yet on "}" ;;
+            "## HEAD (no branch)"*) branch=$(git rev-parse --short HEAD) ;;
+            "## "*) branch="${line#"## "}" && branch="${branch%%...*}" ;;
+            "??"*) untracked='?' ;;
+            *)
+                # col 1 = staged, col 2 = unstaged
+                [[ "${line:0:1}" != " " ]] && staged='+'
+                [[ "${line:1:1}" != " " ]] && unstaged='!'
+                ;;
+        esac
+    done <<<"${output}"
+
+    git_status="${staged}${unstaged}${untracked}"
+    git rev-parse --verify refs/stash &>/dev/null && git_status+='$'
+    [[ -n "${git_status}" ]] && git_status=" [${git_status}]"
+
+    printf "%b on %b%s%s" "${white}" "${blue}" "${branch}" "${git_status}"
+}
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+prompt_venv() {
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        local venv_name
+        venv_name=$(basename "$VIRTUAL_ENV")
+        printf "\n%b(%s)\n" "${steel_blue}" "${venv_name}"
+    fi
+}
+
+bold=$(tput bold)
+reset=$(tput sgr0)
+
+# Exact 24-bit colors when the terminal advertises them (COLORTERM doesn't
+# survive SSH, so remote sessions get the nearest 256-color values)
+if [[ "${COLORTERM}" == "truecolor" || "${COLORTERM}" == "24bit" ]]; then
+    # hex "e47030" -> its 24-bit escape (printf %d converts each 0x pair)
+    color() { printf '\033[38;2;%d;%d;%dm' "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
+    blue=$(color afd7ff)
+    steel_blue=$(color 5f87af)
+    green=$(color 5faf5f)
+    magenta=$(color b48ead)
+    orange=$(color e47030)
+    red=$(color d75f5f)
+    white=$(color f1f1f1)
+    yellow=$(color ffff87)
+else
+    blue=$(tput setaf 153)
+    steel_blue=$(tput setaf 67)
+    green=$(tput setaf 71)
+    magenta=$(tput setaf 139)
+    orange=$(tput setaf 166)
+    red=$(tput setaf 167)
+    white=$(tput setaf 15)
+    yellow=$(tput setaf 228)
+fi
+
+# Red username when root
+if [[ "${USER}" == "root" ]]; then
+    userStyle="${red}"
+else
+    userStyle="${orange}"
+fi
+
+# Magenta hostname over SSH (distinct from the red root warning)
+if [[ "${SSH_TTY}" ]]; then
+    hostStyle="${bold}${magenta}"
+else
+    hostStyle="${yellow}"
+fi
 
 # Blank line before each prompt via zsh's precmd hook (runs before every
 # prompt but not on redraws, so Cmd+K leaves the prompt at the top). The

@@ -1,0 +1,32 @@
+# apt packages installed by server/install.sh — one per line.
+# Lines starting with # (and blank lines) are ignored. The shell essentials
+# only; a server doesn't get the dev toolchain (see ubuntu/apt.txt for that).
+zsh
+# zsh (the login shell)
+
+bat
+# cat with syntax highlighting (Ubuntu's binary is batcat; install.sh links bat)
+
+eza
+# Modern ls (also replaces tree)
+
+fd-find
+# Fast find (Ubuntu's binary is fdfind; install.sh links fd)
+
+fzf
+# Fuzzy finder (shell history/file search)
+
+ripgrep
+# Fast grep
+
+jq
+# JSON processor
+
+git
+# Git
+
+zoxide
+# Smarter cd (jumps by frecency)
+
+htop
+# Process viewer

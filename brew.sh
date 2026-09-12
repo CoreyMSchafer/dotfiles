@@ -41,15 +41,10 @@ fi
 brew update
 brew upgrade --yes
 
-# Read a manifest file's entries, skipping comments and blank lines
-read_manifest() {
-    grep -vE '^#|^$' "${SCRIPT_DIR}/$1"
-}
-
 # ${(f)...} splits the output into an array, one entry per line
-packages=(${(f)"$(read_manifest packages.txt)"})
-apps=(${(f)"$(read_manifest apps.txt)"})
-fonts=(${(f)"$(read_manifest fonts.txt)"})
+packages=(${(f)"$(read_manifest "${SCRIPT_DIR}/packages.txt")"})
+apps=(${(f)"$(read_manifest "${SCRIPT_DIR}/apps.txt")"})
+fonts=(${(f)"$(read_manifest "${SCRIPT_DIR}/fonts.txt")"})
 
 # Homebrew 6+ requires trusting third-party taps first. Entries with a slash
 # (e.g. charmbracelet/tap/freeze) come from one, so derive the taps from the
@@ -102,7 +97,7 @@ stty sane 2>/dev/null || true
 # ~/.fzf.zsh (and it's a symlink into this repo)
 if [[ ! -f "${HOME}/.fzf.zsh" ]]; then
     info "Setting up fzf shell integration..."
-    "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc
+    "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc --no-bash --no-fish
 else
     info "fzf shell integration already configured. Skipping configuration."
 fi

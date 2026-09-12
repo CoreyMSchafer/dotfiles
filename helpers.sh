@@ -1,20 +1,28 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 ############################
-# Shared helpers, sourced by the install scripts (not run directly)
+# Shared helpers, sourced by the install scripts (not run directly).
+# Written in the subset zsh and bash share: the Mac scripts are zsh,
+# ubuntu/install.sh is bash (zsh isn't installed yet when it runs).
 ############################
 
 # One timestamped backup folder per run, created only if needed
 export BACKUP_DIR="${BACKUP_DIR:-${HOME}/.dotfiles_backup/$(date +%Y-%m-%d_%H-%M-%S)}"
 
-info() { print -P "%F{blue}[info]%f $1"; }
-warn() { print -P "%F{yellow}[warn]%f $1"; }
-error() { print -P "%F{red}[error]%f $1" >&2; }
+info() { printf '\033[34m[info]\033[0m %s\n' "$1"; }
+warn() { printf '\033[33m[warn]\033[0m %s\n' "$1"; }
+error() { printf '\033[31m[error]\033[0m %s\n' "$1" >&2; }
 
 # Prompt for a manual step, then wait for enter.
 pause_for() {
     echo ""
     echo "$1"
-    read -r "?Press enter to continue..."
+    printf 'Press enter to continue...'
+    read -r _
+}
+
+# Read a manifest file's entries, skipping comments and blank lines
+read_manifest() {
+    grep -vE '^#|^$' "$1"
 }
 
 # link_with_backup <source> <target>: symlink, backing up any real file
@@ -28,8 +36,8 @@ link_with_backup() {
         return 0
     fi
 
-    # :A resolves to an absolute path
-    if [[ -L "$dst" && "${dst:A}" == "${src:A}" ]]; then
+    # Already linked to this exact source? (readlink -f resolves the full path)
+    if [[ -L "$dst" && "$(readlink -f "$dst")" == "$(readlink -f "$src")" ]]; then
         info "${dst} is already linked. Skipping."
         return 0
     fi
@@ -37,8 +45,8 @@ link_with_backup() {
     # Back up a real file that's in the way
     if [[ -e "$dst" && ! -L "$dst" ]]; then
         mkdir -p "$BACKUP_DIR"
-        mv "$dst" "${BACKUP_DIR}/${dst:t}" # :t = just the filename
-        info "Backed up existing ${dst:t} to ${BACKUP_DIR}/"
+        mv "$dst" "${BACKUP_DIR}/$(basename "$dst")"
+        info "Backed up existing $(basename "$dst") to ${BACKUP_DIR}/"
     fi
 
     ln -sfn "$src" "$dst"

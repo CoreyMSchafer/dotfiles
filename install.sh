@@ -29,7 +29,7 @@ source "${dotfiledir}/helpers.sh"
 cd "${dotfiledir}"
 
 # Dotfiles to symlink into $HOME
-files=(zshrc zprofile zprompt bashrc bash_profile bash_prompt aliases)
+files=(zshrc zprofile zprompt aliases)
 
 for file in "${files[@]}"; do
     link_with_backup "${dotfiledir}/.${file}" "${HOME}/.${file}"

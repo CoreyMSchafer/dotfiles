@@ -1,0 +1,8 @@
+{
+  "colorScheme": "CMS",
+  "font": { "face": "Source Code Pro", "weight": "semi-bold", "size": 14 },
+  "cursorShape": "bar",
+  "padding": "18",
+  "opacity": 100,
+  "intenseTextStyle": "bold"
+}

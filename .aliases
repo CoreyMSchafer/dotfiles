@@ -35,15 +35,23 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # Update everything: Homebrew, casks, npm/uv tools, skills, repos
-alias update_all='brew update;
-                  brew upgrade --yes;
-                  brew upgrade --cask --force --yes;
-                  brew link --overwrite node;
-                  brew cleanup;
-                  $(brew --prefix)/bin/npm update --global;
-                  $(brew --prefix)/bin/uv tool upgrade --all;
-                  $(brew --prefix)/bin/npx skills update -g -y;
-                  $(brew --prefix)/bin/just -g repos'
+if [[ "$OSTYPE" == darwin* ]]; then
+    alias update_all='brew update;
+                      brew upgrade --yes;
+                      brew upgrade --cask --force --yes;
+                      brew link --overwrite node;
+                      brew cleanup;
+                      $(brew --prefix)/bin/npm update --global;
+                      $(brew --prefix)/bin/uv tool upgrade --all;
+                      $(brew --prefix)/bin/npx skills update -g -y;
+                      $(brew --prefix)/bin/just -g repos'
+else # Linux / WSL: apt instead of Homebrew
+    alias update_all='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y;
+                      npm update --global;
+                      uv tool upgrade --all;
+                      npx skills update -g -y;
+                      just -g repos'
+fi
 
 # Show/hide hidden files in Finder
 # (Cmd+Shift+. toggles this in Finder too)
@@ -68,12 +76,17 @@ alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/de
 [ -f "$HOME/Work/Tutorial-Template/shell/work.zsh" ] && source "$HOME/Work/Tutorial-Template/shell/work.zsh"
 
 # Copy to clipboard without newlines; pipe into it or give it a command
+# (pbcopy on macOS, clip.exe under WSL, xclip on desktop Linux)
 c() {
+  local -a clip
+  if command -v pbcopy >/dev/null 2>&1; then clip=(pbcopy)
+  elif command -v clip.exe >/dev/null 2>&1; then clip=(clip.exe)
+  else clip=(xclip -selection clipboard); fi
   if [[ $# -eq 0 ]]; then
     # piped input
-    tr -d '\n' | pbcopy
+    tr -d '\n' | "${clip[@]}"
   else
     # run the command
-    "$@" | tr -d '\n' | pbcopy
+    "$@" | tr -d '\n' | "${clip[@]}"
   fi
 }
