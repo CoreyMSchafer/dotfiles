@@ -114,14 +114,18 @@ uv tool install ruff   # Python formatting and linting
 uv tool install ty     # Astral's Python type checker (used alongside ruff)
 
 # Git config (prompt only if not already set)
-if [[ -z "$(git config --global --get user.name || true)" ]]; then
+if [[ -n "${DOTFILES_NO_INPUT:-}" && -z "$(git config --global --get user.name || true)" ]]; then
+    warn "Git user.name not set (DOTFILES_NO_INPUT). Set it later: git config --global user.name 'Your Name'"
+elif [[ -z "$(git config --global --get user.name || true)" ]]; then
     read -r -p "Please enter your FULL NAME for Git configuration: " git_user_name
     git config --global user.name "$git_user_name"
     info "Git user.name has been set to ${git_user_name}"
 else
     info "Git user.name is already set to '$(git config --global --get user.name)'. Skipping configuration."
 fi
-if [[ -z "$(git config --global --get user.email || true)" ]]; then
+if [[ -n "${DOTFILES_NO_INPUT:-}" && -z "$(git config --global --get user.email || true)" ]]; then
+    warn "Git user.email not set (DOTFILES_NO_INPUT). Set it later: git config --global user.email you@example.com"
+elif [[ -z "$(git config --global --get user.email || true)" ]]; then
     read -r -p "Please enter your EMAIL for Git configuration: " git_user_email
     git config --global user.email "$git_user_email"
     info "Git user.email has been set to ${git_user_email}"
@@ -130,9 +134,9 @@ else
 fi
 git config --global init.defaultBranch main
 
-# GitHub login (skipped if already authenticated, or with DOTFILES_SKIP_SIGNIN=1 on test machines)
-if [[ -n "${DOTFILES_SKIP_SIGNIN:-}" ]]; then
-    info "Skipping GitHub login (DOTFILES_SKIP_SIGNIN)."
+# GitHub login (skipped if already authenticated, or with DOTFILES_NO_INPUT=1 on test machines)
+if [[ -n "${DOTFILES_NO_INPUT:-}" ]]; then
+    info "Skipping GitHub login (DOTFILES_NO_INPUT)."
 elif ! gh auth status &>/dev/null; then
     info "You will need to authenticate with GitHub. Follow the prompts to login..."
     gh auth login

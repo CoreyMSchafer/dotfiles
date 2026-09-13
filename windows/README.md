@@ -25,7 +25,7 @@ Ubuntu, where the [`ubuntu/`](../ubuntu/) installer gives the shell setup.
    git clone https://github.com/CoreyMSchafer/dotfiles.git ~/dotfiles && ~/dotfiles/ubuntu/install.sh
    ```
 
-`-SkipSignIn` skips the GitHub login and the sign-in pauses (handy on a test machine).
+`-NoInput` skips every prompt: computer name, git identity, the GitHub login, and the sign-in pauses (handy on a test machine).
 The script is safe to re-run — steps that are already done are skipped.
 
 ## Files

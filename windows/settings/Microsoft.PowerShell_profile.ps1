@@ -63,7 +63,7 @@ if ($interactive) {
 }
 
 # --- Aliases (PowerShell's built-in ls/cat aliases are replaced with functions)
-# (eza on Windows needs an explicit path — bare `eza` lists nothing — so a
+# (eza on Windows needs an explicit path - bare `eza` lists nothing - so a
 # call with no arguments gets `.`)
 if (Get-Command eza -ErrorAction SilentlyContinue) {
     Remove-Item Alias:ls -Force -ErrorAction SilentlyContinue

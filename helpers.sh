@@ -12,10 +12,10 @@ info() { printf '\033[34m[info]\033[0m %s\n' "$1"; }
 warn() { printf '\033[33m[warn]\033[0m %s\n' "$1"; }
 error() { printf '\033[31m[error]\033[0m %s\n' "$1" >&2; }
 
-# Prompt for a manual step, then wait for enter. Skipped on test machines
-# (DOTFILES_SKIP_SIGNIN) — every caller is a sign-in or a settings import.
+# Prompt for a manual step, then wait for enter. Skipped under DOTFILES_NO_INPUT
+# (test machines) — every caller is a sign-in or a settings import.
 pause_for() {
-    [[ -n "${DOTFILES_SKIP_SIGNIN:-}" ]] && return 0
+    [[ -n "${DOTFILES_NO_INPUT:-}" ]] && return 0
     echo ""
     echo "$1"
     printf 'Press enter to continue...'

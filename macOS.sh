@@ -11,6 +11,25 @@ set -euo pipefail
 SCRIPT_DIR="${0:A:h}"
 source "${SCRIPT_DIR}/helpers.sh"
 
+# Computer name (Enter keeps the current one). ComputerName is the display name;
+# the network names (LocalHostName, HostName) get a lowercase hyphenated form.
+if [[ -n "${DOTFILES_NO_INPUT:-}" ]]; then
+    info "Skipping the computer-name prompt (DOTFILES_NO_INPUT)."
+else
+    current_name="$(scutil --get ComputerName)"
+    read -r "new_name?Computer name [${current_name}] (Enter to keep): "
+    if [[ -n "${new_name}" && "${new_name}" != "${current_name}" ]]; then
+        # "Corey's iMac" -> coreys-imac (drop apostrophes, everything else non-alphanumeric becomes a hyphen)
+        host_name="$(printf '%s' "${new_name}" | tr -d "'" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | sed 's/^-*//; s/-*$//')"
+        sudo scutil --set ComputerName "${new_name}"
+        sudo scutil --set LocalHostName "${host_name}"
+        sudo scutil --set HostName "${host_name}"
+        info "Computer name set to ${new_name} (${host_name} on the network)."
+    else
+        info "Computer name stays ${current_name}."
+    fi
+fi
+
 # Xcode Command Line Tools (git, compilers — needed by Homebrew)
 if xcode-select -p &>/dev/null; then
     info "Xcode Command Line Tools are already installed. Skipping."

@@ -19,6 +19,12 @@ function Install-FontFile([string]$path) {
     New-ItemProperty -Path $fontReg -Name "$([IO.Path]::GetFileNameWithoutExtension($name)) ($type)" -Value $dest -PropertyType String -Force | Out-Null
 }
 
+# Download to an exact path. Invoke-WebRequest -OutFile reads brackets as wildcards under
+# Windows PowerShell 5.1 (variable fonts are named like Caveat[wght].ttf); .NET writes literally.
+function Save-Url([string]$url, [string]$path) {
+    [IO.File]::WriteAllBytes($path, (Invoke-WebRequest $url -UseBasicParsing).Content)
+}
+
 $tmp = Join-Path $env:TEMP 'dotfiles-fonts'
 New-Item -ItemType Directory -Force $tmp | Out-Null
 
@@ -35,7 +41,7 @@ foreach ($entry in (Read-Manifest "$dotfiledir\fonts.txt")) {
             $rel = Invoke-RestMethod 'https://api.github.com/repos/FortAwesome/Font-Awesome/releases/latest'
             $asset = $rel.assets | Where-Object { $_.name -like 'fontawesome-free-*-desktop.zip' } | Select-Object -First 1
             $zip = Join-Path $tmp $asset.name
-            Invoke-WebRequest $asset.browser_download_url -OutFile $zip
+            Save-Url $asset.browser_download_url $zip
             Expand-Archive $zip -DestinationPath (Join-Path $tmp 'fontawesome') -Force
             Get-ChildItem (Join-Path $tmp 'fontawesome') -Recurse -Filter '*.otf' | ForEach-Object {
                 Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $tmp "fontawesome-$($_.Name)")
@@ -50,7 +56,7 @@ foreach ($entry in (Read-Manifest "$dotfiledir\fonts.txt")) {
             if (-not $files) { throw "not found in google/fonts" }
             foreach ($f in ($files | Where-Object { $_.name -like '*.ttf' })) {
                 $local = Join-Path $tmp $f.name
-                Invoke-WebRequest $f.download_url -OutFile $local
+                Save-Url $f.download_url $local
                 Install-FontFile $local
             }
         }

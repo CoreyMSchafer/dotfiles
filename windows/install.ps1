@@ -5,15 +5,16 @@
 #   2. Links config files into place           (PowerShell profile, Terminal, bat, ruff, ssh, VS Code)
 #      and sets Windows preferences          (settings.ps1)
 #   3. Installs global npm/uv tools, AI agent skills, VS Code extensions, fonts
-#   4. Enables WSL (Ubuntu) — needs a reboot, then run ubuntu/install.sh inside it
+#   4. Enables WSL (Ubuntu) - needs a reboot, then run ubuntu/install.sh inside it
 #
 # Run from an elevated PowerShell:  Set-ExecutionPolicy Bypass -Scope Process; .\windows\install.ps1
 # Safe to re-run: steps check before changing anything, and replaced files
 # are backed up to ~\.dotfiles_backup\<timestamp>\
 ############################
 
-# -SkipSignIn: no GitHub login and no sign-in pauses (for test VMs)
-param([switch]$SkipSignIn)
+# -NoInput: never wait for a person (test VMs). Skips the computer-name and git identity
+# prompts, the GitHub login, and the sign-in pauses.
+param([switch]$NoInput)
 $ErrorActionPreference = 'Stop'
 
 # The prompts hardcode ~\dotfiles, so refuse to run from anywhere else
@@ -28,15 +29,15 @@ Set-Location $dotfiledir
 
 # --- winget packages and apps
 $packages = Read-Manifest "$PSScriptRoot\winget.txt"
-$installed = winget list --accept-source-agreements 2>$null | Out-String
+$installed = Get-CommandOutput { winget list --accept-source-agreements }
 foreach ($id in $packages) {
     if ($installed -match [regex]::Escape($id)) { Write-Info "$id is already installed. Skipping."; continue }
     Write-Info "Installing $id..."
     winget install --id $id --exact --silent --accept-source-agreements --accept-package-agreements | Out-Null
     # Portable packages can extract and still fail to register (seen on a fresh
     # machine), so trust the package list, not the exit code
-    if (-not ((winget list --id $id --exact 2>$null | Out-String) -match [regex]::Escape($id))) {
-        Write-Warn "$id did not install — continuing (re-run the script to retry)."
+    if (-not ((Get-CommandOutput { winget list --id $id --exact }) -match [regex]::Escape($id))) {
+        Write-Warn "$id did not install - continuing (re-run the script to retry)."
     }
 }
 Update-Path   # tools installed above become callable from here on
@@ -44,13 +45,20 @@ Update-Path   # tools installed above become callable from here on
 # --- Config files
 # PowerShell 7 profile
 Link-WithBackup "$PSScriptRoot\settings\Microsoft.PowerShell_profile.ps1" "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
-# fzf keybindings for PowerShell (Ctrl+R history) come from the PSFzf module
-if (-not (Get-Module -ListAvailable PSFzf)) {
+# fzf keybindings for PowerShell (Ctrl+R history) come from the PSFzf module. It's installed
+# by PowerShell 7 itself (winget put it in place above): 7's Install-PSResource needs no
+# NuGet-provider bootstrap - that download hangs under Windows PowerShell 5.1 - and the
+# module lands in 7's own module path, which is the PowerShell the profile runs in.
+$pwsh = (Get-Command pwsh -ErrorAction SilentlyContinue).Source
+if (-not $pwsh) { $pwsh = "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe" }
+if (-not (Test-Path $pwsh)) {
+    Write-Warn 'pwsh not found; skipping the PSFzf module (re-run after PowerShell 7 is installed).'
+} elseif (& $pwsh -NoProfile -Command 'Get-Module -ListAvailable PSFzf') {
+    Write-Info 'PSFzf module already installed. Skipping.'
+} else {
     Write-Info 'Installing the PSFzf module...'
-    if (-not (Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue)) { Install-PackageProvider -Name NuGet -Force | Out-Null }
-    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-    Install-Module PSFzf -Scope CurrentUser -Force
-} else { Write-Info 'PSFzf module already installed. Skipping.' }
+    & $pwsh -NoProfile -Command 'Install-PSResource PSFzf -Scope CurrentUser -TrustRepository -Quiet'
+}
 
 # Windows Terminal rewrites its settings.json, so merge into it instead of linking:
 # add/replace the CMS scheme, apply the defaults, make PowerShell 7 the default profile
@@ -82,19 +90,33 @@ Link-WithBackup "$dotfiledir\settings\VSCode-Settings.json" "$env:APPDATA\Code\U
 Link-WithBackup "$dotfiledir\settings\VSCode-Keybindings.json" "$env:APPDATA\Code\User\keybindings.json"
 
 # Register the Predawn bat theme
-if ((bat --list-themes 2>$null) -contains 'Predawn') { Write-Info 'bat theme cache already built. Skipping.' }
+if ((Get-CommandOutput { bat --list-themes }) -match '(?m)^Predawn\s*$') { Write-Info 'bat theme cache already built. Skipping.' }
 else { Write-Info "Building bat's theme cache..."; bat cache --build | Out-Null }
 
-# --- Windows preferences (screenshot folder, ...) — what macOS.sh does on the Mac
+# --- Windows preferences (screenshot folder, ...) - what macOS.sh does on the Mac
 . "$PSScriptRoot\settings.ps1"
 
+# --- Computer name (Enter keeps the current one; a change takes effect after the reboot)
+if ($NoInput) { Write-Info 'Skipping the computer-name prompt (-NoInput).' }
+else {
+    $newName = Read-Host "Computer name [$env:COMPUTERNAME] (Enter to keep)"
+    if ($newName -and $newName -ne $env:COMPUTERNAME) {
+        Rename-Computer -NewName $newName -Force -WarningAction SilentlyContinue | Out-Null
+        Write-Info "Computer name will be $newName after the reboot."
+    } else { Write-Info "Computer name stays $env:COMPUTERNAME." }
+}
+
 # --- Git config (prompt only if not already set)
-if (-not (git config --global --get user.name)) {
+if ($NoInput -and -not (git config --global --get user.name)) {
+    Write-Warn "Git user.name not set (-NoInput). Set it later: git config --global user.name 'Your Name'"
+} elseif (-not (git config --global --get user.name)) {
     $name = Read-Host 'Please enter your FULL NAME for Git configuration'
     git config --global user.name $name
     Write-Info "Git user.name has been set to $name"
 } else { Write-Info "Git user.name is already set to '$(git config --global --get user.name)'. Skipping configuration." }
-if (-not (git config --global --get user.email)) {
+if ($NoInput -and -not (git config --global --get user.email)) {
+    Write-Warn 'Git user.email not set (-NoInput). Set it later: git config --global user.email you@example.com'
+} elseif (-not (git config --global --get user.email)) {
     $email = Read-Host 'Please enter your EMAIL for Git configuration'
     git config --global user.email $email
     Write-Info "Git user.email has been set to $email"
@@ -102,11 +124,14 @@ if (-not (git config --global --get user.email)) {
 git config --global init.defaultBranch main
 
 # GitHub login (skipped if already authenticated)
-if ($SkipSignIn) { Write-Info 'Skipping GitHub login (-SkipSignIn).' }
-elseif (-not (gh auth status 2>$null)) {
-    Write-Info 'You will need to authenticate with GitHub. Follow the prompts to login...'
-    gh auth login
-} else { Write-Info 'Already authenticated with GitHub. Skipping login.' }
+if ($NoInput) { Write-Info 'Skipping GitHub login (-NoInput).' }
+else {
+    Get-CommandOutput { gh auth status } | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Info 'You will need to authenticate with GitHub. Follow the prompts to login...'
+        gh auth login
+    } else { Write-Info 'Already authenticated with GitHub. Skipping login.' }
+}
 
 # --- Global npm tools, which I use in VS Code
 npm install --global prettier   # Code formatter
@@ -125,12 +150,12 @@ foreach ($line in (Read-Manifest "$dotfiledir\skills_ai.txt")) {
 }
 
 # --- VS Code extensions (one failure shouldn't abort the rest)
-$installedExt = code --list-extensions 2>$null
+$installedExt = (Get-CommandOutput { code --list-extensions }) -split "`r?`n"
 foreach ($ext in (Read-Manifest "$dotfiledir\vscode-extensions.txt")) {
     if ($installedExt -contains $ext) { Write-Info "$ext is already installed. Skipping."; continue }
     Write-Info "Installing $ext..."
     code --install-extension $ext | Out-Null
-    if ($LASTEXITCODE -ne 0) { Write-Warn "Failed to install $ext — continuing with the rest." }
+    if ($LASTEXITCODE -ne 0) { Write-Warn "Failed to install $ext - continuing with the rest." }
 }
 
 # --- Fonts: the same families as fonts.txt, fetched from Google Fonts' GitHub
@@ -139,13 +164,20 @@ foreach ($ext in (Read-Manifest "$dotfiledir\vscode-extensions.txt")) {
 
 # --- WSL (Ubuntu). Enabling the feature needs a reboot; Ubuntu's first launch
 # then asks for a username/password, after which ../ubuntu/install.sh takes over.
-if ((wsl --status 2>$null | Out-String) -match 'Default Distribution') { Write-Info 'WSL is already set up. Skipping.' }
+if ((Get-CommandOutput { wsl --status }) -match 'Default Distribution') { Write-Info 'WSL is already set up. Skipping.' }
 else {
     Write-Info 'Enabling WSL and installing Ubuntu (a reboot will be required)...'
     wsl --install -d Ubuntu --no-launch
 }
 
-if (-not $SkipSignIn) {
+# --- Installers drop shortcuts on the Desktop; everything is in the Start menu, so clear them
+$links = @(Get-ChildItem "$HOME\Desktop\*.lnk", "$env:PUBLIC\Desktop\*.lnk" -ErrorAction SilentlyContinue)
+if ($links.Count -gt 0) {
+    $links | Remove-Item -Force
+    Write-Info "Removed $($links.Count) installer shortcut(s) from the Desktop."
+}
+
+if (-not $NoInput) {
     Pause-For 'Sign in to Google Chrome.'
     Pause-For 'Sign in to Google Drive.'
     Pause-For 'Sign in to Discord.'

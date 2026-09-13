@@ -13,10 +13,11 @@
 # -e exit on error, -u error on unset variables, -o pipefail fail on any pipeline stage
 set -euo pipefail
 
-# --skip-signin: no GitHub login and no sign-in pauses (for test machines).
-# The child scripts read the variable, so exporting it by hand works for them too.
-if [[ "${1:-}" == "--skip-signin" ]]; then
-    export DOTFILES_SKIP_SIGNIN=1
+# --no-input: never wait for a person (test machines). Skips the computer-name and
+# git identity prompts, the GitHub login, and the sign-in pauses. The child scripts
+# read the variable, so exporting it by hand works for them too.
+if [[ "${1:-}" == "--no-input" ]]; then
+    export DOTFILES_NO_INPUT=1
 fi
 
 # This script's folder (:A absolute, :h parent). The prompts hardcode

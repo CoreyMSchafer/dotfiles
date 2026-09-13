@@ -12,7 +12,7 @@ git clone https://github.com/CoreyMSchafer/dotfiles.git ~/dotfiles && ~/dotfiles
 ```
 
 Log out and back in afterwards so zsh becomes the shell.
-`DOTFILES_SKIP_SIGNIN=1` skips the GitHub login (handy on a test machine).
+`DOTFILES_NO_INPUT=1` skips the GitHub login and the git identity prompts (handy on a test machine).
 The script is safe to re-run — steps that are already done are skipped.
 
 ## Files

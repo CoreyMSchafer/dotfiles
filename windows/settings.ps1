@@ -1,5 +1,5 @@
 ############################
-# Windows preferences — the macOS.sh counterpart. Dot-sourced by install.ps1 (elevated).
+# Windows preferences - the macOS.sh counterpart. Dot-sourced by install.ps1 (elevated).
 # Each setting checks before changing anything.
 ############################
 
@@ -49,7 +49,7 @@ if (Get-Command git -ErrorAction SilentlyContinue) { git config --global core.lo
 # sudo for Windows (24H2+): `sudo <cmd>` from a normal shell, like the Mac.
 # "normal" mode runs the command inline in the current window.
 if (Get-Command sudo -ErrorAction SilentlyContinue) {
-    if ((sudo config 2>$null) -match 'Inline mode') {
+    if ((Get-CommandOutput { sudo config }) -match 'Inline mode') {
         Write-Info 'sudo is already enabled. Skipping.'
     } else {
         sudo config --enable normal | Out-Null
@@ -59,24 +59,24 @@ if (Get-Command sudo -ErrorAction SilentlyContinue) {
     Write-Warn 'sudo for Windows is not available on this build (needs Windows 11 24H2 or later).'
 }
 
-# PowerToys: make sure Text Extractor (Win+Shift+T screen OCR) and Awake (caffeinate) are on.
-# PowerToys writes settings.json on its first launch; until then the defaults (both on) apply.
-$ptSettings = Join-Path $env:LOCALAPPDATA 'Microsoft\PowerToys\settings.json'
-if (Test-Path $ptSettings) {
-    $pt = Get-Content $ptSettings -Raw | ConvertFrom-Json
-    $ptChanged = $false
-    foreach ($module in 'TextExtractor', 'Awake') {
-        if ($pt.enabled.$module -ne $true) {
-            $pt.enabled | Add-Member -NotePropertyName $module -NotePropertyValue $true -Force
-            $ptChanged = $true
-        }
-    }
-    if ($ptChanged) {
-        $pt | ConvertTo-Json -Depth 10 | Set-Content $ptSettings
-        Write-Info 'PowerToys Text Extractor and Awake enabled.'
-    } else {
-        Write-Info 'PowerToys Text Extractor and Awake are already enabled. Skipping.'
-    }
+# Desktop background used in my tutorials (the same settings/Desktop.png as the Mac).
+# Windows keeps the source path in the registry; SystemParametersInfo applies it live
+# (needs a logged-in desktop session - it fails with error 1459 over SSH).
+$wallpaper = Join-Path (Split-Path -Parent $PSScriptRoot) 'settings\Desktop.png'
+if (-not (Test-Path $wallpaper)) {
+    Write-Warn "Desktop image not found at $wallpaper. Skipping desktop background."
+} elseif ((Get-ItemProperty 'HKCU:\Control Panel\Desktop').Wallpaper -eq $wallpaper) {
+    Write-Info 'Desktop background is already set. Skipping.'
 } else {
-    Write-Info 'PowerToys has not run yet; Text Extractor and Awake are on by default.'
+    # Windows Spotlight (rotating backgrounds) would override a wallpaper set behind its back
+    $spotlight = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings'
+    if (Test-Path $spotlight) { Set-ItemProperty $spotlight -Name EnabledState -Value 0 -Type DWord }
+    Set-ItemProperty 'HKCU:\Control Panel\Desktop' -Name WallpaperStyle -Value '10' # 10 = Fill
+    Set-ItemProperty 'HKCU:\Control Panel\Desktop' -Name TileWallpaper -Value '0'
+    Add-Type -Namespace Dotfiles -Name Wallpaper -MemberDefinition '[DllImport("user32.dll", SetLastError = true)] public static extern bool SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);'
+    if ([Dotfiles.Wallpaper]::SystemParametersInfo(0x0014, 0, $wallpaper, 0x03)) { # SPI_SETDESKWALLPAPER, update ini + broadcast
+        Write-Info 'Desktop background set.'
+    } else {
+        Write-Warn 'Could not set the desktop background (needs a logged-in desktop session; run the script from Terminal).'
+    }
 }
