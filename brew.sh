@@ -150,6 +150,14 @@ uv tool install djlint # Django and Jinja2 template formatting
 uv tool install ruff   # Python formatting and linting
 uv tool install ty     # Astral's Python type checker (used alongside ruff)
 
+# AI agent skills (skills_ai.txt): installed globally and linked into the listed
+# agents' skills folders. The agents must be named: without -a the CLI creates a
+# folder for every agent it knows about (45 of them). Re-runs are no-ops.
+skill_agents=(-a claude-code -a codex)
+while read -r repo skill; do
+    npx skills add "$repo" -g -y -s "$skill" "${skill_agents[@]}"
+done < <(read_manifest "${SCRIPT_DIR}/skills_ai.txt")
+
 # Clean up downloads and outdated versions
 brew cleanup
 

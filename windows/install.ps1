@@ -4,7 +4,7 @@
 #   1. Installs winget packages and apps       (winget.txt)
 #   2. Links config files into place           (PowerShell profile, Terminal, bat, ruff, ssh, VS Code)
 #      and sets Windows preferences          (settings.ps1)
-#   3. Installs global npm/uv tools, VS Code extensions, fonts
+#   3. Installs global npm/uv tools, AI agent skills, VS Code extensions, fonts
 #   4. Enables WSL (Ubuntu) — needs a reboot, then run ubuntu/install.sh inside it
 #
 # Run from an elevated PowerShell:  Set-ExecutionPolicy Bypass -Scope Process; .\windows\install.ps1
@@ -115,6 +115,14 @@ npm install --global eslint     # JavaScript linter
 # --- Global uv tools (djlint/ruff/ty as on the Mac; pre-commit comes from Homebrew
 # there but has no winget package). ocrmypdf lives on the WSL side (apt).
 foreach ($tool in 'djlint', 'ruff', 'ty', 'pre-commit') { uv tool install $tool }
+
+# --- AI agent skills (skills_ai.txt): installed globally and linked into the listed
+# agents' skills folders (without -a the CLI creates a folder for every agent it knows about)
+$skillAgents = @('-a', 'claude-code', '-a', 'codex')
+foreach ($line in (Read-Manifest "$dotfiledir\skills_ai.txt")) {
+    $repo, $skill = $line -split '\s+', 2
+    npx skills add $repo -g -y -s $skill @skillAgents
+}
 
 # --- VS Code extensions (one failure shouldn't abort the rest)
 $installedExt = code --list-extensions 2>$null

@@ -2,7 +2,7 @@
 
 For WSL2 on Windows or any Ubuntu machine. Links the same dotfiles as the Mac,
 installs the tools in `apt.txt` plus uv, Node (from NodeSource), and the global
-npm/uv tools, and makes zsh the login shell. No apps or fonts — those belong to
+npm/uv tools, and makes zsh the login shell. No apps, fonts, or AI agent skills — those belong to
 the host OS.
 
 ## Installation

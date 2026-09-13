@@ -1,0 +1,13 @@
+# AI coding-agent skills installed by brew.sh and windows/install.ps1 — one per line:
+#   <github owner/repo> <skill name>      or      <github owner/repo> *   (every skill in the repo)
+# Lines starting with # (and blank lines) are ignored. `npx skills add` puts them in
+# ~/.agents/skills and links them into the agents named in those scripts (Claude Code, Codex).
+
+remotion-dev/skills *
+# Remotion video skills (best practices, create, render, captions, ...)
+
+adithya-s-k/manim_skill *
+# Manim: composer plus ManimCE and ManimGL best practices
+
+anthropics/claude-plugins-official frontend-design
+# Frontend design guidance
