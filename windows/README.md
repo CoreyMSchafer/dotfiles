@@ -32,6 +32,7 @@ The script is safe to re-run — steps that are already done are skipped.
 
 -  `install.ps1`: The installer
 -  `helpers.ps1`: Logging, backup-then-symlink, and manifest helpers (the PowerShell twin of `../helpers.sh`)
+-  `settings.ps1`: Windows preferences (the `macOS.sh` counterpart) — screenshot folder, hidden files and extensions in Explorer, long paths, `sudo`, PowerToys modules
 -  `fonts.ps1`: Per-user font install from `../fonts.txt` (Google Fonts and Font Awesome)
 -  `winget.txt`: The winget packages to install, one ID per line
 -  `settings/`: The PowerShell profile, and the Windows Terminal color scheme and defaults that `install.ps1` merges into its settings

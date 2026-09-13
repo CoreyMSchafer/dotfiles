@@ -3,6 +3,7 @@
 # Sets up a Windows machine (the native layer; WSL gets ../ubuntu/install.sh):
 #   1. Installs winget packages and apps       (winget.txt)
 #   2. Links config files into place           (PowerShell profile, Terminal, bat, ruff, ssh, VS Code)
+#      and sets Windows preferences          (settings.ps1)
 #   3. Installs global npm/uv tools, VS Code extensions, fonts
 #   4. Enables WSL (Ubuntu) — needs a reboot, then run ubuntu/install.sh inside it
 #
@@ -84,6 +85,9 @@ Link-WithBackup "$dotfiledir\settings\VSCode-Keybindings.json" "$env:APPDATA\Cod
 if ((bat --list-themes 2>$null) -contains 'Predawn') { Write-Info 'bat theme cache already built. Skipping.' }
 else { Write-Info "Building bat's theme cache..."; bat cache --build | Out-Null }
 
+# --- Windows preferences (screenshot folder, ...) — what macOS.sh does on the Mac
+. "$PSScriptRoot\settings.ps1"
+
 # --- Git config (prompt only if not already set)
 if (-not (git config --global --get user.name)) {
     $name = Read-Host 'Please enter your FULL NAME for Git configuration'
@@ -108,9 +112,9 @@ elseif (-not (gh auth status 2>$null)) {
 npm install --global prettier   # Code formatter
 npm install --global eslint     # JavaScript linter
 
-# --- Global uv tools (djlint/ruff/ty as on the Mac; ocrmypdf and pre-commit
-# come from Homebrew there but have no winget package)
-foreach ($tool in 'djlint', 'ruff', 'ty', 'pre-commit', 'ocrmypdf') { uv tool install $tool }
+# --- Global uv tools (djlint/ruff/ty as on the Mac; pre-commit comes from Homebrew
+# there but has no winget package). ocrmypdf lives on the WSL side (apt).
+foreach ($tool in 'djlint', 'ruff', 'ty', 'pre-commit') { uv tool install $tool }
 
 # --- VS Code extensions (one failure shouldn't abort the rest)
 $installedExt = code --list-extensions 2>$null
@@ -136,7 +140,6 @@ else {
 if (-not $SkipSignIn) {
     Pause-For 'Sign in to Google Chrome.'
     Pause-For 'Sign in to Google Drive.'
-    Pause-For 'Sign in to Spotify.'
     Pause-For 'Sign in to Discord.'
     Pause-For 'Open PowerToys and set up a FancyZones layout.'
     Pause-For 'Sign in to your accounts (GitHub Copilot, etc.) within VS Code.'

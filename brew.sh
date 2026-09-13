@@ -131,8 +131,10 @@ fi
 # Github uses "main" as the default branch name
 git config --global init.defaultBranch main
 
-# GitHub login (skipped if already authenticated)
-if ! gh auth status &>/dev/null; then
+# GitHub login (skipped if already authenticated, or with DOTFILES_SKIP_SIGNIN on test machines)
+if [[ -n "${DOTFILES_SKIP_SIGNIN:-}" ]]; then
+    info "Skipping GitHub login (DOTFILES_SKIP_SIGNIN)."
+elif ! gh auth status &>/dev/null; then
     info "You will need to authenticate with GitHub. Follow the prompts to login..."
     gh auth login
 else

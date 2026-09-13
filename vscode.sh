@@ -56,6 +56,8 @@ link_with_backup "${SCRIPT_DIR}/settings/VSCode-Keybindings.json" "${VSCODE_USER
 
 info "VS Code settings and keybindings have been linked."
 
-# Open VS Code for the account sign-ins
-code "${SCRIPT_DIR}"
-pause_for "Sign in to your accounts (GitHub Copilot, etc.) within VS Code."
+# Open VS Code for the account sign-ins (not on test machines)
+if [[ -z "${DOTFILES_SKIP_SIGNIN:-}" ]]; then
+    code "${SCRIPT_DIR}"
+    pause_for "Sign in to your accounts (GitHub Copilot, etc.) within VS Code."
+fi

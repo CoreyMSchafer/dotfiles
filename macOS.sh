@@ -16,7 +16,9 @@ if xcode-select -p &>/dev/null; then
     info "Xcode Command Line Tools are already installed. Skipping."
 else
     xcode-select --install
-    pause_for "Complete the installation of Xcode Command Line Tools before proceeding."
+    info "Complete the Xcode Command Line Tools installation in the dialog; waiting..."
+    until xcode-select -p &>/dev/null; do sleep 5; done
+    info "Xcode Command Line Tools installed."
 fi
 
 # Traditional (non-"natural") scrolling; takes effect after logout

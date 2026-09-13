@@ -79,6 +79,21 @@ if (Get-Command bat -ErrorAction SilentlyContinue) {
 $env:LS_COLORS = 'di=01;33:ln=34:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 $env:EZA_COLORS = 'ur=37:uw=37:ux=32:ue=32:gr=37:gw=37:gx=32:tr=37:tw=37:tx=32:su=31:sf=31:xa=37:sn=0:sb=37:uu=37:un=37:uR=31:gu=37:gn=37:gR=31:hd=4;37:lc=37:lm=37'
 
+# which <name>: a program's path, or what the name is if it isn't a program (alias/function/cmdlet)
+function which {
+    foreach ($name in $args) {
+        $found = Get-Command $name -ErrorAction SilentlyContinue
+        if (-not $found) { Write-Host "$name not found"; continue }
+        foreach ($cmd in $found) {
+            switch ($cmd.CommandType) {
+                'Application' { $cmd.Source }
+                'Alias'       { "$name is an alias for $($cmd.Definition)" }
+                default       { "$name is a $($cmd.CommandType.ToString().ToLower())" }
+            }
+        }
+    }
+}
+
 # History search (ch = git commits, hg = anything)
 function ch { Get-Content (Get-PSReadLineOption).HistorySavePath | Select-String 'git commit' }
 function hg { Get-Content (Get-PSReadLineOption).HistorySavePath | Select-String @args }

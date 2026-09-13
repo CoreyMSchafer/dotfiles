@@ -13,6 +13,12 @@
 # -e exit on error, -u error on unset variables, -o pipefail fail on any pipeline stage
 set -euo pipefail
 
+# --skip-signin: no GitHub login and no sign-in pauses (for test machines).
+# The child scripts read the variable, so exporting it by hand works for them too.
+if [[ "${1:-}" == "--skip-signin" ]]; then
+    export DOTFILES_SKIP_SIGNIN=1
+fi
+
 # This script's folder (:A absolute, :h parent). The prompts hardcode
 # ~/dotfiles, so refuse to run from anywhere else.
 dotfiledir="${0:A:h}"

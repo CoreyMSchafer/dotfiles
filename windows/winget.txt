@@ -68,9 +68,6 @@ BurntSushi.ripgrep.MSVC
 dbrgn.tealdeer
 # tldr pages (command cheat sheets)
 
-UB-Mannheim.TesseractOCR
-# OCR engine (ocrmypdf dependency)
-
 astral-sh.uv
 # Python package/project manager
 
@@ -79,6 +76,16 @@ yt-dlp.yt-dlp
 
 ajeetdsouza.zoxide
 # Smarter cd (jumps by frecency)
+
+# --- Windows-only extras (trial, 2026-09-12)
+voidtools.Everything
+# Instant filename search across all drives (reads the NTFS file table)
+
+AntibodySoftware.WizTree
+# Disk usage treemap in seconds (same trick); dust stays for the CLI
+
+Microsoft.Sysinternals.Autoruns
+# Everything that starts at boot/login, from every location Windows has
 
 # --- Apps
 OpenAI.ChatGPT
@@ -112,7 +119,8 @@ VideoLAN.VLC
 # Media player
 
 # --- Not on winget (installed elsewhere or not applicable)
-# ocrmypdf, pre-commit: uv tools (install.ps1 does these, like brew.sh)
+# pre-commit: uv tool (install.ps1 does it, like brew.sh)
+# ocrmypdf, tesseract, ghostscript: the WSL side (ubuntu/apt.txt) — Ghostscript isn't on winget
 # codex: npm (@openai/codex), like the Mac
 # woff2: GitHub release binary; manual for now
 # ghostty, tart, rectangle: Mac-only (Windows Terminal / Fusion / PowerToys instead)

@@ -48,3 +48,6 @@ teabyii.ayu
 
 tomoki1207.pdf
 # PDF viewer
+
+ms-vscode-remote.remote-wsl
+# Open folders inside WSL on Windows (installs but stays idle on the Mac)

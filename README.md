@@ -63,6 +63,7 @@ This script will:
 -  Configure Visual Studio Code and install the extensions listed in `vscode-extensions.txt` (`vscode.sh`)
 
 The script is safe to re-run — steps that are already done are skipped.
+`./install.sh --skip-signin` skips the GitHub login and the sign-in pauses (handy on a test machine).
 
 ### Other systems
 
