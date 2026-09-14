@@ -1,6 +1,9 @@
 {
   "bundleId" : "com.knollsoft.Rectangle",
   "defaults" : {
+    "SUEnableAutomaticChecks" : {
+      "bool" : true
+    },
     "allowAnyShortcut" : {
       "bool" : true
     },
@@ -10,11 +13,11 @@
     "almostMaximizeWidth" : {
       "float" : 0
     },
-    "alternateDefaultShortcuts" : {
-      "bool" : true
-    },
     "altThirdCycle" : {
       "int" : 0
+    },
+    "alternateDefaultShortcuts" : {
+      "bool" : true
     },
     "alwaysAccountForStage" : {
       "int" : 0
@@ -34,10 +37,16 @@
     "cascadeAllDeltaSize" : {
       "float" : 30
     },
+    "centerHalfCycles" : {
+      "int" : 0
+    },
     "centeredDirectionalMove" : {
       "int" : 0
     },
-    "centerHalfCycles" : {
+    "cooperativeCornerResize" : {
+      "bool" : false
+    },
+    "cornerCycleExpansionAxis" : {
       "int" : 0
     },
     "cornerSnapAreaSize" : {
@@ -45,6 +54,18 @@
     },
     "curtainChangeSize" : {
       "int" : 0
+    },
+    "cycleSizesIsChanged" : {
+      "bool" : false
+    },
+    "cyclingOverlapMaxCascade" : {
+      "int" : 1
+    },
+    "cyclingOverlapOffset" : {
+      "int" : 0
+    },
+    "cyclingOverlapOffsetSize" : {
+      "float" : 11
     },
     "disabledApps" : {
 
@@ -65,7 +86,7 @@
       "int" : 1
     },
     "footprintAlpha" : {
-      "float" : 0.30000001192092896
+      "float" : 0.3
     },
     "footprintAnimationDurationMultiplier" : {
       "float" : 0.75
@@ -85,8 +106,17 @@
     "gapSize" : {
       "float" : 0
     },
+    "greenButtonOverride" : {
+      "bool" : false
+    },
+    "hapticFeedbackOnSnap" : {
+      "int" : 0
+    },
     "hideMenubarIcon" : {
       "bool" : true
+    },
+    "horizontalSplitRatio" : {
+      "float" : 50
     },
     "ignoreDragSnapToo" : {
       "int" : 0
@@ -101,10 +131,10 @@
       "bool" : true
     },
     "minimumWindowHeight" : {
-      "float" : 0
+      "double" : 0
     },
     "minimumWindowWidth" : {
-      "float" : 0
+      "double" : 0
     },
     "missionControlDragging" : {
       "int" : 0
@@ -120,6 +150,9 @@
     },
     "moveCursorAcrossDisplays" : {
       "int" : 0
+    },
+    "moveFixedSizeToEdge" : {
+      "int" : 1
     },
     "notifiedOfProblemApps" : {
       "bool" : false
@@ -145,14 +178,26 @@
     "screenEdgeGapRight" : {
       "float" : 0
     },
-    "screenEdgeGapsOnMainScreenOnly" : {
-      "bool" : false
-    },
     "screenEdgeGapTop" : {
       "float" : 0
     },
+    "screenEdgeGapTopNotch" : {
+      "float" : 0
+    },
+    "screenEdgeGapsOnMainScreenOnly" : {
+      "bool" : false
+    },
+    "screensOrderedByX" : {
+      "int" : 3
+    },
+    "selectedCycleSizes" : {
+      "int" : 0
+    },
     "shortEdgeSnapAreaSize" : {
       "float" : 145
+    },
+    "showAdditionalSizesInMenu" : {
+      "int" : 0
     },
     "showAllActionsInMenu" : {
       "int" : 0
@@ -162,6 +207,12 @@
     },
     "sizeOffset" : {
       "float" : 0
+    },
+    "skipGapTopEdge" : {
+      "bool" : false
+    },
+    "smallerShrinksMaximizedHeight" : {
+      "bool" : false
     },
     "snapEdgeMarginBottom" : {
       "float" : 5
@@ -184,14 +235,14 @@
     "specifiedWidth" : {
       "float" : 1680
     },
+    "stackBadge" : {
+      "int" : 0
+    },
     "stageSize" : {
       "float" : 190
     },
     "subsequentExecutionMode" : {
       "int" : 0
-    },
-    "SUEnableAutomaticChecks" : {
-      "bool" : false
     },
     "systemWideMouseDown" : {
       "int" : 0
@@ -214,20 +265,41 @@
     "todoSidebarWidth" : {
       "float" : 400
     },
+    "todoSidebarWidthUnit" : {
+      "int" : 1
+    },
     "traverseSingleScreen" : {
       "int" : 0
     },
     "unsnapRestore" : {
       "int" : 0
     },
+    "verticalSplitRatio" : {
+      "float" : 50
+    },
+    "widthStepSize" : {
+      "float" : 30
+    },
     "windowSnapping" : {
       "int" : 0
     }
   },
   "shortcuts" : {
+    "almostMaximize" : {
+      "keyCode" : 125,
+      "modifierFlags" : 1048576
+    },
     "bottomHalf" : {
       "keyCode" : 125,
       "modifierFlags" : 1179648
+    },
+    "bottomLeft" : {
+      "keyCode" : 83,
+      "modifierFlags" : 1048576
+    },
+    "bottomRight" : {
+      "keyCode" : 85,
+      "modifierFlags" : 1048576
     },
     "center" : {
       "keyCode" : 8,
@@ -300,7 +372,15 @@
     "topHalf" : {
       "keyCode" : 126,
       "modifierFlags" : 1179648
+    },
+    "topLeft" : {
+      "keyCode" : 89,
+      "modifierFlags" : 1048576
+    },
+    "topRight" : {
+      "keyCode" : 92,
+      "modifierFlags" : 1048576
     }
   },
-  "version" : "82"
+  "version" : "106"
 }

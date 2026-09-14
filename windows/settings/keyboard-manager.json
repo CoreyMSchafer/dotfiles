@@ -1,0 +1,11 @@
+{
+  "remapKeys": { "inProcess": [] },
+  "remapKeysToText": { "inProcess": [] },
+  "remapShortcuts": {
+    "global": [
+      { "originalKeys": "260;16;52", "operationType": 0, "secondKeyOfChord": 0, "newRemapKeys": "260;16;83" }
+    ],
+    "appSpecific": []
+  },
+  "remapShortcutsToText": { "global": [], "appSpecific": [] }
+}

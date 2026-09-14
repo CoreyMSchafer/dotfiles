@@ -18,11 +18,12 @@ if ([Environment]::ExpandEnvironmentVariables("$current") -eq $screenshotDir) {
     Write-Info "Screenshots will now be saved to $screenshotDir."
 }
 
-# Explorer: show hidden files and file extensions (both hidden by default).
-# Explorer re-reads these when it restarts, so restart it only if something changed.
+# Explorer: show hidden files and file extensions (both hidden by default), and no
+# Snap Assist (the "pick another window" popup after snapping - keep snapping quiet like
+# Rectangle). Explorer re-reads these when it restarts, so restart it only if something changed.
 $explorerAdvanced = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
 $explorerChanged = $false
-foreach ($pair in @(@{ Name = 'Hidden'; Value = 1 }, @{ Name = 'HideFileExt'; Value = 0 })) {
+foreach ($pair in @(@{ Name = 'Hidden'; Value = 1 }, @{ Name = 'HideFileExt'; Value = 0 }, @{ Name = 'SnapAssist'; Value = 0 })) {
     $existing = (Get-ItemProperty -Path $explorerAdvanced -Name $pair.Name -ErrorAction SilentlyContinue).($pair.Name)
     if ($existing -ne $pair.Value) {
         Set-ItemProperty -Path $explorerAdvanced -Name $pair.Name -Value $pair.Value -Type DWord
@@ -31,10 +32,38 @@ foreach ($pair in @(@{ Name = 'Hidden'; Value = 1 }, @{ Name = 'HideFileExt'; Va
 }
 if ($explorerChanged) {
     Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue # Windows restarts it
-    Write-Info 'Explorer now shows hidden files and file extensions.'
+    Write-Info 'Explorer now shows hidden files and file extensions; Snap Assist is off.'
 } else {
-    Write-Info 'Explorer already shows hidden files and file extensions. Skipping.'
+    Write-Info 'Explorer already shows hidden files and file extensions, Snap Assist off. Skipping.'
 }
+
+# PowerToys Keyboard Manager: Win+Shift+4 -> Win+Shift+S (the Mac screenshot chord takes a
+# region snip), from settings\keyboard-manager.json. Win = 260 (both Win keys), Shift = 16,
+# then the key's virtual-key code. PowerToys reads the module toggle on startup, so it is
+# restarted when the toggle changes; the remap file itself is watched.
+$ptSettings = "$env:LOCALAPPDATA\Microsoft\PowerToys\settings.json"
+$kbmDir = "$env:LOCALAPPDATA\Microsoft\PowerToys\Keyboard Manager"
+if (Test-Path $ptSettings) {
+    $pt = Get-Content $ptSettings -Raw | ConvertFrom-Json
+    if ($pt.enabled.'Keyboard Manager' -ne $true) {
+        $pt.enabled.'Keyboard Manager' = $true
+        $pt | ConvertTo-Json -Depth 32 | Set-Content $ptSettings -Encoding utf8
+        Stop-Process -Name 'PowerToys*' -Force -ErrorAction SilentlyContinue
+        Start-Process "$env:LOCALAPPDATA\PowerToys\PowerToys.exe"
+        Write-Info 'PowerToys Keyboard Manager enabled.'
+    }
+    New-Item -ItemType Directory -Force $kbmDir | Out-Null
+    $wanted = Get-Content "$PSScriptRoot\settings\keyboard-manager.json" -Raw | ConvertFrom-Json
+    $kbmFile = "$kbmDir\default.json"
+    $kbm = if (Test-Path $kbmFile) { Get-Content $kbmFile -Raw | ConvertFrom-Json } else { $wanted }
+    $have = @($kbm.remapShortcuts.global | ForEach-Object { $_.originalKeys })
+    $missing = @($wanted.remapShortcuts.global | Where-Object { $_.originalKeys -notin $have })
+    if ($missing.Count -gt 0 -or -not (Test-Path $kbmFile)) {
+        $kbm.remapShortcuts.global = @($kbm.remapShortcuts.global) + $missing
+        $kbm | ConvertTo-Json -Depth 8 | Set-Content $kbmFile -Encoding utf8
+        Write-Info 'Keyboard Manager: Win+Shift+4 now takes a region snip (Win+Shift+S).'
+    } else { Write-Info 'Keyboard Manager remaps already in place. Skipping.' }
+} else { Write-Warn 'PowerToys settings not found (open PowerToys once, then re-run for the Keyboard Manager remaps).' }
 
 # Long paths: lift the 260-character path limit (node_modules breaks it). Git has its own switch.
 $fileSystem = 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem'
