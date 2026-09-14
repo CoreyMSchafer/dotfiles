@@ -1,10 +1,8 @@
-﻿# PowerShell profile, linked to $PROFILE for both PowerShell 7 and Windows
-# PowerShell 5.1 by windows/install.ps1. The native-Windows twin of .zshrc +
-# .zprompt + .aliases: same prompt, same aliases where the tools exist, Windows
-# syntax. Saved as UTF-8 with a BOM: 5.1 reads a BOM-less file as Windows-1252
-# and garbles the prompt marker.
+﻿# PowerShell profile (7 and Windows PowerShell 5.1), linked by windows/install.ps1:
+# the Windows twin of .zshrc + .zprompt + .aliases. Saved as UTF-8 with a BOM,
+# which 5.1 needs to read it correctly.
 
-# UTF-8 output so the prompt marker survives 5.1 over SSH (5.1 defaults to the OEM code page there)
+# UTF-8 output (5.1 defaults to the OEM code page over SSH)
 [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false
 
 # --- Colors (same hex values as .zprompt; Windows Terminal is truecolor)
@@ -62,8 +60,7 @@ function prompt {
 # and SSH commands skip the console-only bits, which would otherwise hang)
 $interactive = -not [Console]::IsInputRedirected -and -not [Console]::IsOutputRedirected
 if ($interactive) {
-    # No inline predictions (matches the plain zsh setup); Ctrl+R history search via fzf below.
-    # (5.1's PSReadLine predates predictions, so only when the option exists)
+    # No inline predictions (matches zsh; 5.1's PSReadLine lacks the option)
     if ((Get-Command Set-PSReadLineOption).Parameters.ContainsKey('PredictionSource')) { Set-PSReadLineOption -PredictionSource None }
     Set-PSReadLineOption -BellStyle None
     # Alt+Arrow moves by word like Ctrl+Arrow (Option+Arrow on the Mac)
@@ -74,9 +71,8 @@ if ($interactive) {
 # open <path>: Explorer for folders, the default app for files (like macOS)
 Set-Alias -Name open -Value Invoke-Item
 
-# --- Aliases (PowerShell's built-in ls/cat aliases are replaced with functions)
-# (eza on Windows needs an explicit path - bare `eza` lists nothing - so a
-# call with no arguments gets `.`)
+# --- Aliases (PowerShell's built-in ls/cat aliases are replaced with functions;
+# bare `eza` lists nothing on Windows, so no-argument calls get `.`)
 if (Get-Command eza -ErrorAction SilentlyContinue) {
     Remove-Item Alias:ls -Force -ErrorAction SilentlyContinue
     function ls { if ($args) { eza @args } else { eza . } }

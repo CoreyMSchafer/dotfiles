@@ -6,9 +6,9 @@
 #   3. Installs uv, Node, and global npm/uv tools
 #   4. Makes zsh the login shell
 #
-# No macOS steps, no apps, no fonts — those belong to the host (brew.sh on the
-# Mac, windows/install.ps1 on Windows). Safe to re-run: steps check before
-# changing anything, and replaced files are backed up to ~/.dotfiles_backup/<timestamp>/
+# No apps or fonts: those belong to the host (brew.sh / windows/install.ps1).
+# Safe to re-run: steps check before changing anything, and replaced files
+# are backed up to ~/.dotfiles_backup/<timestamp>/
 ############################
 
 # -e exit on error, -u error on unset variables, -o pipefail fail on any pipeline stage
@@ -23,7 +23,7 @@ if [[ "${dotfiledir}" != "${HOME}/dotfiles" ]]; then
     exit 1
 fi
 
-# Logging, backup-then-symlink, and manifest helpers (shared with the Mac scripts)
+# Shared helpers (logging, backup-then-symlink, manifests)
 source "${dotfiledir}/helpers.sh"
 
 cd "${dotfiledir}"
@@ -61,14 +61,13 @@ sudo apt-get update -qq
 mapfile -t packages < <(read_manifest "${dotfiledir}/ubuntu/apt.txt")
 sudo apt-get install -y -qq "${packages[@]}"
 
-# Ubuntu names two binaries differently; give them their usual names
+# Ubuntu ships these two under different names
 mkdir -p "${HOME}/.local/bin"
 [[ -e "${HOME}/.local/bin/bat" ]] || ln -s "$(command -v batcat)" "${HOME}/.local/bin/bat"
 [[ -e "${HOME}/.local/bin/fd" ]] || ln -s "$(command -v fdfind)" "${HOME}/.local/bin/fd"
 export PATH="${HOME}/.local/bin:${PATH}"
 
-# fzf key bindings + completion: Ubuntu's package ships them as files;
-# ~/.fzf.zsh (what .zshrc sources) just loads them
+# fzf key bindings + completion: ~/.fzf.zsh (sourced by .zshrc) loads the package's files
 if [[ -f "${HOME}/.fzf.zsh" ]]; then
     info "fzf zsh integration already configured. Skipping."
 else
@@ -84,7 +83,7 @@ else
     bat cache --build >/dev/null
 fi
 
-# uv (Python project/tool manager) via its installer; provides ruff/ty/djlint/pre-commit below
+# uv (Python project/tool manager) via its installer
 if command -v uv >/dev/null 2>&1; then
     info "uv is already installed. Skipping."
 else
@@ -92,9 +91,9 @@ else
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-# Node LTS from NodeSource's apt repo (Ubuntu's own nodejs package is years old).
-# Its setup script adds the repo + signing key; apt then owns node like any other package.
-if ls /etc/apt/sources.list.d/nodesource.* >/dev/null 2>&1; then # .sources (deb822) or older .list
+# Node LTS from NodeSource's apt repo (Ubuntu's own package is years old); its setup
+# script adds the repo and signing key, then apt owns node like any other package
+if ls /etc/apt/sources.list.d/nodesource.* >/dev/null 2>&1; then
     info "NodeSource repo is already configured. Skipping."
 else
     info "Adding the NodeSource repo and installing Node LTS..."
@@ -102,8 +101,7 @@ else
 fi
 sudo apt-get install -y -qq nodejs
 
-# Global npm tools, which I use in VS Code. apt's node puts globals under
-# /usr/lib (root-owned), so point npm at ~/.local instead — already on PATH.
+# Global npm tools, which I use in VS Code (under ~/.local, not root-owned /usr/lib)
 npm config set prefix "${HOME}/.local"
 npm install --global prettier # Code formatter
 npm install --global eslint   # JavaScript linter

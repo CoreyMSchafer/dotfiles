@@ -12,8 +12,8 @@
 # are backed up to ~\.dotfiles_backup\<timestamp>\
 ############################
 
-# -NoInput: never wait for a person (test VMs). Skips the computer-name and git identity
-# prompts, the GitHub login, and the sign-in pauses.
+# -NoInput: never wait for a person (test machines): skips the computer-name and git
+# identity prompts, the GitHub login, and the sign-in pauses
 param([switch]$NoInput)
 $ErrorActionPreference = 'Stop'
 
@@ -28,7 +28,7 @@ if ((Resolve-Path $dotfiledir).Path -ne (Join-Path $HOME 'dotfiles')) {
 Set-Location $dotfiledir
 
 # --- winget packages and apps
-# Installers drop shortcuts on the Desktop; remember what was there so only the new ones are removed at the end
+# Snapshot the Desktop shortcuts: installers add more, and only those are removed at the end
 $desktopBefore = @(Get-ChildItem "$HOME\Desktop\*.lnk", "$env:PUBLIC\Desktop\*.lnk" -ErrorAction SilentlyContinue).FullName
 $packages = Read-Manifest "$PSScriptRoot\winget.txt"
 $installed = Get-CommandOutput { winget list --accept-source-agreements }
@@ -37,8 +37,7 @@ foreach ($id in $packages) {
     Write-Info "Installing $id..."
     $result = Get-CommandOutput { winget install --id $id --exact --silent --accept-source-agreements --accept-package-agreements }
     if ($result -match 'Successfully installed|already installed') { continue }
-    # Otherwise trust the package list, not the exit code: portable packages can extract
-    # and still fail to register, and some installers (Postman) return before they finish
+    # The exit code isn't reliable (portable packages, installers that return early), so check the package list
     if (-not ((Get-CommandOutput { winget list --id $id --exact }) -match [regex]::Escape($id))) {
         Write-Warn "$id is not registered with winget yet (its installer may still be running) - re-run the script later to check."
     }
@@ -49,10 +48,8 @@ Update-Path   # tools installed above become callable from here on
 # PowerShell 7 profile
 Link-WithBackup "$PSScriptRoot\settings\Microsoft.PowerShell_profile.ps1" "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
 Link-WithBackup "$PSScriptRoot\settings\Microsoft.PowerShell_profile.ps1" "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"   # 5.1: what SSH sessions land in
-# fzf keybindings for PowerShell (Ctrl+R history) come from the PSFzf module. It's installed
-# by PowerShell 7 itself (winget put it in place above): 7's Install-PSResource needs no
-# NuGet-provider bootstrap - that download hangs under Windows PowerShell 5.1 - and the
-# module lands in 7's own module path, which is the PowerShell the profile runs in.
+# fzf keybindings for PowerShell (PSFzf), installed by PowerShell 7 itself: its module
+# installer needs no NuGet bootstrap (5.1's hangs), and the profile runs in 7 anyway
 $pwsh = (Get-Command pwsh -ErrorAction SilentlyContinue).Source
 if (-not $pwsh) { $pwsh = "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe" }
 if (-not (Test-Path $pwsh)) {
@@ -74,8 +71,7 @@ if (Test-Path $wtSettings) {
     $defaults = Get-Content "$PSScriptRoot\settings\terminal-defaults.json" -Raw | ConvertFrom-Json
     if (-not $wt.profiles.defaults) { $wt.profiles | Add-Member -NotePropertyName defaults -NotePropertyValue ([pscustomobject]@{}) }
     foreach ($p in $defaults.PSObject.Properties) { $wt.profiles.defaults | Add-Member -NotePropertyName $p.Name -NotePropertyValue $p.Value -Force }
-    # Terminal only generates its PowerShell 7 profile entry the next time it launches,
-    # but that entry's GUID is deterministic, so point at it either way
+    # The PowerShell 7 profile entry may not exist yet, but its GUID is deterministic
     $pwsh = $wt.profiles.list | Where-Object { $_.source -eq 'Windows.Terminal.PowershellCore' } | Select-Object -First 1
     $wt.defaultProfile = if ($pwsh) { $pwsh.guid } else { '{574e775e-4f2a-5b96-ac1e-a2962a402336}' }
     $wt | ConvertTo-Json -Depth 32 | Set-Content $wtSettings -Encoding utf8
@@ -97,7 +93,7 @@ Link-WithBackup "$dotfiledir\settings\VSCode-Keybindings.json" "$env:APPDATA\Cod
 if ((Get-CommandOutput { bat --list-themes }) -match '(?m)^Predawn\s*$') { Write-Info 'bat theme cache already built. Skipping.' }
 else { Write-Info "Building bat's theme cache..."; bat cache --build | Out-Null }
 
-# --- Windows preferences (screenshot folder, ...) - what macOS.sh does on the Mac
+# --- Windows preferences (the macOS.sh counterpart)
 . "$PSScriptRoot\settings.ps1"
 
 # --- Computer name (Enter keeps the current one; a change takes effect after the reboot)
@@ -146,12 +142,11 @@ else {
 npm install --global prettier   # Code formatter
 npm install --global eslint     # JavaScript linter
 
-# --- Global uv tools (djlint/ruff/ty as on the Mac; pre-commit comes from Homebrew
-# there but has no winget package). ocrmypdf lives on the WSL side (apt).
+# --- Global uv tools, which I use in VS Code (pre-commit too: no winget package)
 foreach ($tool in 'djlint', 'ruff', 'ty', 'pre-commit') { uv tool install $tool }
 
-# --- AI agent skills (skills_ai.txt): installed globally and linked into the listed
-# agents' skills folders (without -a the CLI creates a folder for every agent it knows about)
+# --- AI agent skills (skills_ai.txt), installed globally for the listed agents
+# (without -a the CLI creates a folder for every agent it knows about)
 $skillAgents = @('-a', 'claude-code', '-a', 'codex')
 foreach ($line in (Read-Manifest "$dotfiledir\skills_ai.txt")) {
     $repo, $skill = $line -split '\s+', 2
@@ -167,19 +162,17 @@ foreach ($ext in (Read-Manifest "$dotfiledir\vscode-extensions.txt")) {
     if ($LASTEXITCODE -ne 0) { Write-Warn "Failed to install $ext - continuing with the rest." }
 }
 
-# --- Fonts: the same families as fonts.txt, fetched from Google Fonts' GitHub
-# repo (the source the Homebrew casks use) and installed per-user
+# --- Fonts (fonts.txt), installed per-user
 . "$PSScriptRoot\fonts.ps1"
 
-# --- WSL (Ubuntu). Enabling the feature needs a reboot; Ubuntu's first launch
-# then asks for a username/password, after which ../ubuntu/install.sh takes over.
+# --- WSL (Ubuntu): needs a reboot, then ../ubuntu/install.sh takes over inside it
 if ((Get-CommandOutput { wsl --status }) -match 'Default Distribution') { Write-Info 'WSL is already set up. Skipping.' }
 else {
     Write-Info 'Enabling WSL and installing Ubuntu (a reboot will be required)...'
     wsl --install -d Ubuntu --no-launch
 }
 
-# --- Remove the shortcuts the installers above dropped on the Desktop (everything is in the Start menu)
+# --- Remove the Desktop shortcuts the installers dropped (everything is in the Start menu)
 $links = @(Get-ChildItem "$HOME\Desktop\*.lnk", "$env:PUBLIC\Desktop\*.lnk" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notin $desktopBefore })
 if ($links.Count -gt 0) {
     $links | Remove-Item -Force

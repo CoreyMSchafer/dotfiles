@@ -1,7 +1,6 @@
-# Shared helpers, dot-sourced by install.ps1 (not run directly).
-# The PowerShell twin of ../helpers.sh.
-# These scripts run under Windows PowerShell 5.1 on a fresh machine, which reads .ps1 files
-# as Windows-1252 unless they carry a BOM - so they stay plain ASCII (no em dashes, arrows).
+# Shared helpers, dot-sourced by install.ps1 (not run directly); the twin of ../helpers.sh.
+# A fresh machine runs these under Windows PowerShell 5.1, which reads BOM-less files as
+# Windows-1252: keep them plain ASCII.
 
 # One timestamped backup folder per run, created only if needed
 $script:BackupDir = Join-Path $HOME ".dotfiles_backup\$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss')"
@@ -27,7 +26,7 @@ function Read-Manifest([string]$path) {
 function Link-WithBackup([string]$src, [string]$dst) {
     if (-not (Test-Path $src)) { Write-Warn "Skipping link for ${dst}: source ${src} does not exist."; return }
     $existing = Get-Item -LiteralPath $dst -ErrorAction SilentlyContinue
-    # .Target works in Windows PowerShell 5.1 and 7 (.LinkTarget is 7-only); 5.1 returns an array
+    # .Target works in 5.1 and 7 (.LinkTarget is 7-only); 5.1 returns an array
     $target = if ($existing) { @($existing.Target)[0] -replace '^\\\\\?\\', '' }
     if ($existing -and $existing.LinkType -eq 'SymbolicLink' -and $target -and
         [IO.Path]::GetFullPath($target) -eq [IO.Path]::GetFullPath($src)) {
@@ -45,19 +44,16 @@ function Link-WithBackup([string]$src, [string]$dst) {
     Write-Info "Linked $dst -> $src"
 }
 
-# Run a native command and return everything it printed as one string. Under Windows
-# PowerShell 5.1 with $ErrorActionPreference = 'Stop', redirecting a native command's stderr
-# turns any stderr line into a terminating error; this keeps probes like `gh auth status`
-# and `sudo config` from killing the script. $LASTEXITCODE is left set by the command.
+# Run a native command and return its stdout + stderr as one string ($LASTEXITCODE stays
+# set). Under 5.1 with $ErrorActionPreference = 'Stop', a native command's stderr becomes a
+# terminating error, which would kill probes like `gh auth status`.
 function Get-CommandOutput([scriptblock]$command) {
     $ErrorActionPreference = 'Continue'
-    # stderr lines arrive as error records; keep only their text (the record's own rendering
-    # includes the calling source line, which would make -match tests match this script)
+    # stderr arrives as error records; keep just the message (the full rendering includes the calling line)
     (& $command 2>&1 | ForEach-Object { if ($_ -is [Management.Automation.ErrorRecord]) { $_.Exception.Message } else { $_ } } | Out-String)
 }
 
-# Re-read PATH from the registry so tools winget just installed are callable
-# in this same session (installers update the registry, not running shells)
+# Re-read PATH from the registry so tools winget just installed are callable in this session
 function Update-Path {
     $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
 }

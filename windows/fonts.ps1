@@ -1,15 +1,13 @@
-# Installs the fonts in ../fonts.txt for the current user. Dot-sourced by
-# install.ps1. Google Fonts families come from the google/fonts GitHub repo
-# (the same source the Homebrew casks use); Font Awesome from its release zip.
-# Safe to re-run: families with any file already installed are skipped.
+# Installs the fonts in ../fonts.txt for the current user (dot-sourced by install.ps1).
+# Google Fonts families come from the google/fonts GitHub repo, Font Awesome from its
+# release zip. Safe to re-run: installed families are skipped.
 
 $fontDir = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"
 $fontReg = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
 New-Item -ItemType Directory -Force $fontDir | Out-Null
 
-# Copy a font file into the per-user font folder and register it
-# (-LiteralPath throughout: variable fonts are named like Caveat[wght].ttf and
-# PowerShell would otherwise read the brackets as wildcards)
+# Copy a font file into the per-user font folder and register it (-LiteralPath: variable
+# fonts are named like Caveat[wght].ttf, and PowerShell reads brackets as wildcards)
 function Install-FontFile([string]$path) {
     $name = Split-Path -Leaf $path
     $dest = Join-Path $fontDir $name
@@ -19,8 +17,7 @@ function Install-FontFile([string]$path) {
     New-ItemProperty -Path $fontReg -Name "$([IO.Path]::GetFileNameWithoutExtension($name)) ($type)" -Value $dest -PropertyType String -Force | Out-Null
 }
 
-# Download to an exact path. Invoke-WebRequest -OutFile reads brackets as wildcards under
-# Windows PowerShell 5.1 (variable fonts are named like Caveat[wght].ttf); .NET writes literally.
+# Download to an exact path (-OutFile treats brackets as wildcards under 5.1; .NET doesn't)
 function Save-Url([string]$url, [string]$path) {
     [IO.File]::WriteAllBytes($path, (Invoke-WebRequest $url -UseBasicParsing).Content)
 }

@@ -4,8 +4,7 @@
 ############################
 
 # Screenshots (Win+Shift+S, Win+PrtScn) go to ~\Desktop\Screenshots, as on the Mac.
-# The Screenshots known folder is the registry value named by its GUID; Explorer
-# and the Snipping Tool read it from here. Takes effect for new captures right away.
+# The known folder is a registry value named by its GUID; takes effect right away.
 $screenshotDir = Join-Path $HOME 'Desktop\Screenshots'
 $shellFolders = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
 $screenshotsGuid = '{B7BEDE81-DF94-4682-A7D8-57A52620B86F}'
@@ -18,9 +17,8 @@ if ([Environment]::ExpandEnvironmentVariables("$current") -eq $screenshotDir) {
     Write-Info "Screenshots will now be saved to $screenshotDir."
 }
 
-# Explorer: show hidden files and file extensions (both hidden by default), and no
-# Snap Assist (the "pick another window" popup after snapping - keep snapping quiet like
-# Rectangle). Explorer re-reads these when it restarts, so restart it only if something changed.
+# Explorer: show hidden files and file extensions, and no Snap Assist (the "pick another
+# window" popup after snapping). Explorer re-reads these on restart, so restart it only on a change.
 $explorerAdvanced = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
 $explorerChanged = $false
 foreach ($pair in @(@{ Name = 'Hidden'; Value = 1 }, @{ Name = 'HideFileExt'; Value = 0 }, @{ Name = 'SnapAssist'; Value = 0 })) {
@@ -37,10 +35,9 @@ if ($explorerChanged) {
     Write-Info 'Explorer already shows hidden files and file extensions, Snap Assist off. Skipping.'
 }
 
-# PowerToys Keyboard Manager: Win+Shift+4 -> Win+Shift+S (the Mac screenshot chord takes a
-# region snip), from settings\keyboard-manager.json. Win = 260 (both Win keys), Shift = 16,
-# then the key's virtual-key code. PowerToys reads the module toggle on startup, so it is
-# restarted when the toggle changes; the remap file itself is watched.
+# PowerToys Keyboard Manager remaps from settings\keyboard-manager.json (Win+Shift+4 ->
+# Win+Shift+S, the Mac screenshot chord). Key codes: 260 = Win, 16 = Shift, then the key.
+# The module toggle is read at PowerToys startup, so it restarts on a change; the remap file is watched.
 $ptSettings = "$env:LOCALAPPDATA\Microsoft\PowerToys\settings.json"
 $kbmDir = "$env:LOCALAPPDATA\Microsoft\PowerToys\Keyboard Manager"
 if (Test-Path $ptSettings) {
@@ -88,16 +85,15 @@ if (Get-Command sudo -ErrorAction SilentlyContinue) {
     Write-Warn 'sudo for Windows is not available on this build (needs Windows 11 24H2 or later).'
 }
 
-# Desktop background used in my tutorials (the same settings/Desktop.png as the Mac).
-# Windows keeps the source path in the registry; SystemParametersInfo applies it live
-# (needs a logged-in desktop session - it fails with error 1459 over SSH).
+# Desktop background used in my tutorials (settings/Desktop.png, as on the Mac).
+# SystemParametersInfo applies it live (needs a desktop session; fails over SSH).
 $wallpaper = Join-Path (Split-Path -Parent $PSScriptRoot) 'settings\Desktop.png'
 if (-not (Test-Path $wallpaper)) {
     Write-Warn "Desktop image not found at $wallpaper. Skipping desktop background."
 } elseif ((Get-ItemProperty 'HKCU:\Control Panel\Desktop').Wallpaper -eq $wallpaper) {
     Write-Info 'Desktop background is already set. Skipping.'
 } else {
-    # Windows Spotlight (rotating backgrounds) would override a wallpaper set behind its back
+    # Windows Spotlight (rotating backgrounds) would override it
     $spotlight = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings'
     if (Test-Path $spotlight) { Set-ItemProperty $spotlight -Name EnabledState -Value 0 -Type DWord }
     Set-ItemProperty 'HKCU:\Control Panel\Desktop' -Name WallpaperStyle -Value '10' # 10 = Fill
