@@ -106,7 +106,7 @@ uv
 vhs
 # Terminal recordings to GIF/MP4
 
-whisper-cpp
+whisper.cpp
 # Local speech-to-text
 
 woff2

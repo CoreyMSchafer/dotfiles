@@ -125,5 +125,5 @@ VideoLAN.VLC
 # woff2: GitHub release binary; manual for now
 # ghostty, tart, rectangle: Mac-only (Windows Terminal / Fusion / PowerToys instead)
 # bash, zsh, coreutils, cairo, pkgconf, python-tk, tcl-tk: the WSL side (ubuntu/apt.txt)
-# freeze, d2, vhs, typst, whisper-cpp, exiftool, librsvg, gimp, spotify, gcloud, keyboardcleantool:
+# freeze, d2, vhs, typst, whisper.cpp, exiftool, librsvg, gimp, spotify, gcloud, keyboardcleantool:
 #   on purpose only on the Mac (tutorial production and personal-use tools)
