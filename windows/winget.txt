@@ -89,7 +89,8 @@ Microsoft.Sysinternals.Autoruns
 
 # --- Apps
 9PLM9XGG6VKS
-# ChatGPT desktop app (Microsoft Store ID; OpenAI does not publish it to the winget source)
+# ChatGPT desktop app (Microsoft Store ID; OpenAI does not publish it to the winget source.
+# Installs as the package OpenAI.Codex, which `winget list` does not show)
 
 Anthropic.Claude
 # Claude desktop app

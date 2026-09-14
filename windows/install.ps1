@@ -35,9 +35,10 @@ $installed = Get-CommandOutput { winget list --accept-source-agreements }
 foreach ($id in $packages) {
     if ($installed -match [regex]::Escape($id)) { Write-Info "$id is already installed. Skipping."; continue }
     Write-Info "Installing $id..."
-    winget install --id $id --exact --silent --accept-source-agreements --accept-package-agreements | Out-Null
-    # Trust the package list, not the exit code: portable packages can extract and
-    # still fail to register, and some installers (Postman) return before they finish
+    $result = Get-CommandOutput { winget install --id $id --exact --silent --accept-source-agreements --accept-package-agreements }
+    if ($result -match 'Successfully installed|already installed') { continue }
+    # Otherwise trust the package list, not the exit code: portable packages can extract
+    # and still fail to register, and some installers (Postman) return before they finish
     if (-not ((Get-CommandOutput { winget list --id $id --exact }) -match [regex]::Escape($id))) {
         Write-Warn "$id is not registered with winget yet (its installer may still be running) - re-run the script later to check."
     }
@@ -47,6 +48,7 @@ Update-Path   # tools installed above become callable from here on
 # --- Config files
 # PowerShell 7 profile
 Link-WithBackup "$PSScriptRoot\settings\Microsoft.PowerShell_profile.ps1" "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
+Link-WithBackup "$PSScriptRoot\settings\Microsoft.PowerShell_profile.ps1" "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"   # 5.1: what SSH sessions land in
 # fzf keybindings for PowerShell (Ctrl+R history) come from the PSFzf module. It's installed
 # by PowerShell 7 itself (winget put it in place above): 7's Install-PSResource needs no
 # NuGet-provider bootstrap - that download hangs under Windows PowerShell 5.1 - and the
@@ -188,6 +190,7 @@ if (-not $NoInput) {
     Pause-For 'Sign in to Google Chrome.'
     Pause-For 'Sign in to Google Drive.'
     Pause-For 'Sign in to Discord.'
+    Pause-For 'Optional: to SSH into this PC, see "SSH into this PC" in windows\README.md.'
     Pause-For 'Open PowerToys and set up a FancyZones layout.'
     Pause-For 'Sign in to your accounts (GitHub Copilot, etc.) within VS Code.'
 }

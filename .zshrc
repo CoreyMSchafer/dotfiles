@@ -27,6 +27,9 @@ setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first when trimming history
 # Before the dotfiles load so .aliases can see them.
 export PATH="$PATH:$HOME/.local/bin"
 
+# Windows Terminal renders 24-bit color but doesn't advertise it inside WSL
+[[ -n "$WSL_DISTRO_NAME" && -z "$COLORTERM" ]] && export COLORTERM=truecolor
+
 # Load dotfiles:
 for file in ~/.{zprompt,aliases,private}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file"
@@ -35,6 +38,12 @@ unset file
 
 # Default minus "/" so word-deletion stops at path components
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+# Ctrl+Arrow and Alt+Arrow move by word (xterm sequences; Windows Terminal and Ubuntu send these)
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;3C' forward-word
 
 # fzf: use the terminal's 16-color palette
 export FZF_DEFAULT_OPTS='--color=16'

@@ -1,8 +1,13 @@
-# PowerShell 7 profile, linked to $PROFILE by windows/install.ps1.
-# The native-Windows twin of .zshrc + .zprompt + .aliases: same prompt, same
-# aliases where the tools exist, Windows syntax.
+﻿# PowerShell profile, linked to $PROFILE for both PowerShell 7 and Windows
+# PowerShell 5.1 by windows/install.ps1. The native-Windows twin of .zshrc +
+# .zprompt + .aliases: same prompt, same aliases where the tools exist, Windows
+# syntax. Saved as UTF-8 with a BOM: 5.1 reads a BOM-less file as Windows-1252
+# and garbles the prompt marker.
 
-# --- Colors (same hex values as .shared_prompt; Windows Terminal is truecolor)
+# UTF-8 output so the prompt marker survives 5.1 over SSH (5.1 defaults to the OEM code page there)
+[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false
+
+# --- Colors (same hex values as .zprompt; Windows Terminal is truecolor)
 $e = [char]27
 function color([string]$hex) { "$e[38;2;$([Convert]::ToInt32($hex.Substring(0,2),16));$([Convert]::ToInt32($hex.Substring(2,2),16));$([Convert]::ToInt32($hex.Substring(4,2),16))m" }
 $bold = "$e[1m"; $reset = "$e[0m"
@@ -60,7 +65,13 @@ if ($interactive) {
     # No inline predictions (matches the plain zsh setup); Ctrl+R history search via fzf below
     Set-PSReadLineOption -PredictionSource None
     Set-PSReadLineOption -BellStyle None
+    # Alt+Arrow moves by word like Ctrl+Arrow (Option+Arrow on the Mac)
+    Set-PSReadLineKeyHandler -Chord Alt+LeftArrow -Function BackwardWord
+    Set-PSReadLineKeyHandler -Chord Alt+RightArrow -Function ForwardWord
 }
+
+# open <path>: Explorer for folders, the default app for files (like macOS)
+Set-Alias -Name open -Value Invoke-Item
 
 # --- Aliases (PowerShell's built-in ls/cat aliases are replaced with functions)
 # (eza on Windows needs an explicit path - bare `eza` lists nothing - so a
