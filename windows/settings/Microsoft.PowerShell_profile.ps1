@@ -62,8 +62,9 @@ function prompt {
 # and SSH commands skip the console-only bits, which would otherwise hang)
 $interactive = -not [Console]::IsInputRedirected -and -not [Console]::IsOutputRedirected
 if ($interactive) {
-    # No inline predictions (matches the plain zsh setup); Ctrl+R history search via fzf below
-    Set-PSReadLineOption -PredictionSource None
+    # No inline predictions (matches the plain zsh setup); Ctrl+R history search via fzf below.
+    # (5.1's PSReadLine predates predictions, so only when the option exists)
+    if ((Get-Command Set-PSReadLineOption).Parameters.ContainsKey('PredictionSource')) { Set-PSReadLineOption -PredictionSource None }
     Set-PSReadLineOption -BellStyle None
     # Alt+Arrow moves by word like Ctrl+Arrow (Option+Arrow on the Mac)
     Set-PSReadLineKeyHandler -Chord Alt+LeftArrow -Function BackwardWord
