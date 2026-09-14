@@ -5,9 +5,11 @@
 # One timestamped backup folder per run, created only if needed
 $script:BackupDir = Join-Path $HOME ".dotfiles_backup\$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss')"
 
-function Write-Info([string]$msg)  { Write-Host '[info] ' -ForegroundColor Blue -NoNewline; Write-Host $msg }
-function Write-Warn([string]$msg)  { Write-Host '[warn] ' -ForegroundColor Yellow -NoNewline; Write-Host $msg }
-function Write-Err([string]$msg)   { Write-Host '[error] ' -ForegroundColor Red -NoNewline; Write-Host $msg }
+# One Write-Host per line (a colored tag via -NoNewline splits the line in logged runs)
+$e = [char]27
+function Write-Info([string]$msg)  { Write-Host "$e[34m[info]$e[0m $msg" }
+function Write-Warn([string]$msg)  { Write-Host "$e[33m[warn]$e[0m $msg" }
+function Write-Err([string]$msg)   { Write-Host "$e[31m[error]$e[0m $msg" }
 
 # Prompt for a manual step, then wait for Enter
 function Pause-For([string]$msg) {

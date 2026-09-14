@@ -55,7 +55,8 @@ Set-Content C:\ProgramData\ssh\administrators_authorized_keys 'ssh-ed25519 AAAA.
 icacls C:\ProgramData\ssh\administrators_authorized_keys /inheritance:r /grant Administrators:F /grant SYSTEM:F
 ```
 
-Then `ssh <user>@<computer-name>` from another machine, and `wsl ~` once in for the Ubuntu side.
+Then `ssh <user>@<computer-name>` from another machine, and `wsl '~'` once in for the Ubuntu side
+(quoted: PowerShell 7 expands a bare `~` to the Windows home path before WSL sees it).
 
 ## Files
 

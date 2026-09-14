@@ -34,9 +34,10 @@ $packages = Read-Manifest "$PSScriptRoot\winget.txt"
 $installed = Get-CommandOutput { winget list --accept-source-agreements }
 foreach ($id in $packages) {
     if ($installed -match [regex]::Escape($id)) { Write-Info "$id is already installed. Skipping."; continue }
-    Write-Info "Installing $id..."
     $result = Get-CommandOutput { winget install --id $id --exact --silent --accept-source-agreements --accept-package-agreements }
-    if ($result -match 'Successfully installed|already installed') { continue }
+    # Store apps don't show in `winget list`, so some land here every run
+    if ($result -match 'already installed') { Write-Info "$id is already installed. Skipping."; continue }
+    if ($result -match 'Successfully installed') { Write-Info "Installed $id."; continue }
     # The exit code isn't reliable (portable packages, installers that return early), so check the package list
     if (-not ((Get-CommandOutput { winget list --id $id --exact }) -match [regex]::Escape($id))) {
         Write-Warn "$id is not registered with winget yet (its installer may still be running) - re-run the script later to check."
@@ -70,6 +71,7 @@ if (-not (Test-Path $pwsh)) {
 $wtSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 if (Test-Path $wtSettings) {
     $wt = Get-Content $wtSettings -Raw | ConvertFrom-Json
+    $wtBefore = $wt | ConvertTo-Json -Depth 32
     $scheme = Get-Content "$PSScriptRoot\settings\cms-scheme.json" -Raw | ConvertFrom-Json
     $wt.schemes = @($wt.schemes | Where-Object { $_.name -ne $scheme.name }) + $scheme
     $defaults = Get-Content "$PSScriptRoot\settings\terminal-defaults.json" -Raw | ConvertFrom-Json
@@ -78,8 +80,12 @@ if (Test-Path $wtSettings) {
     # The PowerShell 7 profile entry may not exist yet, but its GUID is deterministic
     $pwsh = $wt.profiles.list | Where-Object { $_.source -eq 'Windows.Terminal.PowershellCore' } | Select-Object -First 1
     $wt.defaultProfile = if ($pwsh) { $pwsh.guid } else { '{574e775e-4f2a-5b96-ac1e-a2962a402336}' }
-    $wt | ConvertTo-Json -Depth 32 | Set-Content $wtSettings -Encoding utf8
-    Write-Info 'Windows Terminal: CMS scheme, defaults, and PowerShell 7 as the default profile.'
+    $wtAfter = $wt | ConvertTo-Json -Depth 32
+    if ($wtAfter -eq $wtBefore) { Write-Info 'Windows Terminal already configured. Skipping.' }
+    else {
+        $wtAfter | Set-Content $wtSettings -Encoding utf8
+        Write-Info 'Windows Terminal: CMS scheme, defaults, and PowerShell 7 as the default profile.'
+    }
 } else { Write-Warn 'Windows Terminal settings.json not found (open Terminal once, then re-run).' }
 
 # bat config + color scheme (theme cache built below)
@@ -152,9 +158,16 @@ foreach ($tool in 'djlint', 'ruff', 'ty', 'pre-commit') { Invoke-Native { uv too
 # --- AI agent skills (skills_ai.txt), installed globally for the listed agents
 # (without -a the CLI creates a folder for every agent it knows about)
 $skillAgents = @('-a', 'claude-code', '-a', 'codex')
+# The skills CLI records each installed skill's source repo in its lockfile; skip repos
+# already there (`update_all` refreshes them) - the CLI is slow and loud on re-runs otherwise
+$skillLock = "$HOME\.agents\.skill-lock.json"
+$lockedSkills = if (Test-Path $skillLock) { (Get-Content $skillLock -Raw | ConvertFrom-Json).skills } else { $null }
 foreach ($line in (Read-Manifest "$dotfiledir\skills_ai.txt")) {
     $repo, $skill = $line -split '\s+', 2
-    Invoke-Native { npx skills add $repo -g -y -s $skill @skillAgents }
+    $have = @($lockedSkills.PSObject.Properties | Where-Object { $_.Value.source -eq $repo -and ($skill -eq '*' -or $_.Name -eq $skill) })
+    if ($have.Count -gt 0) { Write-Info "Skills from $repo are already installed. Skipping."; continue }
+    Write-Info "Installing skills from $repo..."
+    Invoke-Native { npx skills add $repo -g -y -s $skill @skillAgents } | Select-String 'Installed \d+ skill|error|fail' | ForEach-Object { $_.Line.Trim() }
 }
 
 # --- VS Code extensions (one failure shouldn't abort the rest)
@@ -170,10 +183,13 @@ foreach ($ext in (Read-Manifest "$dotfiledir\vscode-extensions.txt")) {
 . "$PSScriptRoot\fonts.ps1"
 
 # --- WSL (Ubuntu): needs a reboot, then ../ubuntu/install.sh takes over inside it
-if ((Get-CommandOutput { wsl --status }) -match 'Default Distribution') { Write-Info 'WSL is already set up. Skipping.' }
+$env:WSL_UTF8 = 1   # wsl.exe prints UTF-16 otherwise, which 5.1 captures as NUL-riddled text
+$wslInstalled = $false
+if ((Get-CommandOutput { wsl --list --quiet }) -match 'Ubuntu') { Write-Info 'WSL Ubuntu is already installed. Skipping.' }
 else {
     Write-Info 'Enabling WSL and installing Ubuntu (a reboot will be required)...'
-    wsl --install -d Ubuntu --no-launch
+    Invoke-Native { wsl --install -d Ubuntu --no-launch }
+    $wslInstalled = $true
 }
 
 # --- Remove the Desktop shortcuts the installers dropped (everything is in the Start menu)
@@ -195,5 +211,7 @@ if (-not $NoInput) {
 Write-Host ''
 Write-Info 'Installation Complete!'
 if (Test-Path $script:BackupDir) { Write-Info "Files replaced by this run were backed up to $script:BackupDir" }
-Write-Info 'Reboot to finish enabling WSL, then open Ubuntu from the Start menu and run:'
-Write-Info '  git clone https://github.com/CoreyMSchafer/dotfiles.git ~/dotfiles && cd ~/dotfiles && ./ubuntu/install.sh'
+if ($wslInstalled) {
+    Write-Info 'Reboot to finish enabling WSL, then open Ubuntu from the Start menu and run:'
+    Write-Info '  git clone https://github.com/CoreyMSchafer/dotfiles.git ~/dotfiles && cd ~/dotfiles && ./ubuntu/install.sh'
+}

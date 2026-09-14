@@ -158,8 +158,16 @@ uv tool install ty     # Astral's Python type checker (used alongside ruff)
 # agents' skills folders. The agents must be named: without -a the CLI creates a
 # folder for every agent it knows about (45 of them). Re-runs are no-ops.
 skill_agents=(-a claude-code -a codex)
+skill_lock="${HOME}/.agents/.skill-lock.json"
 while read -r repo skill; do
-    npx skills add "$repo" -g -y -s "$skill" "${skill_agents[@]}"
+    # The CLI's lockfile records each skill's source repo; skip what's there (update_all refreshes)
+    if [[ -f "$skill_lock" ]] && [[ -n "$(jq -r --arg r "$repo" --arg s "$skill" \
+        '.skills | to_entries[] | select(.value.source == $r and ($s == "*" or .key == $s)) | .key' "$skill_lock")" ]]; then
+        info "Skills from ${repo} are already installed. Skipping."
+        continue
+    fi
+    info "Installing skills from ${repo}..."
+    npx skills add "$repo" -g -y -s "$skill" "${skill_agents[@]}" | grep -E 'Installed [0-9]+ skill|error|fail' || true
 done < <(read_manifest "${SCRIPT_DIR}/skills_ai.txt")
 
 # Clean up downloads and outdated versions
