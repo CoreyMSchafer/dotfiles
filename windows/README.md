@@ -7,14 +7,15 @@ Ubuntu, where the [`ubuntu/`](../ubuntu/) installer gives the shell setup.
 
 ## Installation
 
-1. Clone the repository to `~\dotfiles` (Git for Windows, or `winget install Git.Git` first):
+1. Clone the repository to `$HOME\dotfiles` (Git for Windows, or `winget install Git.Git` first;
+   PowerShell doesn't expand `~` for git, so use `$HOME`):
    ```powershell
-   git clone https://github.com/CoreyMSchafer/dotfiles.git ~\dotfiles
+   git clone https://github.com/CoreyMSchafer/dotfiles.git $HOME\dotfiles
    ```
 2. Run the script from an elevated PowerShell (Windows Terminal → Run as administrator):
    ```powershell
    Set-ExecutionPolicy Bypass -Scope Process
-   ~\dotfiles\windows\install.ps1
+   & $HOME\dotfiles\windows\install.ps1
    ```
    It installs everything in `winget.txt`, links the PowerShell profile, applies
    the color scheme and font to Windows Terminal, links the bat/ruff/ssh/VS Code
