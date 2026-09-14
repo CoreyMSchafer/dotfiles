@@ -51,7 +51,7 @@ touch "${HOME}/.hushlogin"
 info "Updating apt..."
 sudo apt-get update -qq
 mapfile -t packages < <(read_manifest "${dotfiledir}/server/apt.txt")
-sudo apt-get install -y -qq "${packages[@]}"
+sudo apt-get -o DPkg::Lock::Timeout=300 install -y -qq "${packages[@]}"
 
 # Ubuntu names two binaries differently; give them their usual names
 mkdir -p "${HOME}/.local/bin"

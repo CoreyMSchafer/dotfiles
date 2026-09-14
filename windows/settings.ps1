@@ -40,14 +40,18 @@ if ($explorerChanged) {
 # The module toggle is read at PowerToys startup, so it restarts on a change; the remap file is watched.
 $ptSettings = "$env:LOCALAPPDATA\Microsoft\PowerToys\settings.json"
 $kbmDir = "$env:LOCALAPPDATA\Microsoft\PowerToys\Keyboard Manager"
-if (Test-Path $ptSettings) {
-    $pt = Get-Content $ptSettings -Raw | ConvertFrom-Json
+$pt = if (Test-Path $ptSettings) { Get-Content $ptSettings -Raw | ConvertFrom-Json }
+if (-not $pt -or -not $pt.enabled) {
+    Write-Warn 'PowerToys settings not found or empty (open PowerToys Settings once, then re-run for the Keyboard Manager remaps).'
+} else {
     if ($pt.enabled.'Keyboard Manager' -ne $true) {
-        $pt.enabled.'Keyboard Manager' = $true
-        $pt | ConvertTo-Json -Depth 32 | Set-Content $ptSettings -Encoding utf8
+        # PowerToys keeps its settings file open (writing behind it truncates the file), so stop it first
         Stop-Process -Name 'PowerToys*' -Force -ErrorAction SilentlyContinue
-        Start-Process "$env:LOCALAPPDATA\PowerToys\PowerToys.exe"
-        Write-Info 'PowerToys Keyboard Manager enabled.'
+        Start-Sleep -Seconds 2
+        $pt.enabled | Add-Member -NotePropertyName 'Keyboard Manager' -NotePropertyValue $true -Force
+        $pt | ConvertTo-Json -Depth 32 | Set-Content $ptSettings -Encoding utf8
+        if ($env:SSH_CONNECTION) { Write-Warn 'PowerToys Keyboard Manager enabled; reopen PowerToys from the Start menu (an SSH session cannot start it on the desktop).' }
+        else { Start-Process "$env:LOCALAPPDATA\PowerToys\PowerToys.exe"; Write-Info 'PowerToys Keyboard Manager enabled.' }
     }
     New-Item -ItemType Directory -Force $kbmDir | Out-Null
     $wanted = Get-Content "$PSScriptRoot\settings\keyboard-manager.json" -Raw | ConvertFrom-Json
@@ -60,7 +64,7 @@ if (Test-Path $ptSettings) {
         $kbm | ConvertTo-Json -Depth 8 | Set-Content $kbmFile -Encoding utf8
         Write-Info 'Keyboard Manager: Win+Shift+4 now takes a region snip (Win+Shift+S).'
     } else { Write-Info 'Keyboard Manager remaps already in place. Skipping.' }
-} else { Write-Warn 'PowerToys settings not found (open PowerToys once, then re-run for the Keyboard Manager remaps).' }
+}
 
 # Long paths: lift the 260-character path limit (node_modules breaks it). Git has its own switch.
 $fileSystem = 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem'

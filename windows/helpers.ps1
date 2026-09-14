@@ -53,6 +53,13 @@ function Get-CommandOutput([scriptblock]$command) {
     (& $command 2>&1 | ForEach-Object { if ($_ -is [Management.Automation.ErrorRecord]) { $_.Exception.Message } else { $_ } } | Out-String)
 }
 
+# Run a native command, streaming its output; stderr lines print as plain text instead of
+# becoming terminating errors (which they do under 5.1 when output is redirected to a log)
+function Invoke-Native([scriptblock]$command) {
+    $ErrorActionPreference = 'Continue'
+    & $command 2>&1 | ForEach-Object { if ($_ -is [Management.Automation.ErrorRecord]) { $_.Exception.Message } else { $_ } }
+}
+
 # Re-read PATH from the registry so tools winget just installed are callable in this session
 function Update-Path {
     $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')

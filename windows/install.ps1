@@ -139,18 +139,18 @@ else {
 }
 
 # --- Global npm tools, which I use in VS Code
-npm install --global prettier   # Code formatter
-npm install --global eslint     # JavaScript linter
+Invoke-Native { npm install --global prettier }   # Code formatter
+Invoke-Native { npm install --global eslint }     # JavaScript linter
 
 # --- Global uv tools, which I use in VS Code (pre-commit too: no winget package)
-foreach ($tool in 'djlint', 'ruff', 'ty', 'pre-commit') { uv tool install $tool }
+foreach ($tool in 'djlint', 'ruff', 'ty', 'pre-commit') { Invoke-Native { uv tool install $tool } }
 
 # --- AI agent skills (skills_ai.txt), installed globally for the listed agents
 # (without -a the CLI creates a folder for every agent it knows about)
 $skillAgents = @('-a', 'claude-code', '-a', 'codex')
 foreach ($line in (Read-Manifest "$dotfiledir\skills_ai.txt")) {
     $repo, $skill = $line -split '\s+', 2
-    npx skills add $repo -g -y -s $skill @skillAgents
+    Invoke-Native { npx skills add $repo -g -y -s $skill @skillAgents }
 }
 
 # --- VS Code extensions (one failure shouldn't abort the rest)
@@ -158,7 +158,7 @@ $installedExt = (Get-CommandOutput { code --list-extensions }) -split "`r?`n"
 foreach ($ext in (Read-Manifest "$dotfiledir\vscode-extensions.txt")) {
     if ($installedExt -contains $ext) { Write-Info "$ext is already installed. Skipping."; continue }
     Write-Info "Installing $ext..."
-    code --install-extension $ext | Out-Null
+    Invoke-Native { code --install-extension $ext } | Out-Null
     if ($LASTEXITCODE -ne 0) { Write-Warn "Failed to install $ext - continuing with the rest." }
 }
 

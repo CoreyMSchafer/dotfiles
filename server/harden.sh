@@ -79,7 +79,7 @@ fi
 
 # --- Firewall: deny in, allow out, open SSH + HTTP + HTTPS
 if ! command -v ufw >/dev/null 2>&1; then
-    apt-get install -y -qq ufw
+    apt-get -o DPkg::Lock::Timeout=300 install -y -qq ufw
 fi
 if ufw status | grep -q "^Status: active"; then
     info "UFW is already active. Skipping."
@@ -107,7 +107,7 @@ if [[ -f "$jail_local" && "$(cat "$jail_local")" == "$jail_wanted" ]]; then
     info "fail2ban is already configured. Skipping."
 else
     info "Installing and configuring fail2ban..."
-    apt-get install -y -qq fail2ban
+    apt-get -o DPkg::Lock::Timeout=300 install -y -qq fail2ban
     printf '%s\n' "$jail_wanted" > "$jail_local"
     systemctl enable --now fail2ban >/dev/null 2>&1
     systemctl restart fail2ban
@@ -119,7 +119,7 @@ if [[ -f "$auto_upgrades" ]] && grep -q 'Unattended-Upgrade "1"' "$auto_upgrades
     info "Automatic security updates already enabled. Skipping."
 else
     info "Enabling automatic security updates..."
-    apt-get install -y -qq unattended-upgrades
+    apt-get -o DPkg::Lock::Timeout=300 install -y -qq unattended-upgrades
     printf 'APT::Periodic::Update-Package-Lists "1";\nAPT::Periodic::Unattended-Upgrade "1";\n' > "$auto_upgrades"
 fi
 

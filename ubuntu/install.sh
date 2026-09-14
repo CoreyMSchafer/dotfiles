@@ -59,7 +59,7 @@ link_with_backup "${dotfiledir}/settings/ssh-config" "${HOME}/.ssh/config"
 info "Updating apt..."
 sudo apt-get update -qq
 mapfile -t packages < <(read_manifest "${dotfiledir}/ubuntu/apt.txt")
-sudo apt-get install -y -qq "${packages[@]}"
+sudo apt-get -o DPkg::Lock::Timeout=300 install -y -qq "${packages[@]}"
 
 # Ubuntu ships these two under different names
 mkdir -p "${HOME}/.local/bin"
@@ -99,7 +99,7 @@ else
     info "Adding the NodeSource repo and installing Node LTS..."
     curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - >/dev/null
 fi
-sudo apt-get install -y -qq nodejs
+sudo apt-get -o DPkg::Lock::Timeout=300 install -y -qq nodejs
 
 # Global npm tools, which I use in VS Code (under ~/.local, not root-owned /usr/lib)
 npm config set prefix "${HOME}/.local"
