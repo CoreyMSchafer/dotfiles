@@ -66,6 +66,59 @@ if (-not $pt -or -not $pt.enabled) {
     } else { Write-Info 'Keyboard Manager remaps already in place. Skipping.' }
 }
 
+# Edge: no floating desktop "Search Bar", no preloading at login, no lingering after it's closed.
+# These are Edge's documented policy names, so they hold across versions.
+$edgePolicy = 'HKLM:\SOFTWARE\Policies\Microsoft\Edge'
+$edgeChanged = $false
+if (-not (Test-Path $edgePolicy)) { New-Item -Path $edgePolicy | Out-Null }   # -Force would wipe an existing key's values
+foreach ($name in 'WebWidgetAllowed', 'WebWidgetIsEnabledOnStartup', 'StartupBoostEnabled', 'BackgroundModeEnabled') {
+    if ((Get-ItemProperty -Path $edgePolicy -Name $name -ErrorAction SilentlyContinue).$name -ne 0) {
+        Set-ItemProperty -Path $edgePolicy -Name $name -Value 0 -Type DWord
+        $edgeChanged = $true
+    }
+}
+if ($edgeChanged) { Write-Info 'Edge: search bar, startup boost, and background mode turned off.' }
+else { Write-Info 'Edge already quiet. Skipping.' }
+
+# Game Bar: no background recording (it costs frames in every game; the overlay itself is removed below)
+$gameDvrChanged = $false
+if (-not (Test-Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR')) { New-Item -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR' | Out-Null }
+foreach ($pair in @(@{ Path = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR'; Name = 'AppCaptureEnabled' }, @{ Path = 'HKCU:\System\GameConfigStore'; Name = 'GameDVR_Enabled' })) {
+    if ((Get-ItemProperty -Path $pair.Path -Name $pair.Name -ErrorAction SilentlyContinue).($pair.Name) -ne 0) {
+        Set-ItemProperty -Path $pair.Path -Name $pair.Name -Value 0 -Type DWord
+        $gameDvrChanged = $true
+    }
+}
+if ($gameDvrChanged) { Write-Info 'Game Bar background recording turned off.' } else { Write-Info 'Game Bar background recording already off. Skipping.' }
+
+# Preinstalled apps I never use (removed for this user; missing ones are skipped, so a renamed
+# package just survives until this list is touched)
+$unwantedApps = @(
+    'Microsoft.YourPhone',                     # Phone Link
+    'MicrosoftWindows.Client.WebExperience',   # Widgets
+    'Microsoft.BingWeather',
+    'Microsoft.BingSearch',
+    'Microsoft.WindowsFeedbackHub',
+    'Microsoft.GetHelp',
+    'Microsoft.GamingApp',                     # Xbox app
+    'Microsoft.XboxGamingOverlay',             # Game Bar
+    'Microsoft.XboxGameOverlay',
+    'Microsoft.XboxSpeechToTextOverlay'
+)
+$removed = 0
+foreach ($app in $unwantedApps) {
+    $pkg = Get-AppxPackage -Name $app -ErrorAction SilentlyContinue
+    if ($pkg) { $pkg | Remove-AppxPackage -ErrorAction SilentlyContinue; $removed++ }
+}
+if ($removed -gt 0) { Write-Info "Removed $removed preinstalled app(s) (Phone Link, Widgets, Bing, Xbox, ...)." }
+else { Write-Info 'Preinstalled apps already removed. Skipping.' }
+
+# OneDrive (Google Drive is the sync client here)
+if ((Get-CommandOutput { winget list --id Microsoft.OneDrive --exact }) -match 'Microsoft\.OneDrive') {
+    Get-CommandOutput { winget uninstall --id Microsoft.OneDrive --exact --silent --accept-source-agreements } | Out-Null
+    Write-Info 'OneDrive uninstalled.'
+} else { Write-Info 'OneDrive is not installed. Skipping.' }
+
 # Long paths: lift the 260-character path limit (node_modules breaks it). Git has its own switch.
 $fileSystem = 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem'
 if ((Get-ItemProperty -Path $fileSystem -Name LongPathsEnabled -ErrorAction SilentlyContinue).LongPathsEnabled -eq 1) {

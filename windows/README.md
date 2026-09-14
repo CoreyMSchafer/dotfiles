@@ -61,7 +61,7 @@ Then `ssh <user>@<computer-name>` from another machine, and `wsl ~` once in for 
 
 -  `install.ps1`: The installer
 -  `helpers.ps1`: Logging, backup-then-symlink, and manifest helpers (the PowerShell twin of `../helpers.sh`)
--  `settings.ps1`: Windows preferences (the `macOS.sh` counterpart) — screenshot folder, hidden files and extensions in Explorer, long paths, `sudo`, PowerToys modules
+-  `settings.ps1`: Windows preferences (the `macOS.sh` counterpart) — screenshot folder, hidden files and extensions in Explorer, no Snap Assist popup, Edge kept quiet (no search bar or preloading), Game Bar recording off, a few preinstalled apps removed (Phone Link, Widgets, Bing, Xbox, OneDrive), long paths, `sudo`, PowerToys Keyboard Manager remaps, desktop background
 -  `fonts.ps1`: Per-user font install from `../fonts.txt` (Google Fonts and Font Awesome)
 -  `winget.txt`: The winget packages to install, one ID per line
 -  `settings/`: The PowerShell profile, and the Windows Terminal color scheme and defaults that `install.ps1` merges into its settings

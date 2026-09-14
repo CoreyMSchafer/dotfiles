@@ -52,13 +52,17 @@ Link-WithBackup "$PSScriptRoot\settings\Microsoft.PowerShell_profile.ps1" "$HOME
 # installer needs no NuGet bootstrap (5.1's hangs), and the profile runs in 7 anyway
 $pwsh = (Get-Command pwsh -ErrorAction SilentlyContinue).Source
 if (-not $pwsh) { $pwsh = "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe" }
+$psfzf = if (Test-Path $pwsh) { Get-CommandOutput { & $pwsh -NoProfile -Command 'Get-Module -ListAvailable PSFzf' } }
 if (-not (Test-Path $pwsh)) {
     Write-Warn 'pwsh not found; skipping the PSFzf module (re-run after PowerShell 7 is installed).'
-} elseif (& $pwsh -NoProfile -Command 'Get-Module -ListAvailable PSFzf') {
+} elseif ($psfzf -match 'PSFzf') {
     Write-Info 'PSFzf module already installed. Skipping.'
+} elseif ($psfzf -match 'Access is denied|failed to run') {
+    # The Store build of PowerShell 7 can't be started from an SSH session
+    Write-Warn 'Could not start pwsh from this session; skipping the PSFzf module (re-run from Terminal).'
 } else {
     Write-Info 'Installing the PSFzf module...'
-    & $pwsh -NoProfile -Command 'Install-PSResource PSFzf -Scope CurrentUser -TrustRepository -Quiet'
+    Invoke-Native { & $pwsh -NoProfile -Command 'Install-PSResource PSFzf -Scope CurrentUser -TrustRepository -Quiet' }
 }
 
 # Windows Terminal rewrites its settings.json, so merge into it instead of linking:
