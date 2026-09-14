@@ -28,6 +28,8 @@ if ((Resolve-Path $dotfiledir).Path -ne (Join-Path $HOME 'dotfiles')) {
 Set-Location $dotfiledir
 
 # --- winget packages and apps
+# Installers drop shortcuts on the Desktop; remember what was there so only the new ones are removed at the end
+$desktopBefore = @(Get-ChildItem "$HOME\Desktop\*.lnk", "$env:PUBLIC\Desktop\*.lnk" -ErrorAction SilentlyContinue).FullName
 $packages = Read-Manifest "$PSScriptRoot\winget.txt"
 $installed = Get-CommandOutput { winget list --accept-source-agreements }
 foreach ($id in $packages) {
@@ -170,8 +172,8 @@ else {
     wsl --install -d Ubuntu --no-launch
 }
 
-# --- Installers drop shortcuts on the Desktop; everything is in the Start menu, so clear them
-$links = @(Get-ChildItem "$HOME\Desktop\*.lnk", "$env:PUBLIC\Desktop\*.lnk" -ErrorAction SilentlyContinue)
+# --- Remove the shortcuts the installers above dropped on the Desktop (everything is in the Start menu)
+$links = @(Get-ChildItem "$HOME\Desktop\*.lnk", "$env:PUBLIC\Desktop\*.lnk" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notin $desktopBefore })
 if ($links.Count -gt 0) {
     $links | Remove-Item -Force
     Write-Info "Removed $($links.Count) installer shortcut(s) from the Desktop."
