@@ -133,8 +133,13 @@ else
 fi
 git config --global init.defaultBranch main
 
-# GitHub login (skipped if already authenticated, or with DOTFILES_NO_INPUT=1 on test machines)
-if [[ -n "${DOTFILES_NO_INPUT:-}" ]]; then
+# GitHub credentials. Under WSL, git uses the Windows Git Credential Manager (a secure store;
+# gh's own login would keep a plain-text token in ~/.config/gh). Elsewhere, gh logs in.
+gcm="/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager.exe"
+if [[ -n "${WSL_DISTRO_NAME:-}" && -x "$gcm" ]]; then
+    git config --global credential.helper "${gcm// /\\ }"
+    info "git uses the Windows Git Credential Manager (gh.exe is available from WSL too)."
+elif [[ -n "${DOTFILES_NO_INPUT:-}" ]]; then
     info "Skipping GitHub login (DOTFILES_NO_INPUT)."
 elif ! gh auth status &>/dev/null; then
     info "You will need to authenticate with GitHub. Follow the prompts to login..."
