@@ -88,8 +88,8 @@ Microsoft.Sysinternals.Autoruns
 # Everything that starts at boot/login, from every location Windows has
 
 # --- Apps
-OpenAI.ChatGPT
-# ChatGPT desktop app
+9PLM9XGG6VKS
+# ChatGPT desktop app (Microsoft Store ID; OpenAI does not publish it to the winget source)
 
 Anthropic.Claude
 # Claude desktop app

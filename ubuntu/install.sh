@@ -112,6 +112,7 @@ npm install --global eslint   # JavaScript linter
 uv tool install djlint # Django and Jinja2 template formatting
 uv tool install ruff   # Python formatting and linting
 uv tool install ty     # Astral's Python type checker (used alongside ruff)
+uv tool install pre-commit # Git hook runner (Homebrew provides it on the Mac)
 
 # Git config (prompt only if not already set)
 if [[ -n "${DOTFILES_NO_INPUT:-}" && -z "$(git config --global --get user.name || true)" ]]; then

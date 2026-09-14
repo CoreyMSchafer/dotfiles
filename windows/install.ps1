@@ -36,10 +36,10 @@ foreach ($id in $packages) {
     if ($installed -match [regex]::Escape($id)) { Write-Info "$id is already installed. Skipping."; continue }
     Write-Info "Installing $id..."
     winget install --id $id --exact --silent --accept-source-agreements --accept-package-agreements | Out-Null
-    # Portable packages can extract and still fail to register (seen on a fresh
-    # machine), so trust the package list, not the exit code
+    # Trust the package list, not the exit code: portable packages can extract and
+    # still fail to register, and some installers (Postman) return before they finish
     if (-not ((Get-CommandOutput { winget list --id $id --exact }) -match [regex]::Escape($id))) {
-        Write-Warn "$id did not install - continuing (re-run the script to retry)."
+        Write-Warn "$id is not registered with winget yet (its installer may still be running) - re-run the script later to check."
     }
 }
 Update-Path   # tools installed above become callable from here on
@@ -101,11 +101,16 @@ else { Write-Info "Building bat's theme cache..."; bat cache --build | Out-Null 
 # --- Computer name (Enter keeps the current one; a change takes effect after the reboot)
 if ($NoInput) { Write-Info 'Skipping the computer-name prompt (-NoInput).' }
 else {
-    $newName = Read-Host "Computer name [$env:COMPUTERNAME] (Enter to keep)"
-    if ($newName -and $newName -ne $env:COMPUTERNAME) {
-        Rename-Computer -NewName $newName -Force -WarningAction SilentlyContinue | Out-Null
-        Write-Info "Computer name will be $newName after the reboot."
-    } else { Write-Info "Computer name stays $env:COMPUTERNAME." }
+    while ($true) {
+        $newName = Read-Host "Computer name [$env:COMPUTERNAME] (Enter to keep)"
+        if (-not $newName -or $newName -eq $env:COMPUTERNAME) { Write-Info "Computer name stays $env:COMPUTERNAME."; break }
+        if ($newName -match '^[A-Za-z0-9-]{1,15}$') {
+            Rename-Computer -NewName $newName -Force -WarningAction SilentlyContinue | Out-Null
+            Write-Info "Computer name will be $newName after the reboot."
+            break
+        }
+        Write-Warn 'Windows computer names are 1-15 letters, digits, or hyphens (longer names get truncated). Try again.'
+    }
 }
 
 # --- Git config (prompt only if not already set)
