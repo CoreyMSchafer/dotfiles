@@ -73,7 +73,7 @@ alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/de
 
 # Project/tutorial scaffolding from the ~/Work monorepo:
 # proj_init / yt_init — and the `j` global-justfile alias — are defined there and sourced here:
-[ -f "$HOME/Work/Tutorial-Template/shell/work.zsh" ] && source "$HOME/Work/Tutorial-Template/shell/work.zsh"
+[ -f "$HOME/Work/Ops/shell/work.zsh" ] && source "$HOME/Work/Ops/shell/work.zsh"
 
 # open <path>: macOS has it; WSL hands the path to Windows (Explorer for
 # folders, the default app for files), desktop Linux uses xdg-open

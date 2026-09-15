@@ -76,4 +76,4 @@ info "Installation Complete!"
 if [[ -d "${BACKUP_DIR}" ]]; then
     info "Files replaced by this run were backed up to ${BACKUP_DIR}"
 fi
-info "Next: clone your private repos and wire up your work environment (e.g. cd ~/Work/Tutorial-Template && ./bootstrap.sh)."
+info "Next: clone your private repos and wire up your work environment (e.g. cd ~/Work/Ops && ./bootstrap.sh)."
