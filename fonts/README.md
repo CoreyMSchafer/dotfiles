@@ -1,8 +1,9 @@
 # Fonts
 
-Fonts that Homebrew doesn't carry, or that I also need as `.woff2` for web projects
-(`fonts.txt` covers the Homebrew ones). One folder per font, holding whatever formats
-exist for it:
+The fonts I use, in the formats I need them in: the desktop formats for fonts Homebrew
+doesn't carry, and `.woff2` for every family so web projects can pull from here (search
+this folder for `.woff2` and those are my preferred web fonts). One folder per font,
+holding whatever formats apply:
 
 - `.ttf` / `.otf`: what the installers put in the user font folder on every OS
   (`~/Library/Fonts`, `%LOCALAPPDATA%\Microsoft\Windows\Fonts`, `~/.local/share/fonts`).
@@ -11,6 +12,15 @@ exist for it:
   formats and desktops don't use this one). Reference it from a project as
   `~/dotfiles/fonts/<Font>/<file>.woff2` or copy it into the site's fonts folder.
 - `LICENSE`: the font's license. Only fonts whose license allows redistribution go here.
+
+## The Homebrew families (`.woff2` only)
+
+Every family in `fonts.txt` has a folder here with `.woff2` versions of the files Homebrew
+installs (converted once with `woff2_compress`; variable fonts where the family has them,
+otherwise the static weights) and the family's license. No desktop files: those come from
+`fonts.txt` on the Mac and `windows/fonts.ps1` on Windows, so the installers ignore these
+folders. To refresh after a family changes upstream: `woff2_compress <file>.ttf`, move the
+result here.
 
 ## Excalifont
 
