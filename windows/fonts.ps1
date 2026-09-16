@@ -60,3 +60,9 @@ foreach ($entry in (Read-Manifest "$dotfiledir\fonts.txt")) {
     } catch { Write-Warn "Could not install ${family}: $_" }
 }
 Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
+
+# Fonts kept in the repo (fonts\<Font>\*.ttf|otf; see fonts\README.md)
+foreach ($file in (Get-ChildItem "$dotfiledir\fonts" -Recurse -File | Where-Object { $_.Extension -in '.ttf', '.otf' })) {
+    if (Test-Path -LiteralPath (Join-Path $fontDir $file.Name)) { Write-Info "$($file.Name) is already installed. Skipping." }
+    else { Install-FontFile $file.FullName; Write-Info "Installed $($file.Name)." }
+}

@@ -51,6 +51,20 @@ link_with_backup "${dotfiledir}/settings/bat-themes" "${HOME}/.config/bat/themes
 # Suppresses the "Last login" line in new terminal windows
 touch "${HOME}/.hushlogin"
 
+# Fonts kept in the repo (fonts/<Font>/*.ttf|otf; see fonts/README.md) go in the user font folder
+mkdir -p "${HOME}/.local/share/fonts"
+fonts_changed=false
+for font_file in "${dotfiledir}"/fonts/*/*.ttf "${dotfiledir}"/fonts/*/*.otf; do
+    [[ -f "$font_file" ]] || continue
+    if cmp -s "$font_file" "${HOME}/.local/share/fonts/$(basename "$font_file")"; then
+        info "$(basename "$font_file") is already installed. Skipping."
+    else
+        cp "$font_file" "${HOME}/.local/share/fonts/" && info "Installed $(basename "$font_file")."
+        fonts_changed=true
+    fi
+done
+if [[ "$fonts_changed" == true ]] && command -v fc-cache >/dev/null 2>&1; then fc-cache -f; fi
+
 # SSH client config (personal hosts go in the untracked config.local)
 mkdir -p "${HOME}/.ssh" && chmod 700 "${HOME}/.ssh"
 link_with_backup "${dotfiledir}/settings/ssh-config" "${HOME}/.ssh/config"

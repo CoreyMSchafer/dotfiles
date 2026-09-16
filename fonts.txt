@@ -1,5 +1,6 @@
 # Fonts installed by brew.sh (Homebrew casks) — one per line.
 # Lines starting with # (and blank lines) are ignored.
+# Fonts Homebrew doesn't carry live in fonts/ (see fonts/README.md).
 font-architects-daughter
 font-caveat
 font-fontawesome

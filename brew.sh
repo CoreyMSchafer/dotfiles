@@ -71,6 +71,15 @@ brew install --cask --yes --quiet "${apps[@]}"
 # Install the fonts (Homebrew casks)
 brew install --cask --yes --quiet "${fonts[@]}"
 
+# Fonts kept in the repo (fonts/<Font>/*.ttf|otf; see fonts/README.md) go in the user font folder
+for font_file in "${SCRIPT_DIR}"/fonts/*/*.(ttf|otf)(N); do
+    if cmp -s "$font_file" "${HOME}/Library/Fonts/${font_file:t}"; then
+        info "${font_file:t} is already installed. Skipping."
+    else
+        cp "$font_file" "${HOME}/Library/Fonts/" && info "Installed ${font_file:t}."
+    fi
+done
+
 # Make Homebrew's zsh the login shell (dscl reports the real one; $SHELL can be stale)
 BREW_ZSH="$(brew --prefix)/bin/zsh"
 CURRENT_LOGIN_SHELL="$(dscl . -read "/Users/${USER}" UserShell 2>/dev/null | awk '{print $2}')"

@@ -79,6 +79,7 @@ I occasionally need this setup on other machines. Those installs live in their o
 -  `.aliases`: Aliases for common commands (`ls`/`la`/`tree` run `eza`, `cat` runs `bat`, with plain fallbacks when those aren't installed).
 -  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control
 -  `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
+-  `fonts/`: Fonts Homebrew doesn't carry, kept in the repo (desktop formats installed on every OS, `.woff2` for web projects)
 -  `helpers.sh`: Logging, backup-then-symlink, and manifest helpers shared by the macOS and Linux scripts
 -  `windows/`: The Windows port — `install.ps1`, `winget.txt`, and `settings/` (PowerShell profile, Windows Terminal color scheme and defaults)
 -  `ubuntu/`: The Ubuntu/WSL installer — `install.sh` and `apt.txt`

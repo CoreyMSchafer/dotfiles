@@ -34,7 +34,10 @@ $packages = Read-Manifest "$PSScriptRoot\winget.txt"
 $installed = Get-CommandOutput { winget list --accept-source-agreements }
 foreach ($id in $packages) {
     if ($installed -match [regex]::Escape($id)) { Write-Info "$id is already installed. Skipping."; continue }
-    $result = Get-CommandOutput { winget install --id $id --exact --silent --accept-source-agreements --accept-package-agreements }
+    # --no-upgrade: an app that's installed but newer upstream (or self-updated past winget's
+    # record) must not get its upgrade installer run here - that's update_all's job, and
+    # upgrade installers can hang on a running app
+    $result = Get-CommandOutput { winget install --id $id --exact --silent --no-upgrade --accept-source-agreements --accept-package-agreements }
     # Store apps don't show in `winget list`, so some land here every run
     if ($result -match 'already installed') { Write-Info "$id is already installed. Skipping."; continue }
     if ($result -match 'Successfully installed') { Write-Info "Installed $id."; continue }
