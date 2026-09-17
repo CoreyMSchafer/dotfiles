@@ -53,3 +53,11 @@ export FZF_DEFAULT_OPTS='--color=16'
 
 # zoxide: `z <dir>` jumps to frequently used directories
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
+# Drop-in folder for anything machine-local or not meant for every fork, sourced last so it
+# can build on everything above. Not part of this repo — my private work repo links its shell
+# helpers here (the (N) glob qualifier keeps an empty folder silent).
+for file in "$HOME"/.config/zsh/*.zsh(N); do
+    source "$file"
+done
+unset file

@@ -78,6 +78,7 @@ I occasionally need this setup on other machines. Those installs live in their o
 -  `.zprompt`: The prompt — user, host, directory, and Git branch/status.
 -  `.aliases`: Aliases for common commands (`ls`/`la`/`tree` run `eza`, `cat` runs `bat`, with plain fallbacks when those aren't installed).
 -  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control
+-  `~/.config/zsh/*.zsh`: Not in this repo — a drop-in folder that `.zshrc` sources last, for anything machine-local or not meant for every fork (my private work repo links its shell helpers there)
 -  `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
 -  `fonts/`: Fonts Homebrew doesn't carry, kept in the repo (desktop formats installed on every OS, `.woff2` for web projects)
 -  `helpers.sh`: Logging, backup-then-symlink, and manifest helpers shared by the macOS and Linux scripts

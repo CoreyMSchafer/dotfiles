@@ -71,10 +71,6 @@ alias reg_mode='defaults write com.apple.dock autohide -bool false && killall Do
 alias clean="osascript -e 'tell application \"Finder\" to empty the trash' 2>/dev/null;
             rm -rf ~/Downloads/*(N)"
 
-# Project/tutorial scaffolding from the ~/Work monorepo:
-# proj_init / yt_init — and the `j` global-justfile alias — are defined there and sourced here:
-[ -f "$HOME/Work/Ops/shell/work.zsh" ] && source "$HOME/Work/Ops/shell/work.zsh"
-
 # open <path>: macOS has it; WSL hands the path to Windows (Explorer for
 # folders, the default app for files), desktop Linux uses xdg-open
 if ! command -v open >/dev/null 2>&1; then
