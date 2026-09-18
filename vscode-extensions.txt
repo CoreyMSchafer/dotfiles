@@ -51,3 +51,13 @@ tomoki1207.pdf
 
 ms-vscode-remote.remote-wsl
 # Open folders inside WSL on Windows (installs but stays idle on the Mac)
+
+# Pulled in automatically by ms-python.python and ms-toolsai.jupyter — listed so the
+# `j manifests` diff stays clean, not because they need installing on their own.
+ms-python.vscode-pylance
+ms-python.debugpy
+ms-python.vscode-python-envs
+ms-toolsai.jupyter-keymap
+ms-toolsai.jupyter-renderers
+ms-toolsai.vscode-jupyter-cell-tags
+ms-toolsai.vscode-jupyter-slideshow
