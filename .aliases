@@ -34,7 +34,10 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# Update everything: Homebrew, casks, npm/uv tools, skills, repos
+# Update everything: Homebrew, casks, npm/uv tools, skills, repos.
+# `brew link --overwrite node` is deliberate: `npm update --global` below upgrades npm in
+# place inside node's Cellar, and the next `brew upgrade node` then refuses to link over those
+# files, leaving node/npm unlinked. Overwriting on every run is a no-op when nothing's wrong.
 if [[ "$OSTYPE" == darwin* ]]; then
     alias update_all='brew update;
                       brew upgrade --yes;
