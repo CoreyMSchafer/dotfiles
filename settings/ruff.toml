@@ -1,13 +1,14 @@
-# RUFF DEFAULTS
-# (These are all the default groups, even if you don’t currently select them)
-# select = [
-#     "F",    # Pyflakes – detects syntax errors and basic mistakes
-#     "E4",   # Pycodestyle errors (part of E group)
-#     "E7",   # Pycodestyle E7xx errors (naming, etc.)
-#     "E9",   # Pycodestyle E9xx errors (syntax)
-# ]
+# Every linter is listed explicitly, including the ones ruff enables by default. Ruff's default
+# set is not stable (0.16 rebuilt it and dropped rules from both F and E), so nothing here
+# relies on it: a group that isn't named below is off.
+
+# Loose scripts with no pyproject.toml above them (Asset-Studio demos, one-off snippets) have
+# no `requires-python` to infer from, so state the Python they're written for. Projects set
+# `requires-python` and override this.
+target-version = "py312"
 
 lint.extend-select = [
+    "F",    # Pyflakes – undefined names, unused imports, star imports, basic mistakes
     "E",    # Pycodestyle errors (style issues)
     "W",    # Pycodestyle warnings (style issues)
     "C90",  # McCabe – complexity metric for functions
@@ -81,7 +82,6 @@ lint.ignore = [
     "S311",  # Flake8-bandit - Standard pseudo-random generators are not suitable for security/cryptographic purposes
     "PERF401", # Perflint - Checks for for loops that can be replaced by a list comprehension.
     "RET504", # Flake8-return - Checks for variable assignments that immediately precede a return of the assigned variable.
-    "FA102", # Flake8-future-annotations - Missing `from __future__ import annotations`, but uses PEP 604 union
     "TRY003", # Tryceratops - Checks for long exception messages that are not defined in the exception class itself.
     "EM101", # Flake8-errmsg - Checks for the use of string literals in exception constructors.
     "TC002", # Flake8-type-checking - Checks for usage of typing imports outside of TYPE_CHECKING blocks.
