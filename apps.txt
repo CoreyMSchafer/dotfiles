@@ -37,6 +37,9 @@ google-chrome
 google-drive
 # Drive file sync
 
+harper-desktop
+# Harper Desktop (grammar checker; system-wide trial from 2026-09-20)
+
 keyboardcleantool
 # Locks the keyboard for cleaning
 
