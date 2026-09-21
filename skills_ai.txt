@@ -11,3 +11,12 @@ adithya-s-k/manim_skill *
 
 anthropics/claude-plugins-official frontend-design
 # Frontend design guidance
+
+fastapi/fastapi fastapi
+# Official FastAPI conventions (maintainer defaults beyond the docs)
+
+streamlit/agent-skills developing-with-streamlit
+# Official Streamlit skill: routes into the reference docs bundled in the streamlit package
+
+higgsfield-ai/skills higgsfield-youtube-thumbnail
+# Thumbnail concepts through the Higgsfield CLI (hosted, needs an account); on trial
