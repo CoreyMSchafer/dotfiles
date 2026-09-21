@@ -51,6 +51,9 @@ link_with_backup "${dotfiledir}/.private" "${HOME}/.private"
 mkdir -p "${HOME}/.config/ruff"
 link_with_backup "${dotfiledir}/settings/ruff.toml" "${HOME}/.config/ruff/ruff.toml"
 
+# Prettier global config: any file under $HOME with no closer .prettierrc uses it
+link_with_backup "${dotfiledir}/settings/prettierrc.json" "${HOME}/.prettierrc"
+
 # Ghostty terminal config
 mkdir -p "${HOME}/.config/ghostty"
 link_with_backup "${dotfiledir}/settings/ghostty-config" "${HOME}/.config/ghostty/config"

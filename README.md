@@ -86,7 +86,7 @@ I occasionally need this setup on other machines. Those installs live in their o
 -  `ubuntu/`: The Ubuntu/WSL installer — `install.sh` and `apt.txt`
 -  `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
 -  `skills_ai.txt`: AI coding-agent skills (`npx skills`) that `brew.sh` and `windows/install.ps1` install globally
--  `settings/`: Config files that `install.sh` symlinks into place — Ghostty (my terminal), VS Code settings/keybindings, `~/.ssh/config`, `bat`, and `ruff`.
+-  `settings/`: Config files that `install.sh` symlinks into place — Ghostty (my terminal), VS Code settings/keybindings, `~/.ssh/config`, `bat`, `ruff`, and Prettier (`~/.prettierrc`: prose wrapping preserved and fenced code in Markdown left alone, for any project without its own config).
 
 ### Customizing Your Setup
 
