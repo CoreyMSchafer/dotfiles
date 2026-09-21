@@ -96,6 +96,8 @@ Link-WithBackup "$dotfiledir\settings\bat-config" "$env:APPDATA\bat\config"
 Link-WithBackup "$dotfiledir\settings\bat-themes" "$env:APPDATA\bat\themes"
 # Ruff global config
 Link-WithBackup "$dotfiledir\settings\ruff.toml" "$env:APPDATA\ruff\ruff.toml"
+# Prettier global config (any file under $HOME with no closer .prettierrc uses it)
+Link-WithBackup "$dotfiledir\settings\prettierrc.json" "$HOME\.prettierrc"
 # SSH client config (personal hosts go in the untracked config.local)
 Link-WithBackup "$dotfiledir\settings\ssh-config" "$HOME\.ssh\config"
 # VS Code settings and keybindings

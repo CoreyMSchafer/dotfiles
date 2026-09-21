@@ -43,6 +43,9 @@ link_with_backup "${dotfiledir}/.private" "${HOME}/.private"
 mkdir -p "${HOME}/.config/ruff"
 link_with_backup "${dotfiledir}/settings/ruff.toml" "${HOME}/.config/ruff/ruff.toml"
 
+# Prettier global config: any file under $HOME with no closer .prettierrc uses it
+link_with_backup "${dotfiledir}/settings/prettierrc.json" "${HOME}/.prettierrc"
+
 # bat config + color scheme (theme cache built below)
 mkdir -p "${HOME}/.config/bat"
 link_with_backup "${dotfiledir}/settings/bat-config" "${HOME}/.config/bat/config"

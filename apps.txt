@@ -43,6 +43,9 @@ harper-desktop
 keyboardcleantool
 # Locks the keyboard for cleaning
 
+parallels
+# Parallels Desktop (Windows and Linux VMs; activated with the license key on first launch)
+
 postman
 # API client
 

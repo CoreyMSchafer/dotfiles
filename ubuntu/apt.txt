@@ -71,6 +71,7 @@ build-essential
 # uv: official installer script (uv then provides Pythons, ruff, ty, djlint, pre-commit)
 # node: apt, but from NodeSource's repo (install.sh adds it); Ubuntu's own package is years old
 # gitleaks, betterleaks: GitHub release binaries; manual for now
+# harper: no apt package (the VS Code extension bundles harper-ls); cargo or a GitHub release if needed
 # freeze, d2, vhs, typst, whisper.cpp, exiftool, librsvg, gimp, spotify, gcloud: on purpose only on the Mac
 # dust: apt has it from Ubuntu 24.10 (du-dust); on 24.04 use the GitHub release
 # bash, coreutils: already GNU on Ubuntu

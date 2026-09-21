@@ -44,6 +44,9 @@ Git.Git
 Gitleaks.Gitleaks
 # Secret scanner (pre-commit gate)
 
+Automattic.harper-ls
+# Grammar checker (LSP; the Mac's `harper` formula)
+
 ImageMagick.ImageMagick
 # Image conversion/processing
 
