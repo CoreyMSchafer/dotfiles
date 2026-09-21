@@ -24,12 +24,12 @@ Both are safe to re-run.
 
 Left out on purpose, both easy to add by hand afterwards:
 
--  fail2ban's `ignoreip` for your own address (`/etc/fail2ban/jail.local`,
-   under `[DEFAULT]`). Home IPs change, and it doesn't belong in a public repo.
--  Automatic reboots for kernel updates
-   (`Unattended-Upgrade::Automatic-Reboot` in
-   `/etc/apt/apt.conf.d/50unattended-upgrades`). Many prefer to reboot during
-   a maintenance window.
+- fail2ban's `ignoreip` for your own address (`/etc/fail2ban/jail.local`,
+  under `[DEFAULT]`). Home IPs change, and it doesn't belong in a public repo.
+- Automatic reboots for kernel updates
+  (`Unattended-Upgrade::Automatic-Reboot` in
+  `/etc/apt/apt.conf.d/50unattended-upgrades`). Many prefer to reboot during
+  a maintenance window.
 
 Web server, database, and app deployment are per-project, not dotfiles.
 `../.bash_server_prompt` is the older, standalone prompt for servers that

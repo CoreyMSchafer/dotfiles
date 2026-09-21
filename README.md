@@ -32,7 +32,7 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 ### Prerequisites
 
--  macOS (see [Other systems](#other-systems) for Windows and Ubuntu)
+- macOS (see [Other systems](#other-systems) for Windows and Ubuntu)
 
 ### Installation
 
@@ -57,10 +57,10 @@ By using these scripts, you acknowledge and accept the risk of potential data lo
 
 This script will:
 
--  Create symlinks for dotfiles (`.zshrc`, `.aliases`, etc.), backing up any existing files to `~/.dotfiles_backup/`
--  Run macOS-specific configurations (`macOS.sh`)
--  Install Homebrew, then everything listed in `packages.txt`, `apps.txt`, and `fonts.txt` (`brew.sh`)
--  Configure Visual Studio Code and install the extensions listed in `vscode-extensions.txt` (`vscode.sh`)
+- Create symlinks for dotfiles (`.zshrc`, `.aliases`, etc.), backing up any existing files to `~/.dotfiles_backup/`
+- Run macOS-specific configurations (`macOS.sh`)
+- Install Homebrew, then everything listed in `packages.txt`, `apps.txt`, and `fonts.txt` (`brew.sh`)
+- Configure Visual Studio Code and install the extensions listed in `vscode-extensions.txt` (`vscode.sh`)
 
 The script is safe to re-run — steps that are already done are skipped.
 `./install.sh --no-input` skips every prompt: computer name, git identity, the GitHub login, and the sign-in pauses (handy on a test machine).
@@ -69,31 +69,31 @@ The script is safe to re-run — steps that are already done are skipped.
 
 I occasionally need this setup on other machines. Those installs live in their own folders, each with its own README:
 
--  Windows 11: [`windows/`](windows/) (winget, PowerShell 7, Windows Terminal)
--  Ubuntu, including WSL2 on Windows: [`ubuntu/`](ubuntu/)
+- Windows 11: [`windows/`](windows/) (winget, PowerShell 7, Windows Terminal)
+- Ubuntu, including WSL2 on Windows: [`ubuntu/`](ubuntu/)
 
 ## Configuration Files
 
--  `.zshrc`: Shell configuration for Zsh (the only shell these dotfiles target).
--  `.zprompt`: The prompt — user, host, directory, and Git branch/status.
--  `.aliases`: Aliases for common commands (`ls`/`la`/`tree` run `eza`, `cat` runs `bat`, with plain fallbacks when those aren't installed).
--  `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control. Also the place for per-machine exceptions to the manifests: something installed on one machine on purpose that shouldn't be installed everywhere is named in `MANIFEST_LOCAL_PACKAGES`, `MANIFEST_LOCAL_APPS`, `MANIFEST_LOCAL_FONTS`, or `MANIFEST_LOCAL_EXTENSIONS` (space-separated), so a manifest diff reports it as intentional rather than as a stray
--  `~/.config/zsh/*.zsh`: Not in this repo — a drop-in folder that `.zshrc` sources last, for anything machine-local or not meant for every fork (my private work repo links its shell helpers there)
--  `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
--  `fonts/`: Fonts Homebrew doesn't carry, kept in the repo (desktop formats installed on every OS, `.woff2` for web projects)
--  `helpers.sh`: Logging, backup-then-symlink, and manifest helpers shared by the macOS and Linux scripts
--  `windows/`: The Windows port — `install.ps1`, `winget.txt`, and `settings/` (PowerShell profile, Windows Terminal color scheme and defaults)
--  `ubuntu/`: The Ubuntu/WSL installer — `install.sh` and `apt.txt`
--  `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
--  `skills_ai.txt`: AI coding-agent skills (`npx skills`) that `brew.sh` and `windows/install.ps1` install globally
--  `settings/`: Config files that `install.sh` symlinks into place — Ghostty (my terminal), VS Code settings/keybindings, `~/.ssh/config`, `bat`, `ruff`, and Prettier (`~/.prettierrc`: prose wrapping preserved and fenced code in Markdown left alone, for any project without its own config).
+- `.zshrc`: Shell configuration for Zsh (the only shell these dotfiles target).
+- `.zprompt`: The prompt — user, host, directory, and Git branch/status.
+- `.aliases`: Aliases for common commands (`ls`/`la`/`tree` run `eza`, `cat` runs `bat`, with plain fallbacks when those aren't installed).
+- `.private`: Machine-local file for private information; created empty by `install.sh` and never uploaded to version control. Also the place for per-machine exceptions to the manifests: something installed on one machine on purpose that shouldn't be installed everywhere is named in `MANIFEST_LOCAL_PACKAGES`, `MANIFEST_LOCAL_APPS`, `MANIFEST_LOCAL_FONTS`, or `MANIFEST_LOCAL_EXTENSIONS` (space-separated), so a manifest diff reports it as intentional rather than as a stray
+- `~/.config/zsh/*.zsh`: Not in this repo — a drop-in folder that `.zshrc` sources last, for anything machine-local or not meant for every fork (my private work repo links its shell helpers there)
+- `packages.txt`, `apps.txt`, `fonts.txt`: The Homebrew packages, cask apps, and fonts that `brew.sh` installs
+- `fonts/`: Fonts Homebrew doesn't carry, kept in the repo (desktop formats installed on every OS, `.woff2` for web projects)
+- `helpers.sh`: Logging, backup-then-symlink, and manifest helpers shared by the macOS and Linux scripts
+- `windows/`: The Windows port — `install.ps1`, `winget.txt`, and `settings/` (PowerShell profile, Windows Terminal color scheme and defaults)
+- `ubuntu/`: The Ubuntu/WSL installer — `install.sh` and `apt.txt`
+- `vscode-extensions.txt`: The list of VS Code extensions that `vscode.sh` installs
+- `skills_ai.txt`: AI coding-agent skills (`npx skills`) that `brew.sh` and `windows/install.ps1` install globally
+- `settings/`: Config files that `install.sh` symlinks into place — Ghostty (my terminal), VS Code settings/keybindings, `~/.ssh/config`, `bat`, `ruff`, and Prettier (`~/.prettierrc`: prose wrapping preserved and fenced code in Markdown left alone, for any project without its own config).
 
 ### Customizing Your Setup
 
 You're encouraged to modify the scripts and configuration files to suit your preferences. Here are some tips for customization:
 
--  **Dotfiles**: Edit `.zshrc`, `.zprompt`, and `.aliases` to add or modify shell configurations.
--  **VS Code**: Adjust settings in the `settings/` directory to change editor preferences and themes.
+- **Dotfiles**: Edit `.zshrc`, `.zprompt`, and `.aliases` to add or modify shell configurations.
+- **VS Code**: Adjust settings in the `settings/` directory to change editor preferences and themes.
 
 ## Contributing
 
@@ -105,5 +105,5 @@ This project is licensed under the MIT License - see the [LICENSE-MIT.txt](LICEN
 
 ## Acknowledgments
 
--  I originally forked this from [Mathias Bynens' dotfiles](https://github.com/mathiasbynens/dotfiles)
--  Thanks to all the open-source projects used in this setup.
+- I originally forked this from [Mathias Bynens' dotfiles](https://github.com/mathiasbynens/dotfiles)
+- Thanks to all the open-source projects used in this setup.

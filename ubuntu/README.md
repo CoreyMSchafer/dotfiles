@@ -17,5 +17,5 @@ The script is safe to re-run — steps that are already done are skipped.
 
 ## Files
 
--  `install.sh`: The installer (bash, since zsh isn't installed yet when it runs; it shares `../helpers.sh` with the Mac scripts)
--  `apt.txt`: The apt packages to install, one per line
+- `install.sh`: The installer (bash, since zsh isn't installed yet when it runs; it shares `../helpers.sh` with the Mac scripts)
+- `apt.txt`: The apt packages to install, one per line
