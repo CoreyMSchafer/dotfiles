@@ -176,7 +176,7 @@ while read -r repo skill; do
         continue
     fi
     info "Installing skills from ${repo}..."
-    npx skills add "$repo" -g -y -s "$skill" "${skill_agents[@]}" | grep -E 'Installed [0-9]+ skill|error|fail' || true
+    npx -y skills add "$repo" -g -y -s "$skill" "${skill_agents[@]}" | grep -E 'Installed [0-9]+ skill|error|fail' || true
 done < <(read_manifest "${SCRIPT_DIR}/skills_ai.txt")
 
 # Clean up downloads and outdated versions

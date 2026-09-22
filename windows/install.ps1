@@ -172,7 +172,8 @@ foreach ($line in (Read-Manifest "$dotfiledir\skills_ai.txt")) {
     $have = @($lockedSkills.PSObject.Properties | Where-Object { $_.Value.source -eq $repo -and ($skill -eq '*' -or $_.Name -eq $skill) })
     if ($have.Count -gt 0) { Write-Info "Skills from $repo are already installed. Skipping."; continue }
     Write-Info "Installing skills from $repo..."
-    Invoke-Native { npx skills add $repo -g -y -s $skill @skillAgents } | Select-String 'Installed \d+ skill|error|fail' | ForEach-Object { $_.Line.Trim() }
+    # npx -y: npx's own "Ok to proceed?" prompt (it waits forever when stdin is a console nobody watches)
+    Invoke-Native { npx -y skills add $repo -g -y -s $skill @skillAgents } | Select-String 'Installed \d+ skill|error|fail' | ForEach-Object { $_.Line.Trim() }
 }
 
 # --- VS Code extensions (one failure shouldn't abort the rest)
