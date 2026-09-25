@@ -1,6 +1,9 @@
 # Homebrew cask apps installed by brew.sh — one per line.
 # Lines starting with # (and blank lines) are ignored.
 
+camtasia
+# Screen recording/video editor
+
 chatgpt
 # ChatGPT desktop app
 
@@ -46,11 +49,17 @@ keyboardcleantool
 parallels
 # Parallels Desktop (Windows and Linux VMs; activated with the license key on first launch)
 
+parallels-toolbox
+# Parallels Toolbox (small utilities)
+
 postman
 # API client
 
 rectangle
 # Window snapping/tiling
+
+shottr
+# Screenshots
 
 spotify
 # Music
