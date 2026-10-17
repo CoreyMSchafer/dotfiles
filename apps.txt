@@ -1,6 +1,15 @@
 # Homebrew cask apps installed by brew.sh — one per line.
 # Lines starting with # (and blank lines) are ignored.
 
+antigravity
+# Google Antigravity: agent-first coding app (Gemini)
+
+antigravity-cli
+# Antigravity's command line (`agy`): Google's replacement for the Gemini CLI
+
+blender
+# 3D modeling, physics simulation and rendering (scriptable from Python)
+
 camtasia
 # Screen recording/video editor
 
@@ -39,6 +48,9 @@ google-chrome
 
 google-drive
 # Drive file sync
+
+google-gemini
+# Google's Gemini desktop app (chat; coding happens in Antigravity)
 
 harper-desktop
 # Harper Desktop (grammar checker for every app without a Harper extension)

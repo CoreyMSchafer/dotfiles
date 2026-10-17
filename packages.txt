@@ -40,6 +40,9 @@ fd
 ffmpeg
 # Audio/video conversion
 
+fluid-synth
+# SoundFont synthesizer: plays MIDI notes into audio files
+
 fzf
 # Fuzzy finder (shell history/file search)
 
