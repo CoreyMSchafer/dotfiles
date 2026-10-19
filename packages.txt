@@ -25,6 +25,9 @@ coreutils
 d2
 # Diagrams as code
 
+duf
+# Free space on every mounted drive (a better df)
+
 dust
 # Disk usage as a tree
 
@@ -33,6 +36,9 @@ exiftool
 
 eza
 # Modern ls (also replaces tree)
+
+fclones
+# Duplicate file finder (can turn duplicates into APFS clones)
 
 fd
 # Fast find
