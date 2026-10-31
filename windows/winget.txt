@@ -121,6 +121,9 @@ Microsoft.VisualStudioCode
 VideoLAN.VLC
 # Media player
 
+BlenderFoundation.Blender
+# 3D modeling, physics simulation and rendering (scriptable from Python), as on the Macs
+
 # --- Not on winget (installed elsewhere or not applicable)
 # pre-commit: uv tool (install.ps1 does it, like brew.sh)
 # ocrmypdf, tesseract, ghostscript: the WSL side (ubuntu/apt.txt) — Ghostscript isn't on winget
